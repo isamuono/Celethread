@@ -1,0 +1,143 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="channel-edit-form">
+    <%= form_for @user, url: { controller: 'users', action: 'update', method: :patch } do |f| %>
+      <div class="modal-content user-edit-container">
+        <div class="modal-header">
+          <p class="modal-title user-edit-title">プロフィールを編集</p>
+        </div>
+        <div class="modal-body user-edit-modal-body">
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <%= f.label "プロフィール写真", class: "label-text3" %>
+                <div class="user-image">
+                  <% if @user.images.present? %>
+                    <%= image_tag @user.images.url, class: 'user-profile-thumbnail', id: "user_img_prev" %>
+                  <% else %>
+                    <%= image_tag "icons/user_default.png", class: 'user-profile-thumbnail', id: "user_img_prev" %>
+                  <% end %>
+                </div>
+                <label>
+                  <span class="btn imagefile-upload-btn">
+                    画像をアップロード
+                    <%= f.file_field :images, class: "file_field", id: "user_images" %>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="form-group form-row">
+                <div class="col">
+                  <%= f.label "姓", class: "label-text3" %>
+                  <%= f.text_field :family_name, class: "form-control", id: "family_name", placeholder: "姓", autocomplete: "family-name", autofocus: true %>
+                </div>
+                <div class="col">
+                  <%= f.label "名", class: "label-text3" %>
+                  <%= f.text_field :first_name, class: "form-control", id: "first_name", placeholder: "名", autocomplete: "given-name" %>
+                </div>
+              </div>
+              <div class="form-group form-mt">
+                <%= f.label "アカウント名（表示名）", class: "label-text3" %>
+                <%= f.text_field :accountName, class: "form-control", id: "accountName", placeholder: "アカウント名" %>
+              </div>
+              <div class="form-group form-mt">
+                <%= f.label "メールアドレス", class: "label-text3" %>
+                <%= f.email_field :email, type: "email", class: "form-control", id: "email", placeholder: "例：taro.yamada@gmail.com", autocomplete: "email" %>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group" id="text_area">
+                <%= f.label "自己紹介", class: "label-text3" %>
+                <%= f.text_area :self_introduction, class: "form-control", id: "self_introduction", rows: "8" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
+          <%= f.submit "変更を保存", class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script>
+  var resizeFlg; //setTimeoutの待機中かを判定するフラグ
+  
+  function windowResizeFunc(){
+    //resizeFlgに値が設定されている場合は、待ち時間中なのでリセットする
+    if (resizeFlg !== false) {
+        clearTimeout(resizeFlg);
+    }
+    //300ms待機後にリサイズ処理を実施する
+    resizeFlg = setTimeout( function() {
+        resizeElement();    //リサイズを実施する処理
+    }, 300);
+  }
+  
+  window.addEventListener("resize", windowResizeFunc);
+  window.addEventListener('load', resizeElement());
+  
+  function resizeElement(){
+    const windowWidth = document.documentElement.clientWidth;
+    const windowHeight = document.documentElement.clientHeight;
+  
+    const resizebox1 = document.getElementById("family_name");
+      if (windowWidth <= 767) {
+        resizebox1.className = "form-control";
+      } else if (windowWidth >= 768) {
+        resizebox1.className = "form-control form-control-lg";
+      }
+    const resizebox2 = document.getElementById("first_name");
+      if (windowWidth <= 767) {
+        resizebox2.className = "form-control";
+      } else if (windowWidth >= 768) {
+        resizebox2.className = "form-control form-control-lg";
+      }
+    const resizebox3 = document.getElementById("accountName");
+      if (windowWidth <= 767) {
+        resizebox3.className = "form-control";
+      } else if (windowWidth >= 768) {
+        resizebox3.className = "form-control form-control-lg";
+      }
+    const resizebox4 = document.getElementById("email");
+      if (windowWidth <= 767) {
+        resizebox4.className = "form-control";
+      } else if (windowWidth >= 768) {
+        resizebox4.className = "form-control form-control-lg";
+      }
+    const resizebox5 = document.getElementById("self_introduction");
+      if (windowWidth <= 767) {
+        resizebox5.className = "form-control";
+      } else if (windowWidth >= 768) {
+        resizebox5.className = "form-control form-control-lg";
+      }
+  }
+  
+  //傾きを変える度に現在の傾きを判定
+  window.orientationchange = function (){
+    if (Math.abs(window.orientation) === 0){
+      window.reload(); 
+    } else {
+      window.reload();
+    }
+  };
+  
+  // ユーザー情報編集モーダル プロフィール画像即時プレビュー
+	function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $('#user_img_prev').attr('src', e.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  $("#user_images").change(function() {
+    readURL(this);
+  });
+  
+  $('#self_introduction').on('input', function() {
+    $(this).height(0).innerHeight(this.scrollHeight);
+  });
+</script>

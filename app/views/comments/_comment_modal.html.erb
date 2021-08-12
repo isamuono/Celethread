@@ -1,0 +1,205 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content tcomment-users-index">
+    <div class="modal-header">
+      <p class="modal-title">コメント一覧</p>
+    </div>
+    <div class="modal-body tcomment-modal-body">
+      <div class="comment-index" id="comment-index<%= gthread.id %>">
+        <% comments.each do |tcomment| %>
+          <%= render partial: 'comments/comment', locals: { tcomment: tcomment } %>
+        <% end %>
+      </div>
+      <div class="tcomment-footer" id="modal-footer<%= gthread.id %>">
+        <%= form_with model: @comment, url: { controller: 'comments', action: 'create', method: :post }, html: { autocapitalize: "off", autocorrect: "off" }, local: false do |f| %>
+          <div class="form-group" id="resizebox">
+            <%= f.hidden_field :gthread_id, :value => gthread.id, id: "comment_hidden_field#{ gthread.id }" %>
+            <%= f.text_area :text, class: "form-control form-control-lg tcomment-textarea", id: "commentTextForm#{ gthread.id }", rows: "1", placeholder: "#{ gthread.title.truncate(15, omission: '･･･') } にコメント", required: true %>
+            <%= f.button type: "submit", class: "btn btn-block tcomment-submit-btn", id: "submit#{ gthread.id }" do %>
+              <i class="fas fa-paper-plane"></i>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // tippy.js
+  tippy('.tcomment-submit-btn', {
+    content: '送信する',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.comment-destroy-icon', {
+    content: '削除する',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  // コメントフォーム
+  var $submit_btn<%= gthread.id %> = $("#submit<%= gthread.id %>");
+  var $text_field<%= gthread.id %> = document.getElementById("commentTextForm<%= gthread.id %>");
+  
+  $submit_btn<%= gthread.id %>.prop("disabled", true);
+  
+  //var lineHeight = parseInt($text_field<%= gthread.id %>.css('lineHeight'));
+  // 最低行数を指定
+  //var minHeight = lineHeight * 1;
+  const maxLineCount = 13;
+  // 最高幅を指定
+  var maxHeight = parseInt($(window).height() * 0.45);
+    
+  $text_field<%= gthread.id %>.addEventListener('input', function() {
+    //未入力の場合送信ボタン使用不可
+    var $text_count = $text_field<%= gthread.id %>.value.length;
+    var $text_val = $text_field<%= gthread.id %>.value;
+    
+    if ($text_count >= 1 && !$text_val.match(/\S/g) == "") {
+      $submit_btn<%= gthread.id %>.prop('disabled', false);
+    } else {
+      $submit_btn<%= gthread.id %>.prop('disabled', true);
+    }
+    
+    // 上方向に拡大
+    //var lines<%= gthread.id %> = ($(this).value + '\n').match(/\n/g).length;
+    changeLineCheck<%= gthread.id %>();
+    
+    //$(this).height(Math.min(maxHeight, Math.max(lineHeight * lines<%= gthread.id %>, minHeight)));
+  });
+  
+  const getLineCount<%= gthread.id %> = function() {
+    return ($text_field<%= gthread.id %>.value + "\n").match(/\r?\n/g).length;
+  };
+
+  let lineCount<%= gthread.id %> = getLineCount<%= gthread.id %>();
+  let newLineCount<%= gthread.id %>;
+  
+  const changeLineCheck<%= gthread.id %> = function() {
+    // 現在の入力行数を取得（ただし，最大の行数は maxLineCount とする）
+    newLineCount<%= gthread.id %> = Math.min(getLineCount<%= gthread.id %>(), maxLineCount);
+    // 以前の入力行数と異なる場合は変更する
+    if (lineCount<%= gthread.id %> !== newLineCount<%= gthread.id %>) {
+      changeLineCount<%= gthread.id %>(newLineCount<%= gthread.id %>);
+    }
+  };
+  
+  const comment_index<%= gthread.id %> = document.getElementById("comment-index<%= gthread.id %>");
+  const footer<%= gthread.id %> = document.getElementById("modal-footer<%= gthread.id %>");
+  let footerHeight<%= gthread.id %> = $text_field<%= gthread.id %>.scrollHeight;
+  let newFooterHeight<%= gthread.id %>,
+      footerHeightDiff<%= gthread.id %>;
+      
+  //var paddingBottom = parseInt($("#comment_index<%= gthread.id %>").css('padding-bottom'));
+  
+  /*$('.tcomment-textarea').on('input', function(){
+    const maxLineHeight = 13;
+    let lineHeight<%= gthread.id %> = Number($text_field<%= gthread.id %>.getAttribute("rows"));
+    
+    if ($(this).outerHeight() > this.scrollHeight && lineHeight<%= gthread.id %> < maxLineHeight){
+      $(this).height(1)
+    }
+    while ($(this).outerHeight() < this.scrollHeight && lineHeight<%= gthread.id %> < maxLineHeight){
+      $(this).height($(this).height() + 1)
+    }
+  });*/
+  
+  $text_field<%= gthread.id %>.addEventListener("input", changeLineCount<%= gthread.id %> = (newLineCount<%= gthread.id %>) => {
+    $text_field<%= gthread.id %>.rows = lineCount<%= gthread.id %>;
+    lineCount<%= gthread.id %> = newLineCount<%= gthread.id %>;
+    
+    // 文字量によって自動で高さが変わるtextarea
+    $(".tcomment-textarea").height(0).innerHeight($text_field<%= gthread.id %>.scrollHeight);
+    
+    newFooterHeight<%= gthread.id %> = $text_field<%= gthread.id %>.scrollHeight;
+    footerHeightDiff<%= gthread.id %> = newFooterHeight<%= gthread.id %> - footerHeight<%= gthread.id %>;
+    if (footerHeightDiff<%= gthread.id %> > 0/* && newLineCount<%= gthread.id %> <= 4*/) {
+      //comment_index<%= gthread.id %>.style.paddingBottom = newFooterHeight<%= gthread.id %> - 40 + "px";
+      comment_index<%= gthread.id %>.style.height = 501 - newFooterHeight<%= gthread.id %> + 40 + "px";
+      comment_index<%= gthread.id %>.scrollBy(0, footerHeightDiff<%= gthread.id %>);
+    } else {
+      comment_index<%= gthread.id %>.scrollBy(0, footerHeightDiff<%= gthread.id %>);
+      //comment_index<%= gthread.id %>.style.paddingBottom = newFooterHeight<%= gthread.id %> - 40 + "px";
+      comment_index<%= gthread.id %>.style.height = 501 - newFooterHeight<%= gthread.id %> + 40 + "px";
+    }
+    footerHeight<%= gthread.id %> = newFooterHeight<%= gthread.id %>;
+  });
+  
+  //const data<%= gthread.id %> = document.getElementById("data<%= gthread.id %>")
+  //const thread_id = data<%= gthread.id %>.getAttribute("data-thread-id");
+  const comment_modal<%= gthread.id %> = $("#tcomment-Modal<%= gthread.id %>");
+  
+  App.comment = App.cable.subscriptions.create('CommentChannel', {
+    connected: function() {
+      // Called when the subscription is ready for use on the server
+    },
+    disconnected: function() {
+      // Called when the subscription has been terminated by the server
+    },
+    received: function(data) {
+      //var params = location.search
+      var href = location.href;
+      
+      var comment_id = data['comment_id'];
+      var gthread_id = data['gthread_id'];
+      var g_uid = data['g_uid'];
+      //var current_user_id = data['current_user_id'];
+      var comment_user_id = data['user_id'];
+      
+      if (href.match(`/channels/${ data['channel_id'] }/gthreads/${ data['g_uid'] }`)) {
+        document.getElementById('comment-index' + gthread_id).insertAdjacentHTML("beforeend", data['comment']);
+        
+        if (gon.current_user_id == comment_user_id) {
+          document.getElementById('commentTextForm' + gthread_id).value = '';
+          $('#submit' + gthread_id).prop("disabled", true);
+          
+          const windowWidth = document.documentElement.clientWidth;
+          
+          if (windowWidth >= 768) {
+            document.getElementById('comment-index' + gthread_id).style.height = 501 + 'px';
+            document.getElementById('commentTextForm' + gthread_id).style.height = 42 + 'px';
+          } else if (windowWidth <= 767) {
+            document.getElementById('comment-index' + gthread_id).style.height = 501 + 'px';
+            document.getElementById('commentTextForm' + gthread_id).style.height = 30 + 'px';
+          }
+        }
+      }
+      
+      // tippy.js
+      tippy('.comment-destroy-icon', {
+        content: '削除する',
+        theme: 'black',
+        delay: [100, 0],
+      });
+      
+      // 削除時確認ダイアログ(sweetalert2)
+      $('#comment-destroy-btn' + comment_id).on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      
+        var $link = $(this);
+      
+        swal.fire({
+          icon: 'warning',
+          iconColor: 'red',
+          title: 'このコメントを削除してもよろしいですか？',
+          confirmButtonText: '削除する',
+          confirmButtonColor: '#d33',
+          showCancelButton: true,
+          cancelButtonText: 'キャンセル',
+          focusCancel: true,
+          position : 'center',
+          allowEscapeKey: true,
+          customClass: {
+            popup: 'sweetalert-comment-destroy'
+          }
+        }).then(function(result) {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: `/comments/${ comment_id }`,
+              type: 'DELETE',
+            });
+          }
+        }, function(dismiss) {});
+      });
+    }
+  });
+</script>

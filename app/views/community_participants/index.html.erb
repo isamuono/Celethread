@@ -1,0 +1,45 @@
+<div class="top-wrapper text-center">
+  <div class="com-show-container">
+    <h1 class="text-black text-center">サイト名</h1>
+    <h2 class="text-black">コミュニティー一覧</h2>
+      <div class="communities_list" align="center">
+        <table class="table table-hover">
+          <% @communities.each do |c| %>
+            <tr class="table-light" data-toggle="modal">
+              <td width="6rem" align="center"><%#= image_tag "/staff_02.jpeg", size: "200x200", class: "community-image", class: "img-thumbnail" %></td><td><%= c.communityName %></td>
+              <td>
+                <button type="button" class="btn btn-light" data-toggle="modal" data-target="#Modal<%= c.id %>">
+                  詳細
+                </button>
+                <%#= button_tag "詳細", class: "btn btn-light", data:{toggle: "modal", target: "#exampleModal"} %>
+              </td>
+            </tr>
+            <!-- モーダルの設定 -->
+            <div class="modal" id="Modal<%= c.id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel<%= c.id %>"><%= c.communityName %></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p><%= c.description %></p>
+                  </div>
+                  <div class="modal-footer">
+                    <%= link_to community_participants_path(community_id: c.id), method: :post do %>
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">このコミュニティーに参加する</button>
+                    <% end %>
+                    <%#= c.save "communitiy_participants btn btn-block btn-primary" %>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                  </div><!-- /.modal-footer -->
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+          <% end %>
+        </table>
+      </div>
+  </div>
+  
+</div>

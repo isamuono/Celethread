@@ -4,22 +4,24 @@ class SessionsController < ApplicationController
   
   def create
     user = User.find_by(email: session_params[:email])
+    #@community_first = Community.find(current_user.communities.first.id)
+    #@channel = Channel.find(@community_first.channels.first.id)
     if !user #データベースにemailで照合 => emailがnilだったらaccontNameで照合
       user = User.find_by(accountName: session_params[:email])
     end
-    if user && user.authenticate(session_params[:password])#(:activation, params[:id]) # authenticateメソッド：引数に渡された文字列 (パスワード) をハッシュ化した値と、# データベース内にあるpassword_digestカラムの値を比較
-      if user.activated?
+    if user && user.authenticate(session_params[:password])#(:activation, params[:id]) # authenticateメソッド：引数に渡された文字列 (パスワード) をハッシュ化した値と、
+      if user.activated?                                                               # データベース内にあるpassword_digestカラムの値を比較
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_to user, success: 'ログインに成功しました'
+        redirect_to channels_gthreads_path(current_user.communities.order(:created_at).first.channels.first.id), success: 'ログインに成功しました'
       else
         message  = "このアカウントは有効でありません。"
         message += "お送りしたメールのリンクからアカウントを有効にしてください。"
         flash[:warning] = message
-        redirect_to root_url
+        render :new
       end
     else
-      flash.now[:danger] = 'メールアドレスとパスワードが一致しません'
+      flash.now[:danger] = 'メールアドレス／アカウント名とパスワードが一致しません'
       render :new
     end
   end
@@ -45,6 +47,6 @@ class SessionsController < ApplicationController
   
   private
     def session_params
-      params.require(:session).permit(:email, :password, :remember_me)
+      params.require(:session).permit(:email, :accountName, :password, :remember_me)
     end
 end

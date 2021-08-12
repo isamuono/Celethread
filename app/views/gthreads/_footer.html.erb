@@ -1,0 +1,374 @@
+<div class="offset-xl-2 offset-lg-2 offset-md-2 offset-1 col-xl-8 col-lg-8 col-md-8 col-10">
+  <%= form_with model: @gthread, html: { autocapitalize: "off", autocorrect: "off" }, local: false do |f| %>
+    <div class="relative-container">
+      <div class="thread-new-container">
+        <%= f.hidden_field :user_id, value: current_user.id %>
+        <%= f.hidden_field :community_id, value: @channel.community.id %>
+        <%= f.hidden_field :channel_id, value: @channel.id %>
+        <div class="form-group">
+          <%= f.text_field :title, class: "form-control form-control-lg", id: "thread-new-title", placeholder: "スレッドのタイトル" %>
+        </div>
+        <div class="form-group" id="text_area">
+          <%= f.text_area :description, class: "form-control quill_container", id: "description", placeholder: "スレッドの本文" %>
+        </div>
+        
+        <label class="upload-label">
+          <span class="imagefile-upload-btn">
+            <i class="far fa-file"></i>
+            <%= f.file_field :images, type: "file", class: "file_field", id: "file_field", accept: "image/png, image/jpeg, application/pdf", capture: "camera", multiple: true, name: "gthread[images][]" %>
+          </span>
+        </label>
+        
+        <span class="ql-formats ql-submit">
+          <%= f.button type: "submit", class: "thread-create-btn" do %>
+            <i class="fas fa-paper-plane"></i>
+          <% end %>
+        </span>
+      </div>
+    </div>
+  <% end %>
+</div>
+<script>
+  /*function loadImage(obj) {
+  //素材
+      $ul = $('#previews')
+      $span = $(this).parents('span');
+      $label = $(this).parents('.upload-label');
+      //$inputs = $ul.find('.file_field');
+      //$liに追加するためのプレビュー画面のHTML
+      
+      //次の画像を読み込むためのinput。処理の最後にappendで追加する。 
+      //var append_input = $(`<li class="input"><label class="upload-label"><div class="upload-label__text">ドラッグアンドドロップ<br>またはクリックしてファイルをアップロード<div class="input-area"><input class="hidden image_upload" type="file"></div></div></label></li>`)
+  
+  //処理
+      //inputに画像を読み込んだら、"プレビューの追加"と"新しいli追加"処理が動く
+      //$('.file_field').on('change', function(e) {
+        for (i = 0; i < obj.files.length; i++) {
+          //画像URLを取得
+          var reader = new FileReader();
+          reader.readAsDataURL(obj.files[i]);
+          
+          var ql_editor = $('.ql-editor');
+          var images_preview_container = `<div class="image-preview__wapper"></div>`;
+    
+          //画像URLをimgに追加
+          //画像ファイルが読み込んだら、処理が実行される。 
+          reader.onload = function(e) {
+            //$(preview).find('.preview').attr('src', e.target.result);
+            ql_editor.after(images_preview_container);
+            var preview = `<span><img class="preview" src="${ e.target.result }"><div class="image-preview_btn"><div class="image-preview_btn_delete">削除</div></div></span>`;
+            $('.image-preview__wapper').append(preview);
+            ql_editor.css('height', 140 + 'px');
+          };
+    
+          //inputを保有する、spanにimgを追加
+          //$span.append(preview);
+        }
+      //});
+    }
+    
+    $('.file_field').on('change', function(e) {
+      //選択したfileのオブジェクトをpropで取得
+      var files = file_field.prop('files')[0];
+      //$.each(this.files, function(i, file) {
+      //for (var i=0; i < e.target.files.length; i++) {
+        //FileReaderのreadAsDataURLで指定したFileオブジェクトを読み込む
+        var fileReader = new FileReader();
+        
+        //DataTransferオブジェクトに対して、fileを追加
+        dataBox.items.add(e.target.files[i]);
+        alert(dataBox.items.add(e.target.files[i]));
+        //DataTransferオブジェクトに入ったfile一覧をfile_fieldの中に代入
+        file_field.files = dataBox.files;
+        
+        var num = $('.image-preview_btn').length + 1 + i;
+        
+        fileReader.readAsDataURL(e.target.files[i]);
+        
+        //読み込みが完了すると、srcにfileのURLを格納
+        fileReader.onload = function() {
+          var ql_editor = $('.ql-editor');
+          var src = fileReader.result;
+          var images_preview_container = `<div class="image-preview__wapper"></div>`;
+          var preview = `<span class="image-preview_btn">
+                          <img class="preview" src="${ src }">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                          </svg>
+                        </span>`;
+          
+          ql_editor.after(preview);
+          //$('.image-preview__wapper').append(preview);
+          ql_editor.css('height', 140 + 'px');
+          
+          $('.image-preview_btn').hover(function() {
+      			$(this).find('.bi-x-circle-fill').css('display', 'block');
+      		}, function() {
+      			$(this).find('.bi-x-circle-fill').css('display', 'none');
+      		});
+        };
+      }//);
+    });*/
+  // quill.js
+  var defaults = {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+        //[{ 'header': [1, 2, 3, false] }],
+        [{ 'size': ['small', false, 'large'] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'color': [] }, { 'background': [] }],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        ['blockquote', 'code', 'code-block'],
+        ['link']
+      ]
+    }
+  };
+  
+  Quilljs.setDefaults(defaults);
+  
+  // コードブロックのアイコン変更
+  var code_block = $('.ql-code-block');
+  $('.ql-code-block svg:first').remove();
+  code_block.append('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code-square ql-stroke" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M6.854 4.646a.5.5 0 0 1 0 .708L4.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0zm2.292 0a.5.5 0 0 0 0 .708L11.793 8l-2.647 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0z"/></svg>');
+  
+  var ql_list1 = document.getElementsByClassName('ql-list')[0];
+  var ql_list2 = document.getElementsByClassName('ql-list')[1];
+  
+  ql_list1.setAttribute('id', 'ql-list1');
+  ql_list2.setAttribute('id', 'ql-list2');
+  
+  //var ql_indent1 = document.getElementsByClassName('ql-indent')[0];
+  //var ql_indent2 = document.getElementsByClassName('ql-indent')[1];
+  
+  //ql_indent1.setAttribute('id', 'ql-indent1');
+  //ql_indent2.setAttribute('id', 'ql-indent2');
+  
+  var imagefile_upload_btn_html = $('.upload-label');
+  var ql_thread_submit_btn_html = $('.ql-submit');
+  
+  $('.ql-link').after(imagefile_upload_btn_html);
+  $('.ql-toolbar').append(ql_thread_submit_btn_html);
+  
+  // tippy.js
+  tippy('.ql-size', {
+    content: 'フォントサイズ',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-bold', {
+    content: '太字',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-italic', {
+    content: '斜体',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-underline', {
+    content: 'アンダーライン',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-strike', {
+    content: '取り消し線',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-color', {
+    content: 'フォントカラー',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-background', {
+    content: '塗りつぶし',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('#ql-list1', {
+    content: '順序付きリスト',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('#ql-list2', {
+    content: '箇条書き',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-blockquote', {
+    content: '引用タグ',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-code', {
+    content: 'コード',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-code-block', {
+    content: 'コードブロック',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-link', {
+    content: 'テキストを選択してリンク化',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.imagefile-upload-btn', {
+    content: `<div style="text-align: center">ファイルをアップロードする</div>
+              （ jpg, jpeg, png, pdfファイルのみ ）`,
+    allowHTML: true,
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.thread-create-btn', {
+    content: '送信する',
+    theme: 'black',
+    delay: [100, 0],
+  });
+
+  // bootstrao-add-clear
+  $('#thread-new-title').addClear({
+    symbolClass: 'far fa-times-circle',
+    color: '#7d7d7d'
+  });
+  
+  // スレッド作成フォーム 未入力の場合送信ボタン使用不可 // 未完成
+  var submit_btn = $('.thread-create-btn');
+  var text_field = $('#ql-editor');
+  var text_fields = document.getElementById('ql-editor');
+  var text_field_p = $('#ql-editor p');
+  var text_field_br = $('#ql-editor > p > br');
+  var br1 = $('#ql-editor > p > br')[0];
+  
+  //var ql_blank = text_fields.classList.contains('ql-blank');
+  
+  submit_btn.prop('disabled', true);
+  
+  text_field.on('input keydown', function(e) {
+    var text_count = text_field_p.html().length;
+    //var text_val = ;
+    if (text_field_p.html() !== "<br>" && text_field_br.length <= 1 && !text_field_p.html().match(/\S/g) == "") {
+      submit_btn.prop('disabled', false);
+    } else {
+      submit_btn.prop('disabled', true);
+    }
+    /*if (ql_blank == true) {
+      submit_btn.prop('disabled', true);
+    } else if (text_field_p.html() !== "<br>") {
+      submit_btn.prop('disabled', false);
+    }*/
+    
+    //if (text_count >= 1 && text_field_p.html() !== "<br>" && text_field_br.length >= 1 && !text_field_p.html().match(/\S/g) == "") {
+    //  submit_btn.prop('disabled', false);
+    //} else {
+    //  submit_btn.prop('disabled', true);
+    //}
+  });
+  
+  submit_btn.on('click', function() {
+    $('.footer_container').slideUp();
+    $('.overlay_container').removeClass('overlay');
+  });
+  
+  // ファイルアップロード機能
+  $(function() {
+    var preview_container = `<div class="preview-container"></div>`;
+    $('.ql-editor').after(preview_container);
+    
+    var dataBox = new DataTransfer();
+    var file_field = document.getElementById('file_field');
+    var ql_editor = $('.ql-editor');
+    
+    file_field.addEventListener('change', function() {
+      var filelist = file_field.files;
+      $.each(this.files, function(i, file) {
+      //for (let i = 0; i < filelist.length; i++) {
+        var fileReader = new FileReader();
+        
+        dataBox.items.add(filelist[i]);
+        //DataTransferオブジェクトに入ったfile一覧をfile_fieldの中に代入
+        file_field.files = dataBox.files;
+        
+        fileReader.readAsDataURL(filelist[i]);
+        
+        fileReader.onload = function() {
+          var src = fileReader.result;
+          var type = filelist[i].type;
+          var image_preview = `<span class="image-preview" data-image="${ file.name }">
+                                <img class="preview" src="${ src }">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill image-trash" viewBox="0 0 16 16">
+                                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                </svg>
+                              </span>`;
+                              
+          var pdf_preview = `<span class="pdf-preview_${ file.name.split('.').slice(0, -1).join('.') }" data-image="${ file.name }">
+                              <%= image_tag "icons/pdf_icon.png", class: "pdf-icon" %>
+                              <div class="pdf-filename">
+                                ${ file.name }
+                              </div>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill pdf-trash" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                              </svg>
+                            </span>`;
+          
+          if (type == 'application/pdf' ) {
+            $('.preview-container').append(pdf_preview);
+          } else {
+            $('.preview-container').append(image_preview);
+          }
+          
+          var windowWidth = document.documentElement.clientWidth;
+          
+          if (windowWidth >= 768) {
+            ql_editor.css('height', 160 + 'px');
+            $('.preview-container').css('display', 'block');
+          } else if (windowWidth <= 767) {
+            ql_editor.css('height', 120 + 'px');
+            $('.preview-container').css('display', 'block');
+            $('.preview-container').css('height', 151.5 + 'px');
+          }
+          
+          $(`.image-preview, .pdf-preview_${ file.name.split('.').slice(0, -1).join('.') }`).hover(function() {
+      			$(this).find('.bi-x-circle-fill').css('display', 'block');
+      		}, function() {
+      			$(this).find('.bi-x-circle-fill').css('display', 'none');
+      		});
+      		
+      		tippy(`.pdf-preview_${ file.name.split('.').slice(0, -1).join('.') }`, {
+            content: `${ file.name }`,
+            allowHTML: true,
+            theme: 'black',
+            delay: [100, 0],
+          });
+        };
+      });
+    });
+    
+    $(document).on('click', '.bi-x-circle-fill', function() {
+      var target_image = $(this).parent();
+      var target_name = $(target_image).data('image');
+      if (file_field.files.length == 1) {
+        $('#file_field').val(null)
+        dataBox.clearData();
+        ql_editor.css('height', 100 + '%');
+        $('.preview-container').css('display', 'none');
+      } else {
+        $.each(file_field.files, function(i, input) {
+          if (input.name == target_name) {
+            dataBox.items.remove(i);
+          }
+        })
+        //DataTransferオブジェクトに入ったfile一覧をfile_fieldの中に再度代入
+        file_field.files = dataBox.files;
+      }
+      target_image.remove();
+    });
+    
+    $('.thread-create-btn').on('click', function() {
+      dataBox.clearData();
+    });
+  });
+</script>

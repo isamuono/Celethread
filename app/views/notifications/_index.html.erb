@@ -1,0 +1,176 @@
+<div class="modal-dialog">
+  <div class="modal-content notification-index">
+    <div class="modal-body notification-modal-body">
+      
+      <% if notifications.present? %>
+        <% notifications.each do |notification| %>
+          <% visitor = notification.visitor %>
+          <% visited = notification.visited %>
+          <div class="notification-index-single">
+            <div class="notification-channel-container">
+              <span class="notification-channel-color-icon">
+                <span class="notification-channel-color-hex"><%= notification.gthread.channel.color %></span>
+              </span>
+              <span class="notification-channel-name">
+                <%= notification.gthread.channel.channelName %> チャンネル
+              </span>
+            </div>
+            <div class="visitor-thumbnail">
+              <% if visitor.images.present? %>
+                <%= image_tag visitor.images.url, class: 'visitor-profile-thumbnail', loading: "lazy" %>
+              <% else %>
+                <i class="far fa-user-circle"></i>
+              <% end %>
+            </div>
+            <span class="visitor-accountName"><%= visitor.accountName %>さんが</span>
+            <% case notification.action
+              when 'gthread' then %>
+              スレッド「<%= notification.gthread.title %>」を作成しました
+              <% when 'thread_reaction' then %>
+                <% if notification.gthread.user_id == visited.id %>
+                  あなたのスレッド「<%= notification.gthread.title %>」に
+                <% else %>
+                  <div class="thread-author-thumbnail">
+                    <% if notification.gthread.user.images.present? %>
+                      <%= image_tag notification.gthread.user.images.url, class: 'thread-author-profile-thumbnail', loading: "lazy" %>
+                    <% else %>
+                      <i class="far fa-user-circle"></i>
+                    <% end %>
+                  </div>
+                  <%= notification.gthread.user.accountName %>さんのスレッド「<%= notification.gthread.title %>」に
+                <% end %>
+                リアクションしました
+              <% when 'comment' then %>
+                <% if notification.gthread.user_id == visited.id %>
+                  あなたのスレッド「<%= notification.gthread.title %>」に
+                <% else %>
+                  <div class="thread-author-thumbnail">
+                    <% if notification.gthread.user.images.present? %>
+                      <%= image_tag notification.gthread.user.images.url, class: 'thread-author-profile-thumbnail', loading: "lazy" %>
+                    <% else %>
+                      <i class="far fa-user-circle"></i>
+                    <% end %>
+                  </div>
+                  <%= notification.gthread.user.accountName %>さんのスレッド「<%= notification.gthread.title %>」に
+                <% end %>
+                コメントしました
+                <p class="notification-comment-text text-muted">
+                  <%= Comment.find_by(id: notification.comment_id)&.text %>
+                </p>
+            <% end %>
+            <div class="notification-index-single-footer">
+              <span class="notification-checked-true">
+                <%= check_box_tag "notification[checked]_#{ notification.id }", false, notification.checked, {
+                    onchange: '$(this).data("params", "notification[checked]=" + this.checked)',
+                    data: {
+                        url: notification_path(notification.id),
+                        method: :patch,
+                        remote: true
+                    },
+                    class: "notification-checkbox"
+                } %>
+                <%= label_tag "notification[checked]_#{ notification.id }", "既読にする", class: "notification-checklabel" %>
+              </span>
+              <p class="notification-created_at text-right">
+                <%= time_ago_in_words(notification.created_at).upcase %>前
+              </p>
+            </div>
+            <hr class="notification-hr">
+          </div>
+        <% end %>
+      <% else %>
+        <p class="null-text text-center">通知はありません</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  //window.addEventListener('load', colorElement());
+  // チャンネルイメージカラー
+  $(function() {
+    const color = $('.notification-channel-color-icon');//document.getElementsByClassName("color-icons");
+    const color_arr = Array.from(color);
+    
+    const forEach_arr = color_arr.forEach(function(value) {
+      if (value.firstElementChild.innerHTML == "#000000") {
+        value.style.backgroundColor = "black";
+      } else if (value.firstElementChild.innerHTML == "#808080") {
+        value.style.backgroundColor = "gray";
+      } else if (value.firstElementChild.innerHTML == "#4682b4") {
+        value.style.backgroundColor = "steelblue";
+      } else if (value.firstElementChild.innerHTML == "#000080") {
+        value.style.backgroundColor = "navy";
+      } else if (value.firstElementChild.innerHTML == "#0000ff") {
+        value.style.backgroundColor = "blue";
+      } else if (value.firstElementChild.innerHTML == "#4169e1") {
+        value.style.backgroundColor = "royalblue";
+      } else if (value.firstElementChild.innerHTML == "#1e90ff") {
+        value.style.backgroundColor = "dodgerblue";
+      } else if (value.firstElementChild.innerHTML == "#00bfff") {
+        value.style.backgroundColor = "deepskyblue";
+      } else if (value.firstElementChild.innerHTML == "#87cefa") {
+        value.style.backgroundColor = "lightskyblue";
+      } else if (value.firstElementChild.innerHTML == "#00ffff") {
+        value.style.backgroundColor = "cyan";
+      } else if (value.firstElementChild.innerHTML == "#008b8b") {
+        value.style.backgroundColor = "darkcyan";
+      } else if (value.firstElementChild.innerHTML == "#008000") {
+        value.style.backgroundColor = "green";
+      } else if (value.firstElementChild.innerHTML == "#3cb371") {
+        value.style.backgroundColor = "mediumseagreen";
+      } else if (value.firstElementChild.innerHTML == "#98fb98") {
+        value.style.backgroundColor = "palegreen";
+      } else if (value.firstElementChild.innerHTML == "#adff2f") {
+        value.style.backgroundColor = "greenyellow";
+      } else if (value.firstElementChild.innerHTML == "#00ff00") {
+        value.style.backgroundColor = "lime";
+      } else if (value.firstElementChild.innerHTML == "#9acd32") {
+        value.style.backgroundColor = "yellowgreen";
+      } else if (value.firstElementChild.innerHTML == "#bdb76b") {
+        value.style.backgroundColor = "darkkhaki";
+      } else if (value.firstElementChild.innerHTML == "#f0e68c") {
+        value.style.backgroundColor = "khaki";
+      } else if (value.firstElementChild.innerHTML == "#fff450") {
+        value.style.backgroundColor = "#fff450";
+      } else if (value.firstElementChild.innerHTML == "#ffd700") {
+        value.style.backgroundColor = "gold";
+      } else if (value.firstElementChild.innerHTML == "#fcc800") {
+        value.style.backgroundColor = "#fcc800";
+      } else if (value.firstElementChild.innerHTML == "#ffa500") {
+        value.style.backgroundColor = "orange";
+      } else if (value.firstElementChild.innerHTML == "#ff8c00") {
+        value.style.backgroundColor = "darkorange";
+      } else if (value.firstElementChild.innerHTML == "#8f6552") {
+        value.style.backgroundColor = "#8f6552";
+      } else if (value.firstElementChild.innerHTML == "#8b4513") {
+        value.style.backgroundColor = "saddlebrown";
+      } else if (value.firstElementChild.innerHTML == "#b22222") {
+        value.style.backgroundColor = "firebrick";
+      } else if (value.firstElementChild.innerHTML == "#ff6347") {
+        value.style.backgroundColor = "tomato";
+      } else if (value.firstElementChild.innerHTML == "#ff4500") {
+        value.style.backgroundColor = "orangered";
+      } else if (value.firstElementChild.innerHTML == "#ff0000") {
+        value.style.backgroundColor = "red";
+      } else if (value.firstElementChild.innerHTML == "#dc143c") {
+        value.style.backgroundColor = "crimson";
+      } else if (value.firstElementChild.innerHTML == "#e73562") {
+        value.style.backgroundColor = "#e73562";
+      } else if (value.firstElementChild.innerHTML == "#ff1493") {
+        value.style.backgroundColor = "deeppink";
+      } else if (value.firstElementChild.innerHTML == "#ff69b4") {
+        value.style.backgroundColor = "hotpink";
+      } else if (value.firstElementChild.innerHTML == "#ffb6c1") {
+        value.style.backgroundColor = "lightpink";
+      } else if (value.firstElementChild.innerHTML == "#ee82ee") {
+        value.style.backgroundColor = "violet";
+      } else if (value.firstElementChild.innerHTML == "#8b008b") {
+        value.style.backgroundColor = "darkmagenta";
+      } else if (value.firstElementChild.innerHTML == "#9400d3") {
+        value.style.backgroundColor = "darkviolet";
+      } else if (value.firstElementChild.innerHTML == "#a2efef") {
+        value.style.backgroundColor = "#a2efef";
+      }
+    });
+  });
+</script>

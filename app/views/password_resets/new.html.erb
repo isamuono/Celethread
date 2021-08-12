@@ -1,0 +1,32 @@
+<head>
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+</head>
+<div class="top-wrapper">
+  <div class="form-container">
+    <h1 class="text-black text-center mt-auto">サイト名</h1>
+    <h4 class="text-black text-center">パスワード再発行</h4>
+    <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
+      <%= form_for :password_reset, url: password_resets_path, html: { class: "needs-validation", novalidate: true, autocapitalize: "off", autocorrect: "off" } do |f| %>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "メールアドレス", class: "label-text1" %>
+          </div>
+          <%= f.email_field :email, type: "email", class: "form-control", id: "email", placeholder: "メールアドレス", autofocus: true, required: true %>
+          <div class="invalid-feedback">
+            ［メールアドレス］を入力してください
+          </div>
+        </div>
+        
+        <%= f.submit "メールを送信する", class: "btn btn-block btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag "password_resets_new_resize.js" %>
+<script>
+  $(".form-control").addClear({
+    symbolClass: "far fa-times-circle",
+    color: "#7d7d7d"
+  });
+</script>

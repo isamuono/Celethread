@@ -1,10 +1,13 @@
+<head>
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+</head>
 <div class="top-wrapper text-center">
   <%#div class="container-fluid"%>
     <div class="top-container">
       <h1 class="text-black">サイト名</h1>
       <div class="row">
         <div class="offset-xl-2 offset-lg-2 offset-md-1 offset-1 col-xl-3 col-lg-3 col-md-4 col-4" id="resizebutton1">
-          <%= link_to 'サインアップ', new_user_path, class: 'btn btn-block btn-black btn-outline-info' %>
+          <%= link_to 'サインアップ', new_user_path, class: 'btn btn-block btn-black' %>
         </div>
         <div class="offset-xl-2 offset-lg-2 offset-md-2 offset-2 col-xl-3 col-lg-3 col-md-4 col-4" id="resizebutton2">
           <%= link_to 'ログイン', login_path, class: 'btn btn-block btn-black' %>
@@ -14,15 +17,11 @@
         <h2 class="text-black">コミュニティを探す</h2>
         <div class="row">
           <div class="offset-xl-2 offset-lg-2 offset-md-1 offset-1 col-xl-8 col-lg-8 col-md-10 col-10">
-            <%= form_with url: '/', method: 'get' do %>
-              <div class="input-group" id="resizebox">
-                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "キーワードから探す" %> <%# params[:search]をどうするか %>
-                <span class="input-group-append">
-                  <%= link_to '#', class: "btn btn-primary", method: :get do %>
-                    <i class="fa fa-search"></i>
-                  <% end %>
-                </span>
-              </div>
+            <%= form_with class: "form", url: '/', method: 'get' do %>
+              <%= text_field_tag :search, params[:search], type: "search", class: "form-control", id: "resizebox", placeholder: "キーワードから探す" %> <%# params[:search]をどうするか %>
+              <%= link_to '#', class: "btn search-btn", method: :get do %>
+                <i class="fas fa-search"></i>
+              <% end %>
             <% end %>
           </div>
         </div>
@@ -36,25 +35,55 @@
         <h3 class="text-black">人気の公開コミュニティ</h3>
         <div class="box_scrollbar" align="center">
           <table class="table table-hover">
-            <tr class="table-light">
-              <td width="6rem" align="center"><%#img src="./staff_01.jpg" class="community-image" class="img-thumbnail"%></td><td>F.L.Tクラブ</td>
-            </tr>
-            <tr class="table-light">
-              <td align="center"><%#img src="./staff_02.jpg" class="community-image"%></td><td>Tech Boost</td>
-            </tr>
-            <tr class="table-light">
-              <td align="center"><%#img src="./staff_02.jpg" class="community-image"%></td><td>こぶし</td>
-            </tr>
-            <tr class="table-light">
-              <td align="center"><%#img src="./staff_02.jpg" class="community-image"%></td><td>ルクール</td>
-            </tr>
-            <tr class="table-light">
-              <td align="center"><%#img src="./staff_02.jpg" class="community-image"%></td><td>Team Black</td>
-            </tr>
+            <% @public_communities.each do |c| %>
+              <tr class="table-light" data-toggle="modal">
+                <td width="60rem" align="center">
+                  <% if c.images.present? %>
+                    <%= image_tag c.images.url, class: 'community-image img-thumbnail' %>
+                  <% else %>
+                    <%= image_tag "icons/image_default.png", class: 'community-image img-thumbnail' %>
+                  <% end %>
+                </td>
+                <td><%= c.communityName %></td>
+                <td>
+                  <button type="button" class="btn btn-light detail-btn" data-toggle="modal" data-target="#Modal<%= c.id %>">
+                    詳細
+                  </button>
+                  <%#= button_tag "詳細", class: "btn btn-light", data:{toggle: "modal", target: "#exampleModal"} %>
+                </td>
+              </tr>
+              <!-- モーダルの設定 -->
+              <div class="modal" id="Modal<%= c.id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel<%= c.id %>"><%= c.communityName %></h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p><%= c.description %></p>
+                    </div>
+                    <div class="modal-footer">
+                      <%#button type="button" class="btn btn-primary">このコミュニティに参加する</button%>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                    </div><!-- /.modal-footer -->
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+            <% end %>
           </table>
         </div>
+        
       </div>
     </div>
   <%#</div>%>
 </div>
 <%= javascript_include_tag "pages_index_resize.js" %>
+<script>
+  $(".form-control").addClear({
+    symbolClass: "far fa-times-circle",
+    color: "#7d7d7d"
+  });
+</script>

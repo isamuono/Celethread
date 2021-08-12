@@ -1,0 +1,116 @@
+<div class="cp-users-single" id="cp-users-single_<%= cp.id %>">
+  <div class="cp-users-box" id="cp-users-box_<%= cp.id %>">
+    <span class="cp-thumbnail">
+      <% if cp.user.images.present? %>
+        <%= image_tag cp.user.images.url, class: 'cp-profile-thumbnail' %>
+      <% else %>
+        <i class="far fa-user-circle"></i>
+      <% end %>
+    </span>
+    <span class="cp-name-box">
+      <span class="cp-name">
+        <%= cp.user.accountName %>
+      </span>
+      <% if cp.role == 1 %>
+        <span class="administrator-icon">
+          <i class="fas fa-award"></i>
+        </span>
+      <% end %>
+    </span>
+  </div>
+  <% if cp_current_user.role == 1 && cp.user_id != current_user.id %>
+    <span class="cp_role-change" id="cp_role-change_<%= cp.id %>">
+      <span type="button" class="three-dots-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+          <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+        </svg>
+      </span>
+    </span>
+  <% end %>
+</div>
+<script>
+  $('#cp-users-single_<%= cp.id %>').hover(function() {
+	  $('#cp_role-change_<%= cp.id %>').css('display', 'flex');
+	}, function() {
+		$('#cp_role-change_<%= cp.id %>').css('display', 'none');
+	});
+	
+  // コミュニティー参加者のユーザー情報
+  tippy('#cp-users-box_<%= cp.id %>', {
+    content: `<div class="tippy-user-container">
+                <div class="tippy-userbox-top">
+                  <div class="tippy-user-thumbnail">
+                    <% if cp.user.images.present? %>
+                      <%= image_tag cp.user.images.url, class: 'user-profile-thumbnail', loading: "lazy" %>
+                    <% else %>
+                      <i class="far fa-user-circle"></i>
+                    <% end %>
+                  </div>
+                  <div class="tippy-user-accountName">
+                    <%= cp.user.accountName %>
+                  </div>
+                </div>
+                <div class="tippy-self_introduction"><%== cp.user.self_introduction %></div>
+                <div class="tippy-userbox-bottom">
+                  <div class="tippy-user-communities-count">
+                    <%= icon('fas', 'users') %> 所属コミュニティ数：
+                    <span class="tippy-user-communities-count-number">
+                      <%= cp.user.communities.count - 1 %>
+                    </span>
+                  </div>
+                  <div class="tippy-user-created_at">
+                    <%= icon('far', 'calendar-alt') %>
+                    <%= cp.user.created_at.strftime("%-Y#{'年'}%-m#{'月'}") %>から利用しています
+                  </div>
+                </div>
+              </div>`,
+    allowHTML: true,
+    arrow: false,
+    followCursor: 'initial',
+    trigger: 'click',
+    theme: 'light',
+    interactive: true
+  });
+  tippy('.fa-award', {
+    content: 'コミュニティー責任者',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.bi-three-dots', {
+    content: 'コミュニティー内におけるユーザー権限の変更',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  <% if cp.role == 2 %>
+    tippy('#cp_role-change_<%= cp.id %>', {
+      content: `<div class="cp_role-change-list-item">
+                  <%= link_to '管理者・責任者に変更する', community_participant_path(id: cp.id), class: 'cp_role-change-list-item', method: :patch, remote: true %>
+                </div>`,
+      allowHTML: true,
+      arrow: false,
+      placement: 'left',
+      trigger: 'click',
+      theme: 'cp_role_change',
+      delay: [300, 0],
+      interactive: true,
+      interactiveBorder: 30,
+      onMount(instance) {
+        
+      }
+    });
+  <% elsif cp.role == 1 %>
+    tippy('#cp_role-change_<%= cp.id %>', {
+      content: `<div class="cp_role-change-list-item">
+                  <%= link_to '通常メンバーに変更する', community_participant_path(id: cp.id), class: 'cp_role-change-list-item', method: :patch, remote: true %>
+                </div>`,
+      allowHTML: true,
+      arrow: false,
+      placement: 'left',
+      trigger: 'click',
+      theme: 'cp_role_change',
+      delay: [300, 0],
+      interactive: true,
+      interactiveBorder: 30
+    });
+  <% end %>
+</script>

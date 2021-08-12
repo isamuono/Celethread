@@ -1,0 +1,25 @@
+<% if File.extname(files.url) == '.pdf' %>
+  <%= link_to pdfjs.full_path(file: files.url), class: "pdf-link", target: :_blank do %>
+    <span class="thread-pdf-preview_<%= File.basename(files.url.gsub(/%/, ''), '.*') %>">
+      <%= image_tag "icons/pdf_icon.png", class: "pdf-icon" %>
+      <div class="pdf-filename">
+        <%= File.basename(URI.decode(files.url.gsub(/%20|%5B|%22|%5D/, ''))) %>
+      </div>
+    </span>
+  <% end %>
+<% else %>
+  <span class="image-preview<%= gthread.id %>">
+    <a href="<%= files.to_s %>" class="image-link">
+      <%= image_tag files.to_s, class: "thread-image-preview" %>
+    </a>
+  </span>
+    <%#= File.basename(files.url.gsub(/%20|%5B|%22|%5D/, '')) %>
+<% end %>
+<script>
+  tippy(`.thread-pdf-preview_<%= File.basename(files.url.gsub(/%/, ''), '.*') %>`, {
+    content: `<%= File.basename(URI.decode(files.url.gsub(/%20|%5B|%22|%5D/, ''))) %>`,
+    allowHTML: true,
+    theme: 'black',
+    delay: [100, 0],
+  });
+</script>

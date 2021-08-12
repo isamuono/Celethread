@@ -1,0 +1,7 @@
+$('#channel-edit-Modal<%= @channel_edit_modal.id %>').html("<%= escape_javascript(render partial: 'channels/channel_edit_modal', locals: { channel_edit: @channel_edit_modal }) %>");
+
+$('#channel-edit-Modal<%= @channel_edit_modal.id %>').modal('show');
+
+$('.modal-backdrop').on('click', function() {
+  $('#channel-edit-Modal<%= @channel_edit_modal.id %>').modal('hide');
+});

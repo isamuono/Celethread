@@ -37,4 +37,9 @@ class SearchesController < ApplicationController
     #  @sub5 = @sub5 + item
     #end
   end
+  
+  def index
+    @communities = Community.all
+  end
+  
 end

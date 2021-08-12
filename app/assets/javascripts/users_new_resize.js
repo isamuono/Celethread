@@ -1,7 +1,6 @@
 var resizeFlg;    //setTimeoutの待機中かを判定するフラグ
 
 function windowResizeFunc(){
-
   //resizeFlgに値が設定されている場合は、待ち時間中なのでリセットする
   if (resizeFlg !== false) {
       clearTimeout(resizeFlg);
@@ -11,6 +10,7 @@ function windowResizeFunc(){
       resizeElement();    //リサイズを実施する処理
   }, 300);
 }
+
 window.addEventListener("resize", windowResizeFunc);
 window.addEventListener('load', resizeElement());
 
@@ -19,41 +19,39 @@ function resizeElement(){
   const windowHeight = document.documentElement.clientHeight;
 
   const resizebox1 = document.getElementById("family_name");
-    if (windowWidth <= 592) {
-      resizebox1.className = "form-control form-control-sm";
-    } else if (593 <= windowWidth <= 699) {
+    if (windowWidth <= 767) {
       resizebox1.className = "form-control";
-    } else if (windowWidth >= 667) {
+    } else if (windowWidth >= 768) {
       resizebox1.className = "form-control form-control-lg";
     }
   const resizebox2 = document.getElementById("first_name");
-    if (windowWidth <= 570) {
-      resizebox2.className = "form-control form-control-sm";
-    } else if (windowWidth >= 667) {
+    if (windowWidth <= 767) {
+      resizebox2.className = "form-control";
+    } else if (windowWidth >= 768) {
       resizebox2.className = "form-control form-control-lg";
     }
   const resizebox3 = document.getElementById("accountName");
-    if (windowWidth <= 570) {
-      resizebox3.className = "form-control form-control-sm";
-    } else if (windowWidth >= 667) {
+    if (windowWidth <= 767) {
+      resizebox3.className = "form-control";
+    } else if (windowWidth >= 768) {
       resizebox3.className = "form-control form-control-lg";
     }
   const resizebox4 = document.getElementById("email");
-    if (windowWidth <= 570) {
-      resizebox4.className = "form-control form-control-sm";
-    } else if (windowWidth >= 667) {
+    if (windowWidth <= 767) {
+      resizebox4.className = "form-control";
+    } else if (windowWidth >= 768) {
       resizebox4.className = "form-control form-control-lg";
     }
   const resizebox5 = document.getElementById("password");
-    if (windowWidth <= 570) {
-      resizebox5.className = "form-control form-control-sm";
-    } else if (windowWidth >= 667) {
+    if (windowWidth <= 767) {
+      resizebox5.className = "form-control";
+    } else if (windowWidth >= 768) {
       resizebox5.className = "form-control form-control-lg";
     }
   const resizebox6 = document.getElementById("password_confirmation");
-    if (windowWidth <= 570) {
-      resizebox6.className = "form-control form-control-sm";
-    } else if (windowWidth >= 667) {
+    if (windowWidth <= 767) {
+      resizebox6.className = "form-control";
+    } else if (windowWidth >= 768) {
       resizebox6.className = "form-control form-control-lg";
     }
 }

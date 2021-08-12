@@ -11,6 +11,7 @@ function windowResizeFunc(){
       resizeElement();    //リサイズを実施する処理
   }, 300);
 }
+
 window.addEventListener("resize", windowResizeFunc);
 window.addEventListener('load', resizeElement());
 
@@ -19,12 +20,10 @@ function resizeElement(){
   const windowHeight = document.documentElement.clientHeight;
 
   const resizebox = document.getElementById("resizebox");
-    if (windowWidth <= 666) {
-      resizebox.className = "input-group input-group-sm";
-    } else if (667 <= windowWidth && windowWidth <= 1193) {
-      resizebox.className = "input-group";
-    } else if (1194 <= windowWidth) {
-      resizebox.className = "input-group input-group-lg";
+    if (windowWidth <= 767) {
+      resizebox.className = "form-control";
+    } else if (windowWidth >= 768) {
+      resizebox.className = "form-control form-control-lg";
     }
   
   //Viewportサイズが414px（iPhone 5 系列）の時、

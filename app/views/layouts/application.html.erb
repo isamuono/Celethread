@@ -12,24 +12,17 @@
     <%= stylesheet_link_tag    'm_custom', media: 'screen and (max-width: 767px', 'data-turbolinks-track': 'reload' %>
     
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    
-    <!-- drawer.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/css/drawer.min.css">
-    <!-- jquery & iScroll -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
-    <!-- drawer.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.2/js/drawer.min.js"></script>
-    <!-- popper.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.js"></script>
-    <!-- dropdown.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%= javascript_include_tag 'cable', 'data-turbolinks-track': 'reload' %>
+    <%= include_gon %>
     
     <!-- Font Awesome5 アニメーションを使用するためのコード -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/0.0.10/font-awesome-animation.css" type="text/css" media="all" />
+    
+    <!--  -->
+    
   </head>
 
-  <body>
+  <body data-turbolinks="false" ontouchstart=""> <!-- Fullcalendar-rails導入のためfalseに -->
     <% flash.each do |key, value| %>
       <div class="alert alert-<%= key %>" role="alert">
         <%= value %>
@@ -43,30 +36,6 @@
         $(".alert").fadeOut(4000);
       });
       
-      // Drawer
-      $(document).ready(function() {
-        $('.drawer').drawer();
-      });
-      
-      $('.dropdown-toggle').dropdown();
-      
-      $('.drawer').drawer({
-        class: {
-          nav: 'drawer-nav',
-          toggle: 'drawer-toggle',
-          overlay: 'drawer-overlay',
-          open: 'drawer-open',
-          close: 'drawer-close',
-          dropdown: 'drawer-dropdown'
-        },
-        iscroll: {
-          // Configuring the iScroll
-          // https://github.com/cubiq/iscroll#configuring-the-iscroll
-          mouseWheel: true,
-          preventDefault: false
-        },
-        showOverlay: true
-      });
     </script>
   </body>
 </html>

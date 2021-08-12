@@ -1,0 +1,82 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        family_name: '姓'
+        first_name: '名'
+        accountName: 'アカウント名'
+        email: 'メールアドレス'
+        password: 'パスワード'
+        password_confirmation: 'パスワード（確認用）'
+        images: 'プロフィール画像'
+        
+      invitation:
+        family_name: '姓'
+        first_name: '名'
+        email: 'メールアドレス'
+        
+      community:
+        communityName: 'コミュニティー名'
+        category: 'カテゴリー'
+        subcategory: 'サブカテゴリー'
+        prefecture: '都道府県'
+      
+      community_participant:
+        
+      channel:
+        channelName: 'チャンネル名'
+        color: 'イメージカラー'
+        public: '閲覧範囲'
+        
+      gthread:
+        title: 'タイトル'
+        description: '本文'
+        images: '画像'
+        
+      event:
+        title: 'タイトル'
+        alldaydate: '日時'
+        starttime1: '開始時間'
+        endtime1: '終了時間'
+        startdate: '開始日時'
+        starttime2: '開始日の時間'
+        enddate: '終了日時'
+        endtime2: '終了日の時間'
+        description: '本文'
+  
+  datetime:
+    distance_in_words:
+      half_a_minute: "30秒"
+      less_than_x_seconds:
+        one:   "1秒"
+        other: "%{count}秒"
+      x_seconds:
+        one:   "1秒"
+        other: "%{count}秒"
+      less_than_x_minutes:
+        one:   "1分"
+        other: "%{count}分"
+      x_minutes:
+        one:   "1分"
+        other: "%{count}分"
+      about_x_hours:
+        one:   "1時間"
+        other: "%{count}時間"
+      x_days:
+        one:   "1日"
+        other: "%{count}日"
+      about_x_months:
+        one:   "1ヶ月"
+        other: "%{count}ヶ月"
+      x_months:
+        one:   "1ヶ月"
+        other: "%{count}ヶ月"
+      almost_x_years:
+        one:   "1年弱"
+        other: "%{count}年弱"
+      about_x_years:
+        one:   "1年"
+        other: "%{count}年"
+      over_x_years:
+        one:   "1年"
+        other: "%{count}年"

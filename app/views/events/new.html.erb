@@ -1,0 +1,400 @@
+<head>
+  <!-- bootstrap-add-clear -->
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+  
+  <!-- flatpicker -->
+  <%= stylesheet_link_tag 'flatpickr/flatpickr.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag "flatpickr/flatpickr.min.js" %>
+  <%= javascript_include_tag "flatpickr/ja.js" %>
+  <%= javascript_include_tag "flatpickr/rangePlugin.js" %>
+  
+  <!-- jquery.timepicker -CDN- -->
+  <link rel="stylesheet" href="https://cdn.rawgit.com/jonthornton/jquery-timepicker/3e0b283a/jquery.timepicker.min.css">
+  <script src="https://cdn.rawgit.com/jonthornton/jquery-timepicker/3e0b283a/jquery.timepicker.min.js"></script>
+  <!-- datepair.js -->
+  <%= javascript_include_tag "timepicker/datepair.min.js" %>
+  
+  <!-- Quill -->
+  <%= javascript_include_tag "quill/quill.js" %>
+  <%= stylesheet_link_tag 'quill/quill.snow', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <!-- tippy.js -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <%= javascript_include_tag "tippy/tippy.umd.min.js" %>
+</head>
+<div class="top-wrapper">
+  <div class="form-container">
+    <h4 class="text-black text-center mb-5">イベント作成</h4>
+    <div class="event-form mt-4 offset-xl-2 offset-lg-3 offset-md-2 offset-1 col-xl-8 col-lg-6 col-md-8 col-10">
+      <%= form_for @event, html: { autocapitalize: "off", autocorrect: "off" } do |f| %>
+        <%= f.hidden_field :community_id %>
+        <%= f.hidden_field :channel_id %>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "タイトル", class: "label-text1" %>
+          </div>
+          <%= f.text_field :title, class: "form-control", id: "form1", placeholder: "イベントのタイトル", autofocus: true, required: true %>
+        </div>
+        <div class="form-group" id="datepair">
+          <div class="form-row">
+            <div class="col-5" id="normal-flatpickr">
+              <div class="label-text-box">
+                <span class="badge badge-danger">必須</span>
+                <%= f.label "日時", class: "label-text1" %>
+              </div>
+              <%= f.text_field :alldaydate, class: "form-control flatpickr1", id: "form2", placeholder: "YYYY-MM-DD(d)" %>
+            </div>
+            <div class="col-3" id="starttime1">
+              <div class="label-text-box">
+                <span class="badge badge-danger">必須</span>
+                <%= f.label "開始時間", class: "label-text1" %>
+              </div>
+              <%= f.text_field :starttime1, class: "form-control timepicker time start", id: "form3", placeholder: "HH:MM", onkeypress: "return false" %>
+            </div>
+            <div class="col-1" id="from-to1">
+              <%#= f.label "　", class: "label-text" %>
+              <p class="from-to">〜</p>
+            </div>
+            <div class="col-3" id="endtime1">
+              <div class="label-text-box">
+                <span class="badge badge-danger">必須</span>
+                <%= f.label "終了時間", class: "label-text1" %>
+              </div>
+              <%= f.text_field :endtime1, class: "form-control timepicker time end", id: "form4", placeholder: "HH:MM", onkeypress: "return false" %>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-row">
+          <div class="col-5 mb-3" id="range-flatpickr">
+            <div class="label-text-box">
+              <span class="badge badge-danger">必須</span>
+              <%= f.label "開始日時", class: "label-text1" %>
+            </div>
+            <%= f.text_field :startdate, class: "form-control flatpickr2", id: "form5", data: { id: "rangePlugin" }, placeholder: "YYYY-MM-DD(d)" %>
+          </div>
+          <div class="col-3" id="starttime2">
+            <%= f.label "　", class: "label-text2" %>
+            <%= f.text_field :starttime2, class: "form-control timepicker", id: "form6", placeholder: "HH:MM", onkeypress: "return false" %>
+          </div>
+          <div class="col-1" id="from-to2">
+            <p class="from-to">〜</p>
+          </div>
+          <div class="col-5" id="enddate">
+            <div class="label-text-box">
+              <span class="badge badge-danger">必須</span>
+              <%= f.label "終了日時", class: "label-text1" %>
+            </div>
+            <%= f.text_field :enddate, class: "form-control flatpickr2", id: "secondRangeInput", placeholder: "YYYY-MM-DD(d)" %>
+          </div>
+          <div class="col-3" id="endtime2">
+            <%= f.label "　", class: "label-text2" %>
+            <%= f.text_field :endtime2, class: "form-control timepicker", id: "form8", placeholder: "HH:MM", onkeypress: "return false" %>
+          </div>
+        </div>
+        <div class="form-group form-row ml-2">
+          <div class="col-4" id="slidecheckbox">
+            <label class="daterange-label">
+              <%= f.check_box :daterange, class: "form-check-input", id: "daterange-checkbox", onchange: "dateRangeSet()" %>
+              <span class="form-check-label">日付範囲指定</span>
+            </label>
+            <label class="allday-label">
+              <%= f.check_box :allday, class: "form-check-input", id: "allday-checkbox", checked: true, onchange: "timeRangeSet()" %>
+              <span class="form-check-label">終日</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label "場所", class: "label-text2" %>
+          <%= f.text_field :place, class: "form-control", id: "form9", placeholder: "住所や建物名など" %>
+        </div>
+        
+        <%= f.hidden_field :color %>
+        
+        <div class="form-group" id="text_area">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "本文", class: "label-text1" %>
+          </div>
+          <%= f.text_area :description, class: "quill_container", id: "description", required: true %>
+        </div>
+        
+        <label class="upload-label">
+          <span class="imagefile-upload-btn">
+            <i class="far fa-file"></i>
+            <%= f.file_field :images, type: "file", class: "file_field", id: "file_field", accept: "image/png, image/jpeg, application/pdf", capture: "camera", multiple: true %>
+          </span>
+        </label>
+        
+        <%= f.submit "イベントを作成する", class: "btn btn-block btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag "events_new_resize.js" %>
+<script>
+  $(".form-control").addClear({
+    symbolClass: "far fa-times-circle",
+    color: "#7d7d7d"
+  });
+  
+  $(function(){
+    $('.flatpickr1').css('background-color', '#fff');
+    $('.flatpickr2').css('background-color', '#fff');
+    
+    const config1 = {
+      // Mobile Support -- HTML5のネイティブの日付選択機能(inputタグ内の"type="date""指定)の無効化
+      disableMobile: "true",
+      //minDate: "today",
+      dateFormat: "Y-m-d(D)",
+      defaultDate: "today",
+      locale: "ja",
+      
+      "plugins": [
+        //new confirmDatePlugin({})
+      ]
+    }
+    
+    const config2 = {
+      disableMobile: "true",
+      //minDate: "today",
+      dateFormat: "Y-m-d(D)", //H:i",
+      //defaultHour: 9,
+      //minuteIncrement: "15",
+      //enableTime: true, //datetime
+      locale: "ja",
+      //mode: "range",
+      
+      "plugins": [
+        // 期間指定を可能にするプラグイン
+        new rangePlugin({
+          input: "#secondRangeInput"
+        }),
+        //new confirmDatePlugin({})
+      ]
+    }
+    
+    flatpickr('.flatpickr1', config1);
+    flatpickr('.flatpickr2', config2);
+    
+    $('.timepicker').timepicker({
+	    'scrollDefault': 'now',
+	    'timeFormat': 'H:i'
+	  });
+	  
+	  
+	  // 開始時間と終了時間を連動し、終了時間を開始時間よりも前に設定不可にする
+	  var defaultTimeDelta = document.getElementById('datepair');
+    var defaultDelta = new Datepair(defaultTimeDelta, {
+      //'defaultTimeDelta': 1800000 // 30minutes後の時間をセット
+    });
+  });
+  
+  // 読み込み時、時間入力欄に現在時刻を表示
+  $(window).load(function(){
+    $('.timepicker').timepicker('setTime', new Date());
+  });
+  
+  var defaults = {
+    theme: 'snow',
+    modules: {
+      toolbar: [
+          [{ 'size': ['small', false, 'large'] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          ['blockquote', 'code', 'code-block'],
+          ['link']
+      ]
+    }
+  };
+  
+  Quilljs.setDefaults(defaults)
+  
+  // コードブロックのアイコン変更
+  const code_block = $('.ql-code-block');
+  $('.ql-code-block svg:first').remove();
+  code_block.append('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code-square ql-stroke" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M6.854 4.646a.5.5 0 0 1 0 .708L4.207 8l2.647 2.646a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 0 1 .708 0zm2.292 0a.5.5 0 0 0 0 .708L11.793 8l-2.647 2.646a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708 0z"/></svg>');
+  
+  const ql_list1 = document.getElementsByClassName('ql-list')[0];
+  const ql_list2 = document.getElementsByClassName('ql-list')[1];
+  
+  ql_list1.setAttribute('id', 'ql-list1');
+  ql_list2.setAttribute('id', 'ql-list2');
+  
+  var imagefile_upload_btn_html = $('.upload-label');
+  
+  $('.ql-link').after(imagefile_upload_btn_html);
+  
+  // tippy.js
+  tippy('.ql-size', {
+    content: 'フォントサイズ',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-bold', {
+    content: '太字',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-italic', {
+    content: '斜体',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-underline', {
+    content: 'アンダーライン',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-strike', {
+    content: '取り消し線',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-color', {
+    content: 'フォントカラー',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-background', {
+    content: '塗りつぶし',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('#ql-list1', {
+    content: '順序付きリスト',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('#ql-list2', {
+    content: '箇条書き',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-blockquote', {
+    content: '引用タグ',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-code', {
+    content: 'コード',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-code-block', {
+    content: 'コードブロック',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.ql-link', {
+    content: 'テキストを選択してリンク化',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.imagefile-upload-btn', {
+    content: `<div style="text-align: center">ファイルをアップロードする</div>
+              （ jpg, jpeg, png, pdfファイルのみ ）`,
+    allowHTML: true,
+    theme: 'black',
+    delay: [100, 0],
+  });
+  
+  // ファイルアップロード機能
+  $(function() {
+    var preview_container = `<div class="preview-container"></div>`;
+    $('.ql-editor').after(preview_container);
+    
+    var dataBox = new DataTransfer();
+    var file_field = document.getElementById('file_field');
+    var ql_editor = $('.ql-editor');
+    
+    file_field.addEventListener('change', function() {
+      var filelist = file_field.files;
+      $.each(this.files, function(i, file) {
+      //for (let i = 0; i < filelist.length; i++) {
+        var fileReader = new FileReader();
+        
+        dataBox.items.add(filelist[i]);
+        //DataTransferオブジェクトに入ったfile一覧をfile_fieldの中に代入
+        file_field.files = dataBox.files;
+        
+        fileReader.readAsDataURL(filelist[i]);
+        
+        fileReader.onload = function() {
+          var src = fileReader.result;
+          var type = filelist[i].type;
+          var image_preview = `<span class="image-preview" data-image="${ file.name }">
+                                <img class="preview" src="${ src }">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill image-trash" viewBox="0 0 16 16">
+                                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                </svg>
+                              </span>`;
+                              
+          var pdf_preview = `<span class="pdf-preview_${ file.name.split('.').slice(0, -1).join('.') }" data-image="${ file.name }">
+                              <%= image_tag "icons/pdf_icon.png", class: "pdf-icon" %>
+                              <div class="pdf-filename">
+                                ${ file.name }
+                              </div>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill pdf-trash" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                              </svg>
+                            </span>`;
+          
+          if (type == 'application/pdf' ) {
+            $('.preview-container').append(pdf_preview);
+          } else {
+            $('.preview-container').append(image_preview);
+          }
+          
+          const windowWidth = document.documentElement.clientWidth;
+          
+          if (windowWidth >= 768) {
+            ql_editor.css('height', 160 + 'px');
+            $('.preview-container').css('display', 'block');
+          } else if (windowWidth <= 767) {
+            ql_editor.css('height', 120 + 'px');
+            $('.preview-container').css('display', 'block');
+            $('.preview-container').css('height', 151.5 + 'px');
+          }
+          
+          $(`.image-preview, .pdf-preview_${ file.name.split('.').slice(0, -1).join('.') }`).hover(function() {
+      			$(this).find('.bi-x-circle-fill').css('display', 'block');
+      		}, function() {
+      			$(this).find('.bi-x-circle-fill').css('display', 'none');
+      		});
+      		
+      		tippy(`.pdf-preview_${ file.name.split('.').slice(0, -1).join('.') }`, {
+            content: `${ file.name }`,
+            allowHTML: true,
+            theme: 'black',
+            delay: [100, 0],
+          });
+        };
+      });
+    });
+    
+    $(document).on('click', '.bi-x-circle-fill', function() {
+      var target_image = $(this).parent();
+      var target_name = $(target_image).data('image');
+      if (file_field.files.length == 1) {
+        $('#file_field').val(null)
+        dataBox.clearData();
+        ql_editor.css('height', 100 + '%');
+        $('.preview-container').css('display', 'none');
+      } else {
+        $.each(file_field.files, function(i, input) {
+          if (input.name == target_name) {
+            dataBox.items.remove(i);
+          }
+        })
+        //DataTransferオブジェクトに入ったfile一覧をfile_fieldの中に再度代入
+        file_field.files = dataBox.files;
+      }
+      target_image.remove();
+    });
+    
+    $('.thread-create-btn').on('click', function() {
+      dataBox.clearData();
+    });
+  });
+</script>

@@ -1,0 +1,17 @@
+current directory: /home/ec2-user/environment/portfolio_projects/portfolio/vendor/bundle/ruby/2.6.0/gems/thin-1.8.1/ext/thin_parser
+/home/ec2-user/.rvm/rubies/ruby-2.6.3/bin/ruby -I /home/ec2-user/.rvm/rubies/ruby-2.6.3/lib/ruby/site_ruby/2.6.0 -r ./siteconf20210730-11893-17py21e.rb extconf.rb
+checking for main() in -lc... yes
+creating Makefile
+
+current directory: /home/ec2-user/environment/portfolio_projects/portfolio/vendor/bundle/ruby/2.6.0/gems/thin-1.8.1/ext/thin_parser
+make "DESTDIR=" clean
+
+current directory: /home/ec2-user/environment/portfolio_projects/portfolio/vendor/bundle/ruby/2.6.0/gems/thin-1.8.1/ext/thin_parser
+make "DESTDIR="
+compiling parser.c
+compiling thin.c
+linking shared-object thin_parser.so
+
+current directory: /home/ec2-user/environment/portfolio_projects/portfolio/vendor/bundle/ruby/2.6.0/gems/thin-1.8.1/ext/thin_parser
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 thin_parser.so ./.gem.20210730-11893-1ka7kif

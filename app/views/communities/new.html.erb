@@ -1,65 +1,71 @@
+<head>
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+</head>
 <div class="top-wrapper">
-  <div class="users-new-container">
+  <div class="form-container">  
     <h1 class="text-black text-center mt-auto">サイト名</h1>
-    <h4 class="text-black text-center">コミュニティ開設</h4>
-    <div class="row">
-      <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
-        <%= form_for(@community, html: { name: "selbox" }) do |f| %>
-          <div class="form-group">
-            <%= f.label "コミュニティ名*", class: "label-text" %>
-            <%= f.text_field :communityName, class: "form-control", id: "communityName", placeholder: "例：F.L.Tクラブ" %>
+    <h4 class="text-black text-center">コミュニティー開設</h4>
+    <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
+      <%= form_for(@community, html: { name: "selbox", autocapitalize: "off", autocorrect: "off" }) do |f| %>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "コミュニティー名", class: "label-text1" %>
           </div>
-          <div class="form-group">
-            <%= f.label "カテゴリーを選択*", class: "label-text" %>
-            <div class="input-group mb-3">
-              <%= f.select :category, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
-                { :prompt => "---" }, { class: "custom-select", id: "categorySelect", onchange: "categorySet()" } %>
-            </div>
+          <%= f.text_field :communityName, class: "form-control", id: "communityName", placeholder: "例：Team Black", autofocus: true %>
+        </div>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "カテゴリーを選択", class: "label-text1" %>
           </div>
-          <div class="form-group" id="form-group">
-            <%= f.label "サブカテゴリーを選択*", class: "label-text" %>
-            <div class="input-group mb-3">
-              <%= f.select :subcategory, [], { :prompt => "---" }, { class: "custom-select text-charcoal", id: "subcategorySelect"} %>
-            </div>
+          <%= f.select :category, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
+            { :prompt => "---" }, { class: "custom-select", id: "categorySelect", onchange: "categorySet()" } %>
+        </div>
+        <div class="form-group" id="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "サブカテゴリーを選択", class: "label-text1" %>
           </div>
-          <div class="form-group">
-            <%= f.label "都道府県を選択（主な活動場所、拠点など）*", class: "label-text" %>
-            <div class="input-group">
-              <%= f.select :prefecture, Prefecture.all.map{ |prefecture| [prefecture.name] }, { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect"} %>
-            </div>
+          <%= f.select :subcategory, [], { :prompt => "---" }, { class: "custom-select text-charcoal", id: "subcategorySelect"} %>
+        </div>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "都道府県を選択（主な活動拠点など）", class: "label-text1" %>
           </div>
-          <div class="form-group">
-            <%= f.label "性別を選択（メンバーが男性か女性どちらかのみの場合、選択してください）", class: "label-text" %>
-            <div class="input-group">
-              <%= f.select :sex, [["男性", 1], ["女性", 2]], { :prompt => "指定なし" }, { class: "custom-select text-charcoal", id: "sexSelect" } %>
-            </div>
-          </div>
-          
-          <%= f.submit "コミュニティを作成する", class: "btn btn-block btn-primary" %>
-        <% end %>
-      </div>
+          <%= f.select :prefecture, Prefecture.all.map{ |prefecture| [prefecture.name] }, { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect"} %>
+        </div>
+        
+        <%= f.submit "コミュニティーを作成する", class: "btn btn-block btn-primary" %>
+      <% end %>
     </div>
   </div>
 </div>
 <%= javascript_include_tag "communities_new_resize.js" %>
 <script>
+  $("#communityName").addClear({
+    symbolClass: "far fa-times-circle",
+    color: "#7d7d7d"
+  });
+  
   var subcategoryary1 = new Array(
-    <%= @sub1.html_safe %>
+    <%== @sub1 %>
   );
   
   var subcategoryary2 = new Array(
-    <%= @sub2.html_safe %>
+    <%== @sub2 %>
   );
   
   var subcategoryary3 = new Array(
-    <%= @sub3.html_safe %>
+    <%== @sub3 %>
   );
   
   var subcategoryary4 = new Array(
-    <%= @sub4.html_safe %>
+    <%== @sub4 %>
   );
+  
   var subcategories = new Array(
     0, subcategoryary1, subcategoryary2, subcategoryary3, subcategoryary4
   );
-  
 </script>

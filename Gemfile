@@ -13,6 +13,7 @@ gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
+gem "webpacker"
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 
@@ -55,11 +56,13 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  
+  gem 'letter_opener_web'
 end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  #gem 'capybara', '>= 2.15'
+  # gem 'capybara', '>= 2.15'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
 end
@@ -69,3 +72,14 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'selenium-webdriver'
 gem 'font-awesome-sass', '~> 5.4.1'
+gem "carrierwave"
+gem 'mini_magick'
+#gem 'kaminari'
+gem 'jquery-simplecolorpicker-rails'
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+gem 'rails-i18n'
+gem 'quilljs-rails'
+gem 'gon'
+gem 'pdfjs_viewer-rails'
+gem 'public_uid'

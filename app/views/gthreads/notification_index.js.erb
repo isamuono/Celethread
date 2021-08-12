@@ -1,0 +1,4 @@
+<% notifications = @notifications.includes(:visitor, :visited, :gthread, :thread_reaction, :comment).where.not(visitor_id: current_user.id) %>
+
+$('.notification-Modal').html('<%= escape_javascript(render partial: 'notifications/index', locals: { notifications: notifications } ) %>');
+$('.notification-Modal').modal('show');

@@ -1,0 +1,63 @@
+<% cp_current_user = c.community_participants.find_by(user_id: current_user.id) %>
+<div class="dropdown-btn" id="dropdown-btn_<%= c.id %>">
+  <span class="community-name" id="community-name_<%= c.id %>">
+    <%= icon('fas', 'caret-down') %><%= c.communityName %>
+  </span>
+  <%= link_to communities_community_show_path(id: c.id), class: "community-show", id: "community-show_#{ c.id }", remote: true do %>
+    <span class="btn community-show-icon" data-toggle="modal" data-target="#community-show-Modal<%= c.id %>">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+      </svg>
+    </span>
+  <% end %>
+  
+  <div class="modal community-show-Modal" id="community-show-Modal<%= c.id %>" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <%#= render partial: "community_edit_modal" %>
+  </div>
+  
+  <% if cp_current_user.role == 1 %>
+    <div class="modal community-edit-Modal" id="community-edit-Modal<%= c.id %>" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+      <%#= render partial: "community_edit_modal" %>
+    </div>
+  <% end %>
+</div>
+<div class="dropdown-container">
+  <a class="deep-dropdown-btn">
+    <%= icon('fas', 'caret-down') %>チャンネル
+  </a>
+  <div class="deep-dropdown-container">
+    <% c.channels.order(:created_at).each do |channel| %>
+      <%= render partial: 'deepdropdown_menu', locals: { channel: channel, cp_current_user: cp_current_user } %>
+    <% end %>
+    <% if cp_current_user.role == 1 %>
+      <%= link_to new_channel_path(community_id: c.id), class: 'new-channel-btn' do %>
+        <%= icon('fas', 'plus') %>チャンネル作成
+      <% end %>
+    <% end %>
+  </div>
+  <%= link_to events_community_path(id: c.id), class: 'calendar-btn' do %>
+    <%= icon('far', 'calendar-alt') %>カレンダー
+  <% end %>
+  <% if cp_current_user.role == 1 %>
+    <%= link_to new_invitation_path(community_id: c.id), class: "invitation-btn" do %>
+      <span class="invitation-btn-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+          <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+        </svg>
+      </span>招待メールを送る
+    <% end %>
+  <% end %>
+</div>
+<script>
+  <% unless c.id == 'celestebot' %>
+    $('#dropdown-btn_<%= c.id %>').hover(function() {
+  	  $('#community-show_<%= c.id %>').css('display', 'block');
+  	  $('#community-name_<%= c.id %>').css('width', '19.5rem');
+  	}, function() {
+  		$('#community-show_<%= c.id %>').css('display', 'none');
+  		$('#community-name_<%= c.id %>').css('width', '21.8rem');
+  	});
+	<% end %>
+</script>

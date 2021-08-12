@@ -1,0 +1,7 @@
+$('#channel-show-Modal<%= @channel_show_modal.id %>').html("<%= escape_javascript(render partial: 'channels/channel_show_modal', locals: { channel_show: @channel_show_modal, cp_current_user: @cp_current_user }) %>");
+
+$('#channel-show-Modal<%= @channel_show_modal.id %>').modal('show');
+
+$('.modal-backdrop').on('click', function() {
+  $('#channel-show-Modal<%= @channel_show_modal.id %>').modal('hide');
+});

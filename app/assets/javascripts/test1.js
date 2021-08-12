@@ -11,6 +11,7 @@ function windowResizeFunc(){
       resizeElement();    //リサイズを実施する処理
   }, 300);
 }
+
 window.addEventListener("resize", windowResizeFunc);
 
 const windowWidth = document.documentElement.clientWidth;

@@ -1,0 +1,11 @@
+var messageHeight = main_container.scrollHeight;
+
+//$('.thread-container').html("threadsingle);
+threadContainer.insertAdjacentHTML('afterbegin', "<%= escape_javascript(render partial: 'thread', collection: @threads) %>");
+
+var newMessageHeight = main_container.scrollHeight;
+window.scrollBy(0, newMessageHeight - messageHeight);
+// メッセージが存在するときだけ，更に読み込み可能とする
+<% if @threads.present? %>
+  window.showAdditionally = true;
+<% end %>

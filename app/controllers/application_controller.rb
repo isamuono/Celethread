@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   add_flash_types :success, :info, :warning, :danger
   
   #include CommonActions
-  helper_method :current_user, :logged_in?
+  helper_method :current_user, :current_user_id, :logged_in?
   
   # 記憶トークンcookieに対応するユーザーを返す
   def current_user
@@ -22,10 +22,11 @@ class ApplicationController < ActionController::Base
   
   def log_in(user)
     session[:user_id] = user.id
+    #cookies.signed["user.id"] = user.id #4/14追記
   end
   
   def log_out
-    forget(current_user)  #次回メンタリングでもう一度確認
+    forget(current_user)
     session.delete(:user_id)
     @current_user = nil
   end
@@ -38,6 +39,23 @@ class ApplicationController < ActionController::Base
     unless logged_in?
       flash[:alert] = "ログインしてください"
       redirect_to root_path
+    end
+  end
+  
+  def set_user_id_to_cookie
+    if current_user
+      cookies.signed["user.id"] = current_user.id
+    end
+  end
+  
+  # 参加していないコミュニティーへのアクセス制限
+  def is_com_participants?
+    channel = Channel.find_by(id: params[:channel_id])
+    
+    if current_user.community_participants.find_by(community_id: channel.community_id).present?
+      true
+    else
+      redirect_to channels_gthreads_path(current_user.communities.order(:created_at).first.channels.first.id)
     end
   end
 end

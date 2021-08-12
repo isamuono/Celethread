@@ -1,0 +1,2 @@
+module ThreadReactionsHelper
+end

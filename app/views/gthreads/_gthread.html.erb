@@ -1,0 +1,262 @@
+<div class="thread-index-single" id="thread<%= gthread.id %>">
+  <div class="thread-author-container">
+    <div class="thread-author-thumbnail<%= gthread.id %>">
+      <% if gthread.user.images.present? %>
+        <%= image_tag gthread.user.images.url, class: 'author-profile-thumbnail', loading: "lazy" %>
+      <% else %>
+        <i class="far fa-user-circle"></i>
+      <% end %>
+    </div>
+    <div class="thread-author">
+      <div class="thread-author-name">
+        <%= gthread.user.accountName %>
+      </div>
+      <div class="thread-created_at">
+        <%= gthread.created_at.strftime("%-m.%-d(#{%w(日 月 火 水 木 金 土)[gthread.created_at.wday]}) %-H:%M") %>
+      </div>
+    </div>
+    <div class="thread-title">
+      <%== gthread.title %>
+    </div>
+  </div>
+  
+  <% if gthread.event_id.present? %>
+    <div class="thread-event-information-container">
+      <p><code>イベント情報</code></p>
+      
+      <div class="thread-event-information-text">
+        <% if gthread.event.daterange == false && gthread.event.allday == true %>
+  				<p>
+  				  <i class="far fa-calendar-alt"></i>
+  				  <span>日時：<%= gthread.event.startdate.strftime("%-Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[gthread.event.startdate.wday]})") %></span>
+  				  <i class="far fa-check-square"></i><span>終日</span>
+  				</p>
+        <% elsif gthread.event.daterange == false && gthread.event.allday == false %>
+          <p>
+            <i class="far fa-calendar-alt"></i>
+            <span>日時：<%= gthread.event.startdate.strftime("%-Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[gthread.event.startdate.wday]}) %-H:%M") %>
+              〜 <%= gthread.event.enddate.strftime("%-H:%M") %></span>
+          </p>
+        <% elsif gthread.event.daterange == true && gthread.event.allday == true %>
+          <p>
+            <i class="far fa-calendar-alt"></i>
+            <span>日時：<%= gthread.event.startdate.strftime("%-Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[gthread.event.startdate.wday]})") %>
+  				    〜 <%= gthread.event.enddate.strftime("%-m月%-d日(#{%w(日 月 火 水 木 金 土)[gthread.event.enddate.wday]})") %></span>
+          </p>
+        <% elsif gthread.event.daterange == true && gthread.event.allday == false %>
+          <p>
+            <i class="far fa-calendar-alt"></i>
+            <span>日時：<%= gthread.event.startdate.strftime("%-Y年%-m月%-d日(#{%w(日 月 火 水 木 金 土)[gthread.event.startdate.wday]}) %-H:%M") %>
+              〜 <%= gthread.event.enddate.strftime("%-m月%-d日(#{%w(日 月 火 水 木 金 土)[gthread.event.enddate.wday]}) %-H:%M") %></span>
+          </p>
+        <% end %>
+        <% if gthread.event.place.present? %>
+          <p>
+            <i class="fas fa-map-marker-alt"></i>
+            <span>場所：<%= gthread.event.place %></span>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="thread-description">
+    <%== gthread.description %><%#= simple_format(h(gthread.description)) %>
+    <% if gthread.images.present? %>
+      <div class="images-container">
+        <% gthread.images.each do |files| %>
+          <%= render partial: "gthreads/images", locals: { gthread: gthread, files: files } %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <div class="thread-reaction-container">
+    <span id="treactions-list-container<%= gthread.id %>">
+      <%# gthread.thread_reactions.joins(:user).select("thread_reactions.*").each do |treaction| %>
+      <% gthread.thread_reactions.select(:images, :entity_name).distinct.each do |treaction| %>
+        <%= render partial: "thread_reactions/treactions_list", locals: { gthread: gthread, treaction: treaction } %>
+      <% end %>
+    </span>
+    
+    <%= link_to gthreads_reaction_image_index_path(id: gthread.id), class: "thread-reaction-btn-a", id: "thread-reaction-btn-a#{ gthread.id }", remote: true do %>
+      <button type="button" class="btn treaction-btn" data-toggle="modal" data-target="#thread-reaction-Modal<%= gthread.id %>">
+        <span class="treaction-icon">
+          <i class="far fa-laugh"></i>
+        </span>
+      </button>
+    <% end %>
+    
+    <%#button type="button" class="btn treaction-counter" data-toggle="modal" data-target="#treaction-Modal<%= thread.id >"%>
+      <span class="btn treaction-number" id="treaction-number<%= gthread.id %>" data-toggle="modal" data-target="#treaction-Modal<%= gthread.id %>">
+        <%= gthread.thread_reaction_users.count %>
+        <span class="treaction-number-attached">件のリアクション</span>
+      </span>
+    <%#/button%>
+    
+    <div class="modal thread-reaction-Modal" id="thread-reaction-Modal<%= gthread.id %>" tabindex="-1" aria-labelledby="ModalLabel">
+      <%#= render partial: "thread_reaction_modal", locals: { gthread: gthread } %>
+    </div><!-- /.modal thread-reaction-Modal -->
+    
+    <div class="modal treaction-Modal" id="treaction-Modal<%= gthread.id %>" tabindex="-1" aria-labelledby="ModalLabel">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content treaction-users-index">
+          <div class="modal-header">
+            <p class="modal-title">リアクションしたユーザー</p>
+          </div>
+          <div class="modal-body treaction-modal-body">
+            <% if gthread.thread_reactions.present? %>
+              <% gthread.thread_reactions.each do |treaction| %>
+                <div class="treaction-list">
+                  <%#data-toggle="tooltip" data-placement="top" title="<h3><%= treaction.user.accountName >さん</h3>がリアクションしました"%>
+                  <div class="treaction-list-reactions">
+                    <img src='<%= "#{ treaction.images }" %>' class="treaction-images-single">
+                  </div>
+                  <div class="treaction-list-user_names"><%= treaction.user.accountName %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="null-text">リアクションはまだありません</p>
+            <% end %>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal treaction-Modal -->
+    
+    <%= link_to gthreads_comment_index_path(id: gthread.id, g_uid: gthread.g_uid), class: "tcomment-btn-a", id: "tcomment-btn-a#{ gthread.id }", remote: true do %>
+      <button type="button" class="btn tcomment-btn" data-toggle="modal" data-target="#tcomment-Modal<%= gthread.id %>">
+        <span class="tcomment-icon">
+          <i class="far fa-comment"></i>
+        <span>
+      </button>
+    <% end %>
+    
+    <div class="modal tcomment-Modal" id="tcomment-Modal<%= gthread.id %>" data-gthread_id="<%= gthread.id %>" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"><!-- data-gthread_id 不要？-->
+      <%#= render partial: 'comments/comment_modal', locals: { gthread: gthread } %>
+    </div><!-- /.modal tcomment-Modal -->
+    
+    <button type="button" class="btn treaction-counter">
+      <span class="tcomment-number" id="tcomment-number<%= gthread.id %>">
+        <%= gthread.comments.count %>
+      </span>
+      <%#= render partial: 'tcomment_count', locals: { gthread: gthread } %>
+    </button>
+    
+    <% if gthread.user_id == current_user.id %>
+      <%= link_to "/gthreads/#{ gthread.id }", class: "thread-destroy-btn-a", method: :delete, remote: true do %>
+        <button type="button" class="btn thread-destroy-btn" id="thread-destroy-btn<%= gthread.id %>">
+          <span class="thread-destroy-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+              <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
+          <span>
+        </button>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<script>
+  // 投稿者のユーザー情報
+  tippy('.thread-author-thumbnail<%= gthread.id %>', {
+    content: `<div class="tippy-user-container">
+                <div class="tippy-userbox-top">
+                  <div class="tippy-user-thumbnail">
+                    <% if gthread.user.images.present? %>
+                      <%= image_tag gthread.user.images.url, class: 'user-profile-thumbnail', loading: "lazy" %>
+                    <% else %>
+                      <i class="far fa-user-circle"></i>
+                    <% end %>
+                  </div>
+                  <div class="tippy-user-accountName">
+                    <%= gthread.user.accountName %>
+                  </div>
+                </div>
+                <div class="tippy-self_introduction"><%== gthread.user.self_introduction %></div>
+                <div class="tippy-userbox-bottom">
+                  <div class="tippy-user-communities-count">
+                    <%= icon('fas', 'users') %> 所属コミュニティ数：
+                    <span class="tippy-user-communities-count-number">
+                      <%= gthread.user.communities.count - 1 %>
+                    </span>
+                  </div>
+                  <div class="tippy-user-created_at">
+                    <%= icon('far', 'calendar-alt') %>
+                    <%= gthread.user.created_at.strftime("%-Y#{'年'}%-m#{'月'}") %>から利用しています
+                  </div>
+                </div>
+              </div>`,
+    allowHTML: true,
+    arrow: false,
+    placement: 'bottom-end',
+    theme: 'light',
+    delay: [600, 0],
+    interactive: true,
+    onMount(instance) {
+      
+    }
+  });
+  tippy('.treaction-btn', {
+    content: 'リアクションする',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.treaction-number', {
+    content: 'リアクションしたユーザー一覧',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.tcomment-btn', {
+    content: 'コメントする',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.thread-destroy-btn', {
+    content: '削除する',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  
+  // magnific-popup.js
+  $('.image-preview<%= gthread.id %>').magnificPopup({
+    delegate: 'a', // ポップアップを開く子要素
+    type: 'image',
+    gallery: {
+      enabled: true,
+      navigateByImgClick: true,
+      preload: [0, 1]
+    }
+  });
+  
+  // 削除時確認ダイアログ(sweetalert2)
+  $('#thread-destroy-btn<%= gthread.id %>').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // ダイアログを閉じてもボタンがフォーカス状態でtippyが動作してしまうため
+    $('#thread-destroy-btn<%= gthread.id %>').blur();
+  
+    var $link = $(this);
+  
+    swal.fire({
+      icon: 'warning',
+      iconColor: 'red',
+      title: '<%= gthread.title %> を削除してもよろしいですか？',//$link.data('sweet-confirm'),
+      text: 'このスレッドのリアクション、コメントは全て削除されます。本当によろしいですか？',
+      confirmButtonText: '削除する',
+      confirmButtonColor: '#d33',
+      showCancelButton: true,
+      cancelButtonText: 'キャンセル',
+      focusCancel: true,
+      position : 'center',
+      allowEscapeKey: true, //escボタン
+      customClass: {
+        popup: 'sweetalert-thread-destroy'
+      }
+    }).then(function(result) {
+      if (result.isConfirmed) {
+        $link.trigger('click.rails');
+      }
+    }, function(dismiss) {});
+  });
+</script>

@@ -1,43 +1,59 @@
+<head>
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+</head>
 <div class="top-wrapper">
-  <div class="users-new-container">
+  <div class="form-container">
     <h1 class="text-black text-center mt-auto">サイト名</h1>
     <h4 class="text-black text-center">ログイン</h4>
-    <div class="row">
-      <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
-        <%= form_for :session, url: login_path do |f| %>  
-          <div class="form-group">
-            <%= f.label "アカウント名 または メールアドレス", class: "label-text" %>
-            <%= f.text_field :email, class: "form-control", id: "text", placeholder: "アカウント名／メールアドレス" %>
-            <div class="invalid-tooltip">
-              アカウント名 または メールアドレスを入力してください
+    <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
+      <%= form_for :session, url: login_path, html: { class: "needs-validation", novalidate: true, autocapitalize: "off", autocorrect: "off" } do |f| %>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "メールアドレス または アカウント名", class: "label-text1" %>
+          </div>
+          <%= f.text_field :email, class: "form-control", id: "text", placeholder: "メールアドレス／アカウント名", autofocus: true, required: true %>
+          <div class="invalid-feedback">
+            ［メールアドレス］または［アカウント名］を入力してください
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "パスワード", class: "label-text1" %>
+          </div>
+          <%= f.password_field :password, class: "form-control", id: "password", placeholder: "半角英数字8～20文字", minlength: "８", maxlength: "20", pattern: "^[0-9A-Za-z]+$", required: true %>
+          <div class="invalid-feedback">
+            ［パスワード］を入力してください
+          </div>
+        </div>
+        
+        <div class="form-group form-check">
+          <label>
+            <%= f.check_box :remember_me, class: "form-check-input", id: "checkbox", required: false %>
+            <span class="form-check-label">次回から自動的にログイン</span>
+            <div class="valid-feedback">
+              チェックは任意です
             </div>
-          </div>
-          <div class="form-group">
-            <%= f.label "パスワード", class: "label-text" %>
-            <%= f.password_field :password, class: "form-control", id: "password", placeholder: "半角英数字8～20文字", minlength: "８", maxlength: "20", pattern: "^[0-9A-Za-z]+$" %>
-            <div class="invalid-tooltip">
-              パスワードを入力してください
-            </div>
-          </div>
-          
-          <div class="form-group form-check">
-            <%= f.label :remember_me do %>
-              <%= f.check_box :remember_me, class: "form-check-input", id: "checkbox" %>
-              <span class="form-check-label">次回から自動的にログイン</span>
-            <% end %>
-          </div>
-          
-          <%= f.submit "ログイン", class: "btn btn-block btn-primary" %>
-        <% end %>
-      </div>
+          </label>
+        </div>
+        
+        <%= f.submit "ログイン", class: "btn btn-block btn-primary" %>
+      <% end %>
     </div>
-    <div class="row text-right">
+    <div class="text-right">
       <div class="offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
         <p2>
-          <%= link_to 'パスワードをお忘れの方はこちら', logout_path, :method => :delete, class: "text-black" %>
+          <%= link_to 'パスワードをお忘れの方はこちら', new_password_reset_path, class: "text-black" %>
         </p2>
       </div>
     </div>
   </div>
 </div>
 <%= javascript_include_tag "sessions_new_resize.js" %>
+<script>
+  $(".form-control").addClear({
+    symbolClass: "far fa-times-circle",
+    color: "#7d7d7d"
+  });
+</script>

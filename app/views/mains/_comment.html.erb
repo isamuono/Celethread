@@ -1,0 +1,25 @@
+<%# thread.comments.each do |tcomment| %>
+  <div class="comment-container">
+    <div class="comment-author-container">
+      <div class="comment-author-thumbnail">
+        <% if tcomment.user.images.present? %>
+          <%= image_tag tcomment.user.images.url, class: 'author-profile-thumbnail', loading: "lazy" %>
+        <% else %>
+          <i class="far fa-user-circle"></i>
+        <% end %>
+      </div>
+      <div class="comment-author">
+        <div class="comment-author-name">
+          <%= tcomment.user.accountName %>
+        </div>
+      </div>
+    </div>
+    <div class="comment-text-container">
+      <div class="comment-text"><%= tcomment.text %>
+      </div>
+      <div class="comment-created_at">
+        <%= tcomment.created_at.strftime("%-Y.%-m.%-d(#{%w(日 月 火 水 木 金 土)[tcomment.created_at.wday]}) %-H:%M") %>
+      </div>
+    </div>
+  </div>
+<%# end %>

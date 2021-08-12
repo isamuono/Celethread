@@ -1,0 +1,106 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content community-show-container">
+    <div class="modal-header community-show-modal-header">
+      <p class="modal-title community-show-title"><%= community_show.communityName %></p>
+      
+      <div class="tab">
+        <li class="active">コミュニティー情報</li>
+        <li class="">メンバー <%= community_show.community_participants.count %></li>
+      </div>
+    </div>
+    <div class="modal-body community-show-modal-body">
+      <div class="show tab-contents">
+        <div class="community-information">
+          <div class="row">
+            <div class="col-4">
+              <div class="community-image">
+                <% if community_show.images.present? %>
+                  <%= image_tag community_show.images.url, class: 'community-profile-thumbnail' %>
+                <% else %>
+                  <%= image_tag "icons/image_default.png", class: 'community-profile-thumbnail' %>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="community-information-single">
+                <label class="label-text4">カテゴリー</label>
+                <div><%= Category.find(community_show.category).name %></div>
+              </div>
+              <div class="community-information-single">
+                <label class="label-text4">サブカテゴリー</label>
+                <div><%= Subcategory.find(community_show.subcategory).name %></div>
+              </div>
+              <div class="community-information-single">
+                <label class="label-text4">都道府県（主な活動場所、拠点など）</label>
+                <div><%= community_show.prefecture %></div>
+              </div>
+              <div class="community-information-single">
+                <label class="label-text4">性別（コミュニティーメンバーの性別が限定的である場合指定可能）</label>
+                <% if community_show.sex == 0 || community_show.sex == nil %>
+                  <div class="community-information-single-placeholder">指定なし</div>
+                <% elsif community_show.sex == 1 %>
+                  <div>男性のみ</div>
+                <% elsif community_show.sex == 2 %>
+                  <div>女性のみ</div>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="community-information-single-description">
+                <label class="label-text4">コミュニティー紹介文・説明文</label>
+                <% if community_show.description.present? %>
+                  <div><%= community_show.description %></div>
+                <% else %>
+                  <div class="community-information-single-placeholder">ここにコミュニティーの説明文を記載することができます</div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-contents">
+        <% community_show.community_participants.order(:created_at).each do |cp| %>
+          <%= render partial: 'community_participants', locals: { cp: cp, cp_current_user: cp_current_user } %>
+        <% end %>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
+      <% if cp_current_user.role == 1 %>
+        <%= link_to communities_community_edit_path(id: community_show.id), class: "community-edit", id: "community-edit_#{ community_show.id }", remote: true do %>
+          <span type="button" class="btn btn-edit" data-toggle="modal" data-target="#community-edit-Modal<%= community_show.id %>">
+            <svg viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>編集する
+          </span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  $(function() {
+    $('.tab li').click(function() {
+      var index = $('.tab li').index(this);
+      
+      // クリック済みタブのデザインを設定したcssのクラスを一旦削除
+      $('.tab li').removeClass('active');
+      $(this).addClass('active');
+      
+      // コンテンツを一旦非表示にし、クリックされた順番のコンテンツのみを表示
+      $('.tab-contents').removeClass('show').eq(index).addClass('show');
+    });
+  });
+  
+  // モーダルの重複
+  /*$(document).ready(function () {
+    $(document).on('show.bs.modal', '.community-edit-Modal', e => {
+      setTimeout(function() {
+        $('.modal-backdrop')
+          .not('.modal-stack')
+          .addClass('modal-stack');
+      }, 0);
+    });
+  });*/
+</script>

@@ -1,0 +1,413 @@
+<head>
+  <!-- tippy.js -->
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <%= javascript_include_tag "tippy/tippy.umd.min.js" %>
+  <!-- bootstrap-add-clear -->
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+  <!-- readmore.js -->
+  <%= javascript_include_tag "readmore-js/readmore.min.js" %>
+  <!-- Quill -->
+  <%= javascript_include_tag "quill/quill.js" %>
+  <%= stylesheet_link_tag 'quill/quill.snow', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <!-- magnific-popup.js -->
+  <%= stylesheet_link_tag 'magnific-popup/magnific-popup', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag "magnific-popup/jquery.magnific-popup.min.js" %>
+  <!-- lazyload -cdn- -->
+  <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script>
+  <!-- jquery-toast-plugin -->
+  <%= stylesheet_link_tag 'jquery-toast/jquery.toast.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag "jquery-toast/jquery.toast.min.js" %>
+  <!-- sweetalert2 -cdn- -->
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <%#= javascript_pack_tag 'index.js' %>
+  <%= javascript_include_tag "crop_image.js" %>
+</head>
+<header>
+  <!-- サイドメニュー -->
+  <div class="menu-container">
+    <div id="mySidenav" class="sidenav">
+      <div class="sidenav-margin-top">
+        <button type="button" class="closebtn" onclick="closeNav()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5.72 5.72a.75.75 0 011.06 0L12 10.94l5.22-5.22a.75.75 0 111.06 1.06L13.06 12l5.22 5.22a.75.75 0 11-1.06 1.06L12 13.06l-5.22 5.22a.75.75 0 01-1.06-1.06L10.94 12 5.72 6.78a.75.75 0 010-1.06z"></path></svg>
+        </button>
+      </div>
+      <div id="menu-contents">
+        <div class="user-information">
+          <span class="login-user">
+            <div class="current_user-thumbnail">
+              <% if @user.images.present? %>
+                <%= image_tag @user.images.url, class: 'user-profile-thumbnail' %>
+              <% else %>
+                <i class="far fa-user-circle"></i>
+              <% end %>
+            </div>
+            <span class="user-name">
+              <%= @user.accountName %>
+            </span>
+          </span>
+          <span class="user-edit">
+            <span class="btn user-edit-icon" data-toggle="modal" data-target=".user-edit-Modal">
+              <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+              </svg>
+            </span>
+          </span>
+          
+          <div class="modal user-edit-Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+            <%= render partial: "users/user_edit_modal" %>
+          </div>
+        </div>
+        <hr class="hr" color="#242424">
+        
+        <a class="communities-participated">
+          <i class="fas fa-users"></i>参加コミュニティー
+        </a>
+        <% current_user.communities.order(:created_at).includes(:users).each do |c| %>
+          <%= render partial: 'dropdown_menu', locals: { c: c } %>
+        <% end %>
+        <%= link_to new_community_path, class: 'new-community-btn' do %>
+          <%= icon('fas', 'plus') %>コミュニティー開設
+        <% end %>
+        <hr class="hr" color="#242424">
+        <%= link_to logout_path, :method => :delete, class: "logout-btn" do %>
+          <%= icon('fas', 'sign-out-alt') %>ログアウト
+        <% end %>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="main-wrapper">
+  <!-- サイドメニューオープン時.main-wrapperを覆う -->
+  <div class="overlay_container"></div>
+  
+  <!-- ナビゲーションバー -->
+  <div id="navbar">
+    <div class="floatleft">
+      <button type="button" class="menu-trigger" id="sideMenuBtn" onclick="openNav()">
+        <%= icon('fas', 'bars') %>
+      </button>
+      <span id="color-icon">
+        <span id="hex"><%= @channel.color %></span>
+      </span>
+      <a class="nav-channel-name">
+        <%= @channel.channelName %>
+      </a>
+    </div>
+    <div class="floatright">
+      <%= link_to gthreads_notification_index_path, remote: true do %>
+        <button type="button" class="notification-btn" data-toggle="modal" data-target=".notification-Modal">
+          <% if unchecked_notifications.any? %>
+            <span class="fa-stack">
+              <i class="far fa-bell"></i>
+              <i class="fas fa-circle"></i>
+            </span>
+          <% else %>
+            <span class="fa-stack">
+              <i class="far fa-bell"></i>
+            </span>
+          <% end %>
+        </button>
+      <% end %>
+      
+      <div class="modal notification-Modal" tabindex="-1" aria-labelledby="ModalLabel">
+        
+      </div><!-- /.modal notification-Modal -->
+    </div>
+  </div>
+  
+  <div id="main" class="main-container">
+    <div class="channel-container">
+      <%= render partial: 'channel_room', locals: { channel: @channel, gthread: @gthread, gthreads: @gthreads } %>
+    </div>
+    <%# if @channel.id != 1 %>
+      <button class="btn new-thread-btn" id="new-thread-btn">
+        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+        </svg>
+      </button>
+    <%# end %>
+  </div>
+  
+  <div class="footer_container">
+    <%= render partial: 'footer', locals: { channel: @channel, gthread: @gthread, gthreads: @gthreads } %>
+  </div>
+</div>
+<%= javascript_include_tag "mains.js" %>
+<%#= javascript_include_tag "gthread_destroy.js" %>
+<%= javascript_include_tag "mains_resize.js" %>
+<script>
+  // When the user scrolls the page, execute myFunction
+  //window.onscroll = function() {stickyFunction()};
+  
+  //var navbar = document.getElementById("navbar");
+  // Get the offset position of the navbar
+  //var sticky = navbar.offsetTop;
+  
+  // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+  //function stickyFunction() {
+  //  if (window.pageYOffset >= sticky) {
+  //    navbar.classList.add("sticky")
+  //  } else {
+  //    navbar.classList.remove("sticky");
+  //  }
+  //}
+
+var $body = $('.overlay_container');
+
+$(function() {
+  // サイドメニュー
+  $('#sideMenuBtn').on('click', function() {
+    $body.toggleClass('overlay');
+  });
+  
+  $('.overlay_container, .closebtn, .channel-name').on('click', function(e) {
+    closeNav();
+    if ($('.footer_container').css('display') == 'block') {
+      if ((!$(e.target).closest('.footer_container').length) && (!$(e.target).closest('#new_thread-btn').length)) {
+        $('.footer_container').slideUp();
+      }
+      $body.removeClass('overlay');
+    }
+    $body.removeClass('overlay');
+  });
+  
+  // サイドメニュー ドロップダウンリスト
+  $('.community-name').on('click', function() {
+    $(this).toggleClass('dropdown_toggle');//.children('.dropdown-container').slideToggle(200);
+  });
+  
+	$('.deep-dropdown-btn').on('click', function() {
+		$(this).toggleClass('dropdown_toggle');//.children('.deep-dropdown-container').slideToggle(200);
+	});
+	
+	// サイドメニュー ユーザー/コミュニティ/チャンネル編集モーダル
+	$('.user-edit, .community-show, .channel-show').on('click', function() {
+    closeNav();
+    $body.removeClass('overlay');
+  });
+  
+	$('.user-edit-Modal')
+  	.on('show.bs.modal', function() {
+      $('body').addClass('modal-opacity8');
+    })
+    .on('hidden.bs.modal', function() {
+      $('body').removeClass('modal-opacity8');
+    })
+    
+  $('.community-edit-Modal, .channel-edit-Modal')
+  	.on('show.bs.modal', function() {
+      $('body').addClass('modal-opacity45');
+    })
+    .on('hidden.bs.modal', function() {
+      $('body').removeClass('modal-opacity45');
+    })
+	
+	// 画面読み込み時、最下部表示
+	//var main_container = document.getElementById('main');
+    //main_container.scrollTop = main_container.scrollHeight;
+	
+  // tippy.js
+  tippy('.user-edit-icon', {
+    content: 'ユーザー情報の編集',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.community-show-icon', {
+    content: 'コミュニティー情報の詳細',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.channel-show-icon', {
+    content: 'チャンネル情報の詳細',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.new-thread-btn', {
+    content: `<div class="new-thread">
+                <%= image_tag "icons/thread_create.png", class: 'thread-create-icon', id: "user_img_prev" %>
+                <span class="dropdown-text1">
+                  スレッドを作成する
+                </span>
+              </div>
+              <div class="new-event">
+                <%= image_tag "icons/event_create.png", class: 'event-create-icon', id: "user_img_prev" %>
+                <%= link_to 'イベントを作成する', new_event_path(community_id: @channel.community_id, channel_id: @channel.id, color: @channel.color), class: 'dropdown-text2' %>
+              </div>`,
+    allowHTML: true,
+    theme: 'light',
+    delay: [300, 0],
+    interactive: true,
+    onMount(instance) {
+      var btnOpen = '.new-thread',
+          sld = '.footer_container';
+      
+      $(btnOpen).on('click', function(e) {
+        if ($(sld).css('display') == 'none') {
+          $(sld).slideDown();
+          $body.toggleClass('overlay');
+        }
+      });
+      
+      $('.overlay_container').on('click', function(e) {
+        if ($(sld).css('display') == 'block') {
+          if ((!$(e.target).closest(sld).length) && (!$(e.target).closest(btnOpen).length)) {
+            $(sld).slideUp();
+          }
+          $body.removeClass('overlay');
+        }
+      });
+    }
+  });
+  
+  tippy('.treaction-btn', {
+    content: 'リアクションする',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.treaction-number', {
+    content: 'リアクションしたユーザー一覧',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.tcomment-btn', {
+    content: 'コメントする',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  tippy('.thread-destroy-btn', {
+    content: '削除する',
+    theme: 'black',
+    delay: [100, 0],
+  });
+  
+  // readmore.js
+  $('.thread-description').readmore({
+    moreLink: '<div class="btn btn-link readmore">続きを見る<div class="readmore-icon"><i class="fas fa-chevron-down"></i></div></div>',
+    lessLink: '<a class="readless">閉じる</a>',
+    speed: 10,
+    collapsedHeight: 200,
+    heightMargin: 40,
+    embedCSS: false
+  });
+});
+
+// 逆順無限スクロール
+document.addEventListener('turbolinks:load', function() {
+  //window.threadContainer = document.getElementsByClassName('thread-container');
+  //window.mainContainer = document.getElementsByClassName('main-container');
+  
+  let oldest_thread_id,
+      channel_id;
+  
+  // メッセージの追加読み込みの可否を決定する変数
+  window.showAdditionally = true;
+  
+  $(".main-container").scroll(function() {
+    if (($(".main-container").scrollTop() == 0) && window.showAdditionally) {
+      window.showAdditionally = false;
+      oldest_thread_id = document.getElementsByClassName('thread-index-single')[0].id.replace(/[^0-9]/g, "");
+      channel_id = document.getElementById('thread-container').dataset.channel_id;
+      $.ajax({
+        type: 'GET',
+        url: '/show_additionally',
+        cache: false,
+        data: { oldest_gthread_id: oldest_thread_id, channel_id: channel_id, remote: true }
+      });
+    }
+  });
+}, { passive: true });
+
+$(function() {
+  //setInterval(check_notification, 10000);
+});
+
+function check_notification() {
+  $.ajax({
+    url: '/unchecked_notifications_present_check',
+    type: 'GET',
+    cache: false
+  });
+}
+
+// 一定期間操作がなかった場合リロード
+$(function() {
+  var toHome = function() {
+    location.href = "/channels/<%= @channel.id %>/gthreads";
+  };
+  var timerMs = 60 * 60 * 1000;
+  var timerId = setTimeout(toHome, timerMs);
+
+  $('body').on('click keypress mousemove mousedown', function() {
+    clearTimeout(timerId);
+    timerId = setTimeout(toHome, timerMs);
+  });
+});
+
+//setTimeout(refresh, 10000);
+
+$(window).load(function(){
+  const threadDescriptionFormClass = document.getElementById('description');
+  threadDescriptionFormClass.setAttribute('id', 'ql-editor');
+});
+
+// cropper.js
+$(function () {
+  let $image = $('#imageModal'),
+    $img_field = $('#user_image'),
+    $croppedImage = $('#croppedImage'),
+    $cropModal = $('#cropModal'),
+    $beforeUpload = $('#beforeUpload'),
+    $button = $('#btn-save'),
+    $dataX = $('#dataX'),
+    $dataY = $('#dataY'),
+    $dataWidth = $('#dataWidth'),
+    $dataHeight = $('#dataHeight');
+
+  let options = {
+    dragmode: 'crop',
+    aspectRatio: 1/1,
+    restore: false,
+    guides: false,
+    center: false,
+    highlight: true,
+    cropBoxMovable: true,
+    cropBoxResizable: true,
+    modal: true,
+    crop: (e) => {
+      $dataX.val(Math.round(e.detail.x));
+      $dataY.val(Math.round(e.detail.y));
+      $dataWidth.val(Math.round(e.detail.width));
+      $dataHeight.val(Math.round(e.detail.height));
+    }
+  };
+
+  // when file upload
+  
+  // onclick save button
+  $button.click(() => {
+    imgCropping();
+  });
+
+  // modalを閉じたとき、cropper要素を初期化
+  $cropModal.on('hidden.bs.modal',function() {
+    $image.cropper('destroy').removeAttr('src');
+    let $cropperContainer = $('.cropper-container');
+    $cropperContainer.remove();
+  });
+
+  function imgCropping() {
+    if (!croppable) {
+      alert('トリミングする画像が用意されていません')
+      return false;
+    }
+    $beforeUpload.hide();
+    let croppedData = $image.cropper('getCroppedCanvas').toDataURL();
+    $croppedImage.attr('src', croppedData);
+    $cropModal.modal('hide');
+  }
+});
+
+</script>

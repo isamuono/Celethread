@@ -1,0 +1,285 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="community-edit-form">
+    <%= form_with model: @community_edit_modal, url: { controller: 'communities', action: 'update', method: :patch }, local: true do |f| %>
+      <div class="modal-content community-edit-container">
+        <div class="modal-header">
+          <p class="modal-title community-edit-title"><%= community_edit.communityName %></p>
+        </div>
+        <div class="modal-body community-edit-modal-body">
+          <%= f.hidden_field :id %>
+          <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <%= f.label "イメージサムネイル", class: "label-text3" %>
+                <div class="community-image">
+                  <% if community_edit.images.present? %>
+                    <%= image_tag community_edit.images.url, class: 'community-profile-thumbnail', id: "community_img_prev#{ community_edit.id }" %>
+                  <% else %>
+                    <%= image_tag "icons/image_default.png", class: 'community-profile-thumbnail', id: "community_img_prev#{ community_edit.id }" %>
+                  <% end %>
+                </div>
+                <label>
+                  <span class="btn imagefile-upload-btn">
+                    画像をアップロード
+                    <%= f.file_field :images, class: "file_field", id: "community_images#{ community_edit.id }" %>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="form-group">
+                <%= f.label "コミュニティー名", class: "label-text3" %>
+                <%= f.text_field :communityName, class: "form-control", id: "communityName#{ community_edit.id }", placeholder: "コミュニティー名", autocomplete: "family-name", autofocus: true %>
+              </div>
+              <div class="form-group">
+                <%= f.label "カテゴリーを選択", class: "label-text3" %>
+                <%= f.select :category, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
+                  { }, { class: "custom-select", id: "categorySelect#{ community_edit.id }", onchange: "categorySet()" } %>
+              </div>
+              <div class="form-group" id="form-group<%= community_edit.id %>">
+                <%= f.label "サブカテゴリーを選択", class: "label-text3" %>
+                <%= f.select :subcategory, [],
+                  { }, { class: "custom-select text-charcoal", id: "subcategorySelect#{ community_edit.id }" } %>
+              </div>
+              <div class="form-group">
+                <%= f.label "都道府県を選択（主な活動場所、拠点など）", class: "label-text3" %>
+                <%= f.select :prefecture, Prefecture.all.map{ |prefecture| [prefecture.name] },
+                  { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect#{ community_edit.id }"} %>
+              </div>
+              <div class="form-group">
+                <%= f.label "性別を選択（メンバーが男性か女性どちらかの場合のみ、選択してください）", class: "label-text3" %>
+                <%= f.select :sex, [["指定なし", 0], ["男性", 1], ["女性", 2]],
+                  { }, { class: "custom-select text-charcoal", id: "sexSelect#{ community_edit.id }" } %>
+              </div>
+              <div class="form-group">
+                <%= f.label "規模・人数を選択", class: "label-text3" %>
+                <%= f.select :scale, [["指定なし", 0], ["1〜10人", 1], ["11〜50人", 2], ["51〜100人", 3], ["101〜500人", 4], ["501〜1000人", 5], ["1001人〜", 6]],
+                  { }, { class: "custom-select text-charcoal", id: "scaleSelect#{ community_edit.id }" } %>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-group" id="text_area">
+                <%= f.label "コミュニティー紹介文・説明文", class: "label-text3" %>
+                <%= f.text_area :description, class: "form-control", id: "community-description", rows: "8", placeholder: "コミュニティーの説明文・紹介文を書くことができます" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <%= link_to "/communities/#{ community_edit.id }", class: "community-destroy-link", method: :delete, data: { sweet_confirm: "#{ community_edit.communityName } を削除してもよろしいですか？" } do %>
+            <span type="button" class="btn btn-destroy">削除する</span>
+          <% end %>
+          <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
+          <%= f.submit "変更を保存", class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<script>
+  var resizeFlg; //setTimeoutの待機中かを判定するフラグ
+  
+  function windowResizeFunc(){
+  
+    //resizeFlgに値が設定されている場合は、待ち時間中なのでリセットする
+    if (resizeFlg !== false) {
+        clearTimeout(resizeFlg);
+    }
+    //300ms待機後にリサイズ処理を実施する
+    resizeFlg = setTimeout( function() {
+      resizeElement();    //リサイズを実施する処理
+    }, 300);
+  }
+  
+  window.addEventListener('resize', windowResizeFunc);
+  window.addEventListener('load', resizeElement());
+  
+  function resizeElement(){
+    const windowWidth = document.documentElement.clientWidth;
+    
+    const resizebox1 = document.getElementById("communityName<%= community_edit.id %>");
+      if (windowWidth <= 767) {
+        resizebox1.className = "form-control";
+      } else if (windowWidth >= 768) {
+        resizebox1.className = "form-control form-control-lg";
+      } 
+    
+    const resizeCustomselectbox1 = document.getElementById("categorySelect<%= community_edit.id %>");
+      if (windowWidth <= 767) {
+        resizeCustomselectbox1.className = "custom-select text-charcoal";
+      } else if (windowWidth >= 768) {
+        resizeCustomselectbox1.className = "custom-select custom-select-lg text-charcoal";
+      } 
+      
+    const resizeCustomselectbox2 = document.getElementById("subcategorySelect<%= community_edit.id %>");
+      if (windowWidth <= 767) {
+        resizeCustomselectbox2.className = "custom-select text-charcoal";
+      } else if (windowWidth >= 768) {
+        resizeCustomselectbox2.className = "custom-select custom-select-lg text-charcoal";
+      } 
+      
+    const resizeCustomselectbox3 = document.getElementById("prefectureSelect<%= community_edit.id %>");
+      if (windowWidth <= 767) {
+        resizeCustomselectbox3.className = "custom-select text-charcoal";
+      } else if (windowWidth >= 768) {
+        resizeCustomselectbox3.className = "custom-select custom-select-lg text-charcoal";
+      }
+    
+    const resizeCustomselectbox4 = document.getElementById("sexSelect<%= community_edit.id %>");
+      if (windowWidth <= 767) {
+        resizeCustomselectbox4.className = "custom-select text-charcoal";
+      } else if (windowWidth >= 768) {
+        resizeCustomselectbox4.className = "custom-select custom-select-lg text-charcoal";
+      } 
+    
+    const resizeCustomselectbox5 = document.getElementById("scaleSelect<%= community_edit.id %>");
+      if (windowWidth <= 767) {
+        resizeCustomselectbox5.className = "custom-select text-charcoal";
+      } else if (windowWidth >= 768) {
+        resizeCustomselectbox5.className = "custom-select custom-select-lg text-charcoal";
+      } 
+      
+    const resizebox2 = document.getElementById("community-description");
+      if (windowWidth <= 767) {
+        resizebox2.className = "form-control";
+      } else if (windowWidth >= 768) {
+        resizebox2.className = "form-control form-control-lg";
+      }
+  }
+  
+  //傾きを変える度に現在の傾きを判定
+  window.orientationchange = function (){
+    if (Math.abs(window.orientation) === 0){
+      window.reload(); 
+    } else {
+      window.reload();
+    }
+  };
+  
+  function categorySet(){
+    var value = document.getElementById("categorySelect<%= community_edit.id %>").value;
+    var subcateSel = document.getElementById("subcategorySelect<%= community_edit.id %>");
+    var i;
+    
+    if (1 <= value && value <= 4){
+      document.getElementById("form-group<%= community_edit.id %>").style.display = "block";
+      
+      var subs = subcategories[value];
+      var size = subcateSel.options.length;
+      
+      for (i = 0; i < size; i++) {
+        subcateSel.remove(0);
+      }
+    
+      for (i = 0; i < subs.length; i++) {
+        var option = document.createElement("option");
+          option.text = subs[i];
+          option.value = i;
+          subcateSel.add(option);
+      }
+    } else {
+      document.getElementById("form-group<%= community_edit.id %>").style.display = "none";
+    }
+    
+    subcateSel.selectedIndex = 0;
+  }
+  
+  $('#community-edit-Modal<%= community_edit.id %>').on('show.bs.modal', function subcategorySet(){
+    var value = document.getElementById("categorySelect<%= community_edit.id %>").value;
+    var subcateSel = document.getElementById("subcategorySelect<%= community_edit.id %>");
+    var i;
+    
+    if (1 <= value && value <= 4){
+      document.getElementById("form-group<%= community_edit.id %>").style.display = "block";
+      
+      var subs = subcategories[value];
+      var size = subcateSel.options.length;
+      
+      for (i = 0; i < size; i++) {
+        subcateSel.remove(0);
+      }
+    
+      for (i = 0; i < subs.length; i++) {
+        var option = document.createElement("option");
+          option.text = subs[i];
+          option.value = i;
+          subcateSel.add(option);
+      }
+    } else {
+      document.getElementById("form-group<%= community_edit.id %>").style.display = "none";
+    }
+    
+    subcateSel.selectedIndex = <%= community_edit.subcategory %>;
+  });
+  
+  var subcategoryary1 = new Array(
+    <%== @sub1 %>
+  );
+  var subcategoryary2 = new Array(
+    <%== @sub2 %>
+  );
+  var subcategoryary3 = new Array(
+    <%== @sub3 %>
+  );
+  var subcategoryary4 = new Array(
+    <%== @sub4 %>
+  );
+  var subcategories = new Array(
+    0, subcategoryary1, subcategoryary2, subcategoryary3, subcategoryary4
+  );
+  
+	function readURL(input) {
+    if (input.files && input.files[0]) {
+      var reader<%= community_edit.id %> = new FileReader();
+      reader<%= community_edit.id %>.onload = function(e) {
+        $('#community_img_prev<%= community_edit.id %>').attr('src', e.target.result);
+      }
+      reader<%= community_edit.id %>.readAsDataURL(input.files[0]);
+    }
+  }
+  $("#community_images<%= community_edit.id %>").change(function() {
+    readURL(this);
+  });
+  
+  $('#community-description').on('input', function() {
+    $(this).height(0).innerHeight(this.scrollHeight);
+  });
+  
+  // 削除時確認ダイアログ(sweetalert2)
+  $('.community-destroy-link').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  
+    var $link = $(this);
+  
+    swal.fire({
+      icon: 'warning',
+      iconColor: 'red',
+      title: $link.data('sweet-confirm'),
+      text: 'このコミュニティーのチャンネル、スレッド、イベントは全て削除されます。本当によろしいですか？',
+      confirmButtonText: '削除する',
+      confirmButtonColor: '#d33',
+      showCancelButton: true,
+      cancelButtonText: 'キャンセル',
+      focusCancel: true,
+      position : 'center',
+      allowEscapeKey: true, //escボタン
+      customClass: {
+        popup: 'sweetalert-community-destroy'
+      }
+    }).then(function(result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/communities/<%= community_edit.id %>',
+          type: 'DELETE',
+        });
+        /*.done(function(response) {
+          
+        })
+        .fail(function(xhr) {
+          
+        });*/
+      }
+    }, function(dismiss) {});
+  });
+</script>

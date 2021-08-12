@@ -1,0 +1,43 @@
+<head>
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+</head>
+<div class="top-wrapper">
+  <div class="form-container">
+    <h1 class="text-black text-center mt-auto">サイト名</h1>
+    <h4 class="text-black text-center">パスワード再設定</h4>
+    <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
+      <%= form_for(@user, url: password_reset_path(params[:id]), html: { class: "needs-validation", novalidate: true, autocapitalize: "off", autocorrect: "off" }) do |f| %>
+        <%= hidden_field_tag :email, @user.email %>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "パスワード", class: "label-text1" %>
+          </div>
+          <%= f.password_field :password, class: "form-control", id: "password", placeholder: "半角英数字8～20文字", minlength: "８", maxlength: "20", pattern: "^[0-9A-Za-z]+$", required: true %>
+          <div class="invalid-feedback">
+            ［パスワード］を入力してください
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "パスワード（確認用）", class: "label-text1" %>
+          </div>
+          <%= f.password_field :password_confirmation, class: "form-control", id: "password_confirmation", placeholder: "パスワードの再入力", minlength: "8", maxlength: "20", pattern: "^[0-9A-Za-z]+$", required: true %>
+          <div class="invalid-feedback">
+            ［パスワード（確認用）］を入力してください
+          </div>
+        </div>
+        
+        <%= f.submit "パスワードを再設定する", class: "btn btn-block btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag "password_resets_edit_resize.js" %>
+<script>
+  $(".form-control").addClear({
+    symbolClass: "far fa-times-circle",
+    color: "#7d7d7d"
+  });
+</script>

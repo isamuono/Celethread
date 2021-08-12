@@ -1,6 +1,7 @@
 <%= @user.family_name %> <%= @user.first_name %>様！
 
 ［サイト名］をご利用いただき、ありがとうございます！
-以下のリンクにアクセスしてアカウント認証を行ってください。
+以下のリンクをクリックしてアカウント認証を行ってください。
 
 <%= edit_account_activation_url(@user.activation_token, email: @user.email) %>
+このリンクは24時間で有効期限が切れます。

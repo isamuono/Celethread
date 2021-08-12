@@ -1,0 +1,134 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content channel-show-container">
+    <div class="modal-header channel-show-modal-header">
+      <p class="modal-title channel-show-title"><%= channel_show.channelName %></p>
+    </div>
+    <div class="modal-body channel-show-modal-body">
+      <div class="channel-information-single">
+        <label class="label-text4">チャンネルの説明文</label>
+        <% if channel_show.description.present? %>
+          <div><%= channel_show.description %></div>
+        <% else %>
+          <div class="channel-information-single-placeholder">ここにチャンネルの説明文を記載することができます</div>
+        <% end %>
+      </div>
+      <div class="channel-information-single">
+        <label class="label-text4">イメージカラー</label>
+        <div>
+          <span class="channel-information-color">
+          </span>
+          <span class="channel-information-color-hex"><%= channel_show.color %></span>
+        </div>
+      </div>
+      <div class="channel-information-single">
+        <label class="label-text4">閲覧範囲</label>
+        <% if channel_show.public == 1 %>
+          <div>コミュニティー管理者のみ</div>
+        <% elsif channel_show.public == 2 %>
+          <div>コミュニティーメンバー全員</div>
+        <% end %>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
+      <% if cp_current_user.role == 1 %>
+        <%= link_to channels_channel_edit_path(id: channel_show.id), class: "channel-edit", id: "channel-edit_#{ channel_show.id }", remote: true do %>
+          <span type="button" class="btn btn-edit" data-toggle="modal" data-target="#channel-edit-Modal<%= channel_show.id %>">
+            <svg viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+              <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+            </svg>編集する
+          </span>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script>
+  $(function() {
+    const color = $('.channel-information-color');
+    const color_arr = Array.from(color);
+    
+    const forEach_arr = color_arr.forEach(function(value) {
+      if (value.nextElementSibling.innerHTML == "#000000") {
+        value.style.backgroundColor = "black";
+      } else if (value.nextElementSibling.innerHTML == "#808080") {
+        value.style.backgroundColor = "gray";
+      } else if (value.nextElementSibling.innerHTML == "#4682b4") {
+        value.style.backgroundColor = "steelblue";
+      } else if (value.nextElementSibling.innerHTML == "#000080") {
+        value.style.backgroundColor = "navy";
+      } else if (value.nextElementSibling.innerHTML == "#0000ff") {
+        value.style.backgroundColor = "blue";
+      } else if (value.nextElementSibling.innerHTML == "#4169e1") {
+        value.style.backgroundColor = "royalblue";
+      } else if (value.nextElementSibling.innerHTML == "#1e90ff") {
+        value.style.backgroundColor = "dodgerblue";
+      } else if (value.nextElementSibling.innerHTML == "#00bfff") {
+        value.style.backgroundColor = "deepskyblue";
+      } else if (value.nextElementSibling.innerHTML == "#87cefa") {
+        value.style.backgroundColor = "lightskyblue";
+      } else if (value.nextElementSibling.innerHTML == "#00ffff") {
+        value.style.backgroundColor = "cyan";
+      } else if (value.nextElementSibling.innerHTML == "#008b8b") {
+        value.style.backgroundColor = "darkcyan";
+      } else if (value.nextElementSibling.innerHTML == "#008000") {
+        value.style.backgroundColor = "green";
+      } else if (value.nextElementSibling.innerHTML == "#3cb371") {
+        value.style.backgroundColor = "mediumseagreen";
+      } else if (value.nextElementSibling.innerHTML == "#98fb98") {
+        value.style.backgroundColor = "palegreen";
+      } else if (value.nextElementSibling.innerHTML == "#adff2f") {
+        value.style.backgroundColor = "greenyellow";
+      } else if (value.nextElementSibling.innerHTML == "#00ff00") {
+        value.style.backgroundColor = "lime";
+      } else if (value.nextElementSibling.innerHTML == "#9acd32") {
+        value.style.backgroundColor = "yellowgreen";
+      } else if (value.nextElementSibling.innerHTML == "#bdb76b") {
+        value.style.backgroundColor = "darkkhaki";
+      } else if (value.nextElementSibling.innerHTML == "#f0e68c") {
+        value.style.backgroundColor = "khaki";
+      } else if (value.nextElementSibling.innerHTML == "#fff450") {
+        value.style.backgroundColor = "#fff450";
+      } else if (value.nextElementSibling.innerHTML == "#ffd700") {
+        value.style.backgroundColor = "gold";
+      } else if (value.nextElementSibling.innerHTML == "#fcc800") {
+        value.style.backgroundColor = "#fcc800";
+      } else if (value.nextElementSibling.innerHTML == "#ffa500") {
+        value.style.backgroundColor = "orange";
+      } else if (value.nextElementSibling.innerHTML == "#ff8c00") {
+        value.style.backgroundColor = "darkorange";
+      } else if (value.nextElementSibling.innerHTML == "#8f6552") {
+        value.style.backgroundColor = "#8f6552";
+      } else if (value.nextElementSibling.innerHTML == "#8b4513") {
+        value.style.backgroundColor = "saddlebrown";
+      } else if (value.nextElementSibling.innerHTML == "#b22222") {
+        value.style.backgroundColor = "firebrick";
+      } else if (value.nextElementSibling.innerHTML == "#ff6347") {
+        value.style.backgroundColor = "tomato";
+      } else if (value.nextElementSibling.innerHTML == "#ff4500") {
+        value.style.backgroundColor = "orangered";
+      } else if (value.nextElementSibling.innerHTML == "#ff0000") {
+        value.style.backgroundColor = "red";
+      } else if (value.nextElementSibling.innerHTML == "#dc143c") {
+        value.style.backgroundColor = "crimson";
+      } else if (value.nextElementSibling.innerHTML == "#e73562") {
+        value.style.backgroundColor = "#e73562";
+      } else if (value.nextElementSibling.innerHTML == "#ff1493") {
+        value.style.backgroundColor = "deeppink";
+      } else if (value.nextElementSibling.innerHTML == "#ff69b4") {
+        value.style.backgroundColor = "hotpink";
+      } else if (value.nextElementSibling.innerHTML == "#ffb6c1") {
+        value.style.backgroundColor = "lightpink";
+      } else if (value.nextElementSibling.innerHTML == "#ee82ee") {
+        value.style.backgroundColor = "violet";
+      } else if (value.nextElementSibling.innerHTML == "#8b008b") {
+        value.style.backgroundColor = "darkmagenta";
+      } else if (value.nextElementSibling.innerHTML == "#9400d3") {
+        value.style.backgroundColor = "darkviolet";
+      } else if (value.nextElementSibling.innerHTML == "#a2efef") {
+        value.style.backgroundColor = "#a2efef";
+      }
+    });
+  });
+</script>

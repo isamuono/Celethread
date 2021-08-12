@@ -1,0 +1,79 @@
+<head>
+  <%= javascript_include_tag "bootstrap-add-clear/bootstrap-add-clear.min.js" %>
+  <%= stylesheet_link_tag 'colorpicker/spectrum', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag "colorpicker/spectrum.js" %>
+</head>
+<div class="top-wrapper">
+  <div class="form-container">
+    <h1 class="text-black text-center mt-auto">サイト名</h1>
+    <h4 class="text-black text-center">チャンネル作成</h4>
+    <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-2 offset-1 col-xl-6 col-lg-6 col-md-8 col-10">
+      <%= form_for @channel, html: { autocapitalize: "off", autocorrect: "off" } do |f| %>
+        <%= f.hidden_field :community_id %>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "チャンネル名", class: "label-text1" %>
+          </div>
+          <%= f.text_field :channelName, class: "form-control", id: "channelName", placeholder: "例：合宿", autofocus: true %>
+        </div>
+        <div class="form-group" id="text_area">
+          <%= f.label "チャンネルの説明文", class: "label-text2" %>
+          <%= f.text_area :description, class: "form-control", id: "description", rows: "4", placeholder: "例：春休みや夏休み期間中における泊まり込みの練習。1〜2泊の遠征。", maxlength: "2000" %>
+          <small class="form-text text-muted text-right help-text2" >※2000文字以内</small>
+        </div>
+        <div class="form-group color-select-form">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "イメージカラー", class: "label-text1" %>
+          </div>
+          <%= f.text_field :color, class: "form-control", id: "color" %>
+        </div>
+        <div class="form-group">
+          <div class="label-text-box">
+            <span class="badge badge-danger">必須</span>
+            <%= f.label "閲覧可能なメンバーの範囲", class: "label-text1" %>
+          </div>
+          <div class="radio-box">
+            <label>
+              <%= f.radio_button :public, "1", class: "radiobutton" %>
+              <span class="radio-label">コミュニティー管理者のみ</span>
+            </label>
+            <label>
+              <%= f.radio_button :public, "2", class: "radiobutton", checked: true %>
+              <span class="radio-label">コミュニティーメンバー全員</span>
+            </label>
+          </div>
+        </div>
+        
+        <%= f.submit "チャンネルを作成する", class: "btn btn-block btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag "channels_new_resize.js" %>
+<script>
+  $("#channelName").addClear({
+    symbolClass: "far fa-times-circle",
+    color: "#7d7d7d"
+  });
+  $('#color').spectrum({
+    allowEmpty: true,
+    showPaletteOnly: true,
+    showPalette: true,
+    preferredFormat: "hex",
+    palette: [
+      'black', 'gray', 
+      'steelblue', 'navy', 'blue', 'royalblue', 'dodgerblue', 'deepskyblue', 'lightskyblue', 
+      'darkcyan', 'green', 'mediumseagreen', 'palegreen', 'greenyellow', 'lime', 'yellowgreen', 'darkkhaki', 'khaki', 
+      '#fff450', 'gold', '#fcc800', 'orange', 'darkorange', '#8f6552', 'saddlebrown', 'firebrick', 'tomato', 'orangered', 'red', 'crimson', '#e73562',
+      'deeppink', 'hotpink', 'lightpink', 'violet', 'darkmagenta', 'darkviolet'
+    ],
+    //hideAfterPaletteSelect: true,
+  });
+  
+  // 文字量によって自動で高さが変わるtextarea
+  $("#description").on("input", function() {
+    $(this).height(0).innerHeight(this.scrollHeight);
+  });
+</script>

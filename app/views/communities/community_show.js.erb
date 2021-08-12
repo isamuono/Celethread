@@ -1,0 +1,7 @@
+$('#community-show-Modal<%= @community_show_modal.id %>').html("<%= escape_javascript(render partial: 'communities/community_show_modal', locals: { community_show: @community_show_modal, cp_current_user: @cp_current_user }) %>");
+
+$('#community-show-Modal<%= @community_show_modal.id %>').modal('show');
+
+$('.modal-backdrop').on('click', function() {
+  $('#community-show-Modal<%= @community_show_modal.id %>').modal('hide');
+});

@@ -1,6 +1,24 @@
+/*
+ *= require_self
+ *= require fullcalendar
+ *= require quill.snow
+*/
+ 
 @import "bootstrap";
 @import 'font-awesome-sprockets';
 @import 'font-awesome';
 @import "d_custom.scss";
 @import "t_custom.scss";
 @import "m_custom.scss";
+@import "colorpicker/spectrum.scss";
+@import "flatpickr/flatpickr.min.scss";
+@import "flatpickr/confirmDate.scss";
+@import "cropper/cropper.min.scss";
+@import "tippy/tippy.css";
+@import "tippy/light.css";
+@import "quill/quill.snow.css";
+//@import "pickadate/classic.scss";
+//@import "pickadate/classic.date.scss";
+
+//@import "custom.scss";
+//@import "jsidemenu.scss";

@@ -1,0 +1,26 @@
+$('#tcomment-Modal<%= @thread_comment.id %>').html("<%= escape_javascript(render partial: 'comments/comment_modal', locals: { gthread: @thread_comment, comments: @comments }) %>");
+
+$('#tcomment-Modal<%= @thread_comment.id %>').modal('show');
+
+$('#tcomment-Modal<%= @thread_comment.id %>').on('hidden.bs.modal', function() {
+  $('#tcomment-Modal<%= @thread_comment.id %>').modal('hide');
+  
+  $.ajax({
+    'url': '/channels/<%= @thread_comment.channel.id %>/gthreads/<%= @thread_comment.g_uid %>',
+    'dataType': 'html',
+    'cache': false
+  })
+  .then(function(data) {
+    window.history.pushState(null, null, '/channels/<%= @channel.id %>/gthreads');
+  })
+  
+  // モーダルを開いた回数分、コメントがブロードキャストされるのを防ぐため、モーダルを閉じる度に購読を解除する
+  //var subscriptions = App.cable.subscriptions['subscriptions'];
+  
+  //subscriptions.forEach(function (subscription) {
+    //App.cable.subscriptions.remove(subscription);
+  //});
+  App.comment.unsubscribe();
+});
+
+window.history.pushState(null, null, '/channels/<%= @channel.id %>/gthreads/<%= @thread_comment.g_uid %>');

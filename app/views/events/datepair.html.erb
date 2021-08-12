@@ -1,0 +1,121 @@
+<head>
+  <!-- Bootstrap-datepicker -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.ja.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
+    
+  <!-- flatpickr -->
+  <%#= stylesheet_link_tag 'flatpickr/flatpickr.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%#= javascript_include_tag "flatpickr/flatpickr.min.js" %>
+  <%#= javascript_include_tag "flatpickr/ja.js" %>
+  <%#= javascript_include_tag "flatpickr/rangePlugin.js" %>
+  
+  <!-- jquery.timepicker -CDN- -->
+  <link rel="stylesheet" href="https://cdn.rawgit.com/jonthornton/jquery-timepicker/3e0b283a/jquery.timepicker.min.css">
+  <script src="https://cdn.rawgit.com/jonthornton/jquery-timepicker/3e0b283a/jquery.timepicker.min.js"></script>
+  <!-- datepair.js -->
+  <%= javascript_include_tag "timepicker/datepair.min.js" %>
+</head>
+<div class="top-wrapper">
+  <div class="form-container">
+    <h1 class="text-black text-center mt-auto">サイト名</h1>
+    <h4 class="text-black text-center">イベント作成</h4>
+    <div class="row">
+      <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-2 offset-1 col-xl-6 col-lg-6 col-md-8 col-10">
+        <%= form_for @event do |f| %>
+          <div class="form-group">
+            <%= f.label "タイトル", class: "label-text" %>
+            <%= f.text_field :title, class: "form-control", id: "title", placeholder: "○○クラブとの合同練習試合" %>
+          </div>
+          <div class="form-group form-row" id="datepair">
+            <div class="col-5">
+              <%= f.label "日時", class: "label-text" %>
+              <%= f.text_field :startdate, class: "form-control date start", id: "from" , placeholder: "YYYY-MM-DD(d)", readonly: "readonly" %>
+            </div>
+            <div class="col-5">
+              <%= f.label "　", class: "label-text" %>
+              <%#= f.text_field :starttime, class: "form-control time start", placeholder: "HH:mm" %>
+            </div>
+            <div class="col-1">
+              <%= f.label "　", class: "label-text" %>
+              <p class="from-to">〜</p>
+            </div>
+            <div class="offset-2 col-5">
+              <%#= f.label "終了", class: "label-text" %>
+              <%= f.text_field :enddate, class: "form-control date end", placeholder: "YYYY-MM-DD(d)", readonly: "readonly" %>
+            </div>
+            <div class="col-5">
+              <%#= f.label "　", class: "label-text" %>
+              <%= f.text_field :endtime, class: "form-control time end", placeholder: "HH:mm" %>
+            </div>
+          </div>
+          <div class="form-group" id="text_area" aria-describedby="passwordHelpBlock">
+            <%= f.label "本文", class: "label-text" %>
+            <%= f.text_area :description, class: "form-control", id: "description" %>
+          </div>
+          
+          <%= f.submit "スレッドを作成する", class: "btn btn-block btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<%#= javascript_include_tag "channels_new_resize.js" %>
+<script>
+  $('.form-control').css('background-color', '#fff');
+  
+  /*$('tr').change(function() {
+        const result = $('th:selected').text();
+    
+        if(dow == $(".dow").text("日")){
+          document.getElementById("form-group").style.fontColor = "red";
+        }
+  })*/
+  
+  $(function() {
+    var dow = document.getElementsByClassName('dow').innerHTML;
+    
+    if(dow == "日"){
+      document.getElementsByClassName("dow").style.color = '#fff';
+    }
+  });
+    
+  $('#datepair .time').timepicker({
+    scrollDefault: 'now',
+    timeFormat: 'Y H:i'
+  });
+	  
+  $('#datepair .date').datepicker({
+    language: 'ja',
+    format: 'yyyy-mm-dd(D)-H:i',
+    todayHighlight: true, //現在日付をハイライト
+    // 土日の色変更
+    beforeShowDay: function(date) {
+      var myDate = new Object();
+      if (date.getDay() == 0) {
+        myDate.classes = 'class-sunday';
+        myDate.tooltip  = '日曜日';
+      } else if　(date.getDay() == 6) {
+        myDate.classes = 'class-saturday';
+        myDate.tooltip  = '土曜日';
+      } else {
+        myDate.classes = 'class-weekday';
+        myDate.tooltip  = '平日';
+      }
+      return myDate;
+    },
+    startDate: Date(), //現在よりも前の日付を選択不可にする
+    templates: {
+      leftArrow: '<%= icon('fas', 'chevron-left') %>',
+      rightArrow: '<%= icon('fas', 'chevron-right') %>'
+    },
+    clearBtn: true,
+    autoclose: true
+  });
+  
+  // 開始日(時間)と終了日(時間)を連動し、終了日を開始日よりも前に設定不可にする
+  var defaultTimeDelta = document.getElementById('datepair');
+  var defaultDelta = new Datepair(defaultTimeDelta, {
+    //'defaultTimeDelta': 1800000 // 30minutes後の時間をセット
+  });
+</script>

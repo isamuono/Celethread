@@ -1,0 +1,2 @@
+class DmReaction < ApplicationRecord
+end

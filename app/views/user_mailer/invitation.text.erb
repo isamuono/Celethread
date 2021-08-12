@@ -1,6 +1,5 @@
-<%= @invitation.family_name %> <%= @invitation.first_name %>様！
-
-［サイト名］をご利用いただき、ありがとうございます！
+<%= @inviter.accountName %>さんがあなたを[サイト名]に招待しています。
 まずは以下のリンクにアクセスしてアカウントを作成してください。
 
-<%= new_user_url %>
+<%= edit_invitation_url(@user.invite_token, email: @user.email) %>
+このリンクは24時間で有効期限が切れます。

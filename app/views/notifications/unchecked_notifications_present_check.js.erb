@@ -1,0 +1,5 @@
+<% if @unchecked_notifications.present? %>
+  $('.notification-btn').html(`<span class="fa-stack"><i class="far fa-bell"></i><i class="fas fa-circle"></i></span>`);
+<% else %>
+  $('.notification-btn').html(`<span class="fa-stack"><i class="far fa-bell"></i></span>`);
+<% end %>

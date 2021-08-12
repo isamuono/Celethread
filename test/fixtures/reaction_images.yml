@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  emoji_id: MyString
+  entity_name: MyString
+  images: MyString
+
+two:
+  emoji_id: MyString
+  entity_name: MyString
+  images: MyString

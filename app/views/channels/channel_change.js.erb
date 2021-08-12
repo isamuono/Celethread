@@ -1,0 +1,59 @@
+$('#hex').html("<%= @channel.color %>");
+$('.nav-channel-name').html("<%= @channel.channelName %>");
+
+$('.footer_container').html("<%= escape_javascript(render partial: 'gthreads/footer') %>");
+
+//var gthreads = '<div class="thread-container" id="thread-container" data-channel_id="<%= @channel.id %>"><%= escape_javascript(render @gthreads) %></div>';
+
+// 同じチャンネルのサブスクリプションが複数複数作成されるのを防ぐ
+App.gthread.unsubscribe();
+
+$('.channel-container').html("<%= escape_javascript(render partial: 'gthreads/channel_room') %>");
+
+tippy('.new-thread-btn', {
+  content: `<div class="new-thread">
+              <%= image_tag "icons/thread_create.png", class: 'thread-create-icon', id: "user_img_prev" %>
+              <span class="dropdown-text1">
+                スレッドを作成する
+              </span>
+            </div>
+            <div class="new-event">
+              <%= image_tag "icons/event_create.png", class: 'event-create-icon', id: "user_img_prev" %>
+              <%= link_to 'イベントを作成する', new_event_path(community_id: @channel.community_id, channel_id: @channel.id, color: @channel.color), class: 'dropdown-text2' %>
+            </div>`,
+  allowHTML: true,
+  theme: 'light',
+  delay: [300, 0],
+  interactive: true,
+  onMount(instance) {
+    var btnOpen = '.new-thread',
+        sld = '.footer_container';
+    
+    $(btnOpen).on('click', function(e) {
+      if ($(sld).css('display') == 'none') {
+        $(sld).slideDown();
+        $body.toggleClass('overlay');
+      }
+    });
+    
+    $('.overlay_container').on('click', function(e) {
+      if ($(sld).css('display') == 'block') {
+        if ((!$(e.target).closest(sld).length) && (!$(e.target).closest(btnOpen).length)) {
+          $(sld).slideUp();
+        }
+        $body.removeClass('overlay');
+      }
+    });
+  }
+});
+
+if (`<%= @channel.id %>` == 'celestebot') { 
+  $('#new-thread-btn').prop('disabled', true);
+} else {
+  $('#new-thread-btn').prop('disabled', false);
+}
+
+window.history.pushState(null, null, '/channels/<%= @channel.id %>/gthreads');
+
+var main_container = document.getElementById('main');
+main_container.scrollTop = main_container.scrollHeight;

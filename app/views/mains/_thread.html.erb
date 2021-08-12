@@ -1,0 +1,220 @@
+<%# @threads.each do |thread| %>
+<div class="thread-index-single" id="thread<%= thread.id %>">
+  <div class="thread-author-container">
+    <div class="thread-author-thumbnail">
+      <% if thread.user.images.present? %>
+        <%= image_tag thread.user.images.url, class: 'author-profile-thumbnail', loading: "lazy" %>
+      <% else %>
+        <i class="far fa-user-circle"></i>
+      <% end %>
+    </div>
+    <div class="thread-author">
+      <div class="thread-author-name">
+        <%= thread.user.accountName %>
+      </div>
+      <div class="thread-created_at">
+        <%= thread.created_at.strftime("%-m.%-d(#{%w(日 月 火 水 木 金 土)[thread.created_at.wday]}) %-H:%M") %>
+      </div>
+    </div>
+    <div class="thread-title">
+      <%== thread.title %>
+    </div>
+  </div>
+  
+  <div class="thread-description">
+    <%== thread.description %><%#= simple_format(h(thread.description)) %>
+    <% if thread.images.present? %>
+      <%# if thread.images.file.extname == '.pdf' %>
+        <%#= link_to thread.images, class: 'author-profile-thumbnail', loading: "lazy" do %>
+          
+        <%# end %>
+      <%# else %>
+      <% thread.images.each do |files| %>
+      <%#= image_tag (files.url) %>
+        <%= link_to "添付ファイル", class: 'author-profile-thumbnail', loading: "lazy" %>
+      <% end %>
+        <%#= image_tag thread.images.url, class: 'author-profile-thumbnail', loading: "lazy" %>
+      <%# end %>
+    <%# else %>
+      
+    <% end %>
+  </div>
+  <div class="thread-reaction-container">
+    <% thread.thread_reactions.each do |treactions| %>
+      <button type="button" class="btn treaction-btn">
+        <div class="treaction-list-reactions"><img src="<%= "#{treactions.images}" %>" class="thread-reaction-images-single"></div>
+        <%#= treactions.images.count %>
+      </button>
+    <% end %>
+    <button type="button" class="btn treaction-btn" data-toggle="modal" data-target="#thread-reaction-Modal<%= thread.id %>">
+      <span class="treaction-icon">
+        <i class="far fa-laugh"></i>
+      </span>
+    </button>
+    <%#button type="button" class="btn treaction-counter" data-toggle="modal" data-target="#treaction-Modal<%= thread.id >"%>
+      <span class="btn treaction-number" data-toggle="modal" data-target="#treaction-Modal<%= thread.id %>">
+        <%= thread.thread_reaction_users.count %>
+        <span class=treaction-number-attached>件のリアクション</span>
+      </span>
+    <%#/button%>
+    
+    <div class="modal thread-reaction-Modal" id="thread-reaction-Modal<%= thread.id %>" tabindex="-1" aria-labelledby="ModalLabel">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content reaction-emojis-index">
+          <div class="modal-header">
+            <p class="modal-title">リアクションのアイコンを選んでください</p>
+          </div>
+          <div class="modal-body thread-reaction-modal-body">
+            <% @reaction_images_custom.each do |custom| %>
+              <span class="custom thread-reaction-btn">
+                <%= link_to mains_path(custom.id, gthread_id: thread.id, entity_name: custom.entity_name, images: custom.images), { controller: 'mains', action: 'create', method: :post } do %>
+                  <img src="<%= "#{ custom.images }" %>" class="thread-reaction-images-single" loading="lazy">
+                <% end %>
+              </span>
+            <% end %>
+            <hr>
+            <% @reaction_images_smileys_and_emotion.each do |se| %>
+              <span class="thread-reaction-btn smileys_and_emotion">
+                <%= link_to mains_path(se.id, gthread_id: thread.id, entity_name: se.entity_name, images: se.images), { controller: 'mains', action: 'create', method: :post } do %>
+                  <img src="<%= "#{ se.images }" %>" class="thread-reaction-images-single" loading="lazy">
+                <% end %>
+              </span>
+            <% end %>
+            <hr>
+            <% @reaction_images_body.each do |body| %>
+              <span class="thread-reaction-btn body">
+                <%= link_to mains_path(body.id, gthread_id: thread.id, entity_name: body.entity_name, images: body.images), { controller: 'mains', action: 'create', method: :post } do %>
+                  <img src="<%= "#{ body.images }" %>" class="thread-reaction-images-single" loading="lazy">
+                <% end %>
+              </span>
+            <% end %>
+            <hr>
+            <% @reaction_images_person_and_gesture.each do |pg| %>
+              <span class="thread-reaction-btn person_and_gesture">
+                <%= link_to mains_path(pg.id, gthread_id: thread.id, entity_name: pg.entity_name, images: pg.images), { controller: 'mains', action: 'create', method: :post } do %>
+                  <img src="<%= "#{ pg.images }" %>" class="thread-reaction-images-single" loading="lazy">
+                <% end %>
+              </span>
+            <% end %>
+            <hr>
+            <% @reaction_images_symbols.each do |symbols| %>
+              <span class="thread-reaction-btn symbols">
+                <%= link_to mains_path(symbols.id, gthread_id: thread.id, entity_name: symbols.entity_name, images: symbols.images), { controller: 'mains', action: 'create', method: :post } do %>
+                  <img src="<%= "#{ symbols.images }" %>" class="thread-reaction-images-single" loading="lazy">
+                <% end %>
+              </span>
+            <% end %>
+            
+            <%# @reaction_emojis.each do |reactions| %>
+              <%#span class="thread-reaction-btn"> <%#{ controller: 'thread-reactions', action: 'create' },%>
+                <%#= link_to mains_path(reactions.id, gthread_id: thread.id, entity_name: reactions.entity_name), { controller: 'mains', action: 'create', method: :post, remote: true, class: "thread-reaction-emojis" } do %>
+                  <%#= simple_format(reactions.entity_name) %>
+                <%# end >
+              </span>
+            <% end %>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal thread-reaction-Modal -->
+    
+    <div class="modal treaction-Modal" id="treaction-Modal<%= thread.id %>" tabindex="-1" aria-labelledby="ModalLabel">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content treaction-users-index">
+          <div class="modal-header">
+            <p class="modal-title">リアクションしたユーザー</p>
+          </div>
+          <div class="modal-body treaction-modal-body">
+            <% if thread.thread_reactions.present? %>
+              <div class="row treaction-list">
+                <% thread.thread_reactions.each do |treaction| %>
+                  <%#data-toggle="tooltip" data-placement="top" title="<h3><%= treaction.user.accountName >さん</h3>がリアクションしました"%>
+                  <div class="treaction-list-reactions offset-1 col-1"><img src="<%= "#{treaction.images}" %>" class="thread-reaction-images-single"></div>
+                  <div class="treaction-list-user_names offset-1 col-7">ああああ aa bb test cc<%#= treaction.user.accountName%></div>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="null-text">リアクションはまだありません</p>
+            <% end %>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal treaction-Modal -->
+    
+    <button type="button" class="btn tcomment-btn" data-toggle="modal" data-target="#tcomment-Modal<%= thread.id %>">
+      <span class="tcomment-icon">
+        <i class="far fa-comment"></i>
+      <span>
+    </button>
+    
+    <div class="modal tcomment-Modal" id="tcomment-Modal<%= thread.id %>" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+      <div class="modal-dialog modal-dialog-centered">
+          
+        <div class="modal-content tcomment-users-index">
+          <div class="modal-header">
+            <p class="modal-title">コメント一覧</p>
+          </div>
+          <div class="modal-body tcomment-modal-body" id="comment<%= thread.id %>">
+            <% if thread.comments.present? %>
+              <% thread.comments.each do |tcomment| %>
+                <%= render partial: 'comment', locals: { tcomment: tcomment } %>
+              <% end %>
+            <% else %>
+              <p class="null-text">コメントはまだありません</p>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <div class="tcomment-form col-12">
+              <%= form_with model: @comment, url: { path: mains_path, controller: 'comments', action: 'create', method: :post, autocapitalize: "off", autocorrect: "off" }, local: false do |f| %>
+                <div class="form-group" id="resizebox">
+                  <%= f.hidden_field :gthread_id, :value => thread.id %>
+                  <%= f.text_area :text, class: "form-control form-control-lg tcomment-textarea", id: "commentTextForm#{ thread.id }", placeholder: "#{ thread.title } にコメント", required: true %>
+                  <%= f.button type: "submit", class: "btn btn-block tcomment-submit-btn", id: "submit#{ thread.id }" do %>
+                    <i class="fas fa-paper-plane"></i>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div><!-- /.modal tcomment-Modal -->
+    
+    <button type="button" class="btn treaction-counter" data-toggle="modal" data-target="#thread-reaction-Modal<%= thread.id %>">
+      <span class="treaction-number">
+        <%= thread.comments.count %>
+      </span>
+    </button>
+  </div>
+</div>
+<%# end %>
+<script>
+  // コメントフォーム 未入力の場合送信ボタン使用不可
+  var $submit_btn<%= thread.id %> = $('#submit<%= thread.id %>');
+  var $text_field<%= thread.id %> = $('#commentTextForm<%= thread.id %>');
+  
+  $submit_btn<%= thread.id %>.prop('disabled', true);
+    
+  $text_field<%= thread.id %>.on('input', function(e) {
+    var text_count = $text_field<%= thread.id %>.val().length;
+    var text_val = $text_field<%= thread.id %>.val();
+    
+    if (text_count >= 1 && !text_val.match(/\S/g) == "") {
+      $submit_btn<%= thread.id %>.prop('disabled', false);
+    } else {
+      $submit_btn<%= thread.id %>.prop('disabled', true);
+    }
+  });
+  
+  // 上方向に伸びるtextarea
+  var $textarea = $('.tcomment-textarea');
+  var lineHeight = parseInt($textarea.css('lineHeight'));
+  // 最低行数を指定
+  var minHeight = lineHeight * 1;
+  // 最高幅を指定
+  var maxHeight = parseInt($(window).height() * 0.45);
+  $textarea.on('input', function() {
+    var lines = ($(this).val() + '\n').match(/\n/g).length;
+    $(this).height(Math.min(maxHeight, Math.max(lineHeight * lines, minHeight)));
+  });
+</script>
