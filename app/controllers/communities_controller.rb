@@ -1,5 +1,7 @@
 class CommunitiesController < ApplicationController
   before_action :login_check
+  before_action :has_admin_right?, only: [:community_edit, :destroy]
+  before_action :has_admin_right_at_community?, only: [:update]
   
   def new
     session[:previous_url] = request.referer
@@ -86,14 +88,9 @@ class CommunitiesController < ApplicationController
     end
   end
   
-  def index
-    @communities = Community.all
-  end
-  
-  def show
-    #@community = Community.find(params[:id]) #fullcalendar コミュニティ毎のイベント表示
-    #@events = @community.events
-  end
+  #def index
+  #  @communities = Community.all
+  #end
   
   def community_show
     @community_show_modal = Community.find(params[:id])
@@ -102,6 +99,7 @@ class CommunitiesController < ApplicationController
   
   def community_edit
     @community_edit_modal = Community.find(params[:id])
+    @cp_current_user = CommunityParticipant.find_by(id: params[:cp_current_user_id])
     
     @subcategories1 = Subcategory.where(category_id: 1)
     @sub1 = '"---"'
@@ -158,5 +156,15 @@ class CommunitiesController < ApplicationController
   private
     def community_params
       params.require(:community).permit(:communityName, :category, :subcategory, :prefecture, :sex, :scale, :images, :description)
+    end
+    
+    def has_admin_right_at_community?
+      cp_current_user_role = current_user.community_participants.find_by(community_id: params[:community][:id]).role
+      
+      if cp_current_user_role == 1
+        true
+      elsif cp_current_user_role == 2
+        redirect_to request.referer, danger: 'あなたには権限がありません'
+      end
     end
 end

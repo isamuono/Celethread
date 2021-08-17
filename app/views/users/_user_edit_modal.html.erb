@@ -80,7 +80,6 @@
   
   function resizeElement(){
     const windowWidth = document.documentElement.clientWidth;
-    const windowHeight = document.documentElement.clientHeight;
   
     const resizebox1 = document.getElementById("family_name");
       if (windowWidth <= 767) {
@@ -105,12 +104,6 @@
         resizebox4.className = "form-control";
       } else if (windowWidth >= 768) {
         resizebox4.className = "form-control form-control-lg";
-      }
-    const resizebox5 = document.getElementById("self_introduction");
-      if (windowWidth <= 767) {
-        resizebox5.className = "form-control";
-      } else if (windowWidth >= 768) {
-        resizebox5.className = "form-control form-control-lg";
       }
   }
   

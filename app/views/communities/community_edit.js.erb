@@ -1,4 +1,4 @@
-$('#community-edit-Modal<%= @community_edit_modal.id %>').html("<%= escape_javascript(render partial: 'communities/community_edit_modal', locals: { community_edit: @community_edit_modal }) %>");
+$('#community-edit-Modal<%= @community_edit_modal.id %>').html("<%= escape_javascript(render partial: 'communities/community_edit_modal', locals: { community_edit: @community_edit_modal, cp_current_user: @cp_current_user }) %>");
 
 $('#community-edit-Modal<%= @community_edit_modal.id %>').modal('show');
 

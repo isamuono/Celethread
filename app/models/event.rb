@@ -14,7 +14,6 @@ class Event < ApplicationRecord
   validates :endtime2, presence: false#{ message: "を選択してください" }, if: [:daterange?, :notallday?]
   validates :daterange, presence: false
   validates :allday, presence: false
-  validates :color, presence: true
   validates :images, presence: false
   validates :description, presence: true
   
@@ -52,5 +51,5 @@ class Event < ApplicationRecord
   belongs_to :user
   belongs_to :community
   belongs_to :channel
-  has_one :gthread#, dependent: :destroy
+  has_one :gthread, dependent: :destroy
 end

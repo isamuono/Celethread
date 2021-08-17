@@ -1,7 +1,8 @@
 class GthreadsController < ApplicationController
   before_action :login_check, :set_user_id_to_cookie
   #before_action :set_channel_id
-  before_action :is_com_participants?, only: [:index, :show_additionally]
+  before_action :is_com_participant?, only: [:index, :show_additionally]
+  before_action :is_gthread_author?, only: :destroy
   
   def set_channel_id
     @channel = Channel.find(params[:channel_id])
@@ -130,5 +131,13 @@ class GthreadsController < ApplicationController
   private
     def thread_params
       params.require(:gthread).permit(:user_id, :community_id, :channel_id, :title, :description, { images: [] })#merge(:channel_id)
+    end
+    
+    def is_gthread_author?
+      if current_user.id == Gthread.find_by(id: params[:id]).user_id
+        true
+      else
+        redirect_to request.referer, danger: 'あなたにはこのスレッドを削除出来る権限がありません'
+      end
     end
 end

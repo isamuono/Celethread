@@ -67,7 +67,7 @@
     <div class="modal-footer">
       <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
       <% if cp_current_user.role == 1 %>
-        <%= link_to communities_community_edit_path(id: community_show.id), class: "community-edit", id: "community-edit_#{ community_show.id }", remote: true do %>
+        <%= link_to communities_community_edit_path(id: community_show.id, cp_current_user_id: cp_current_user.id), class: "community-edit", id: "community-edit_#{ community_show.id }", remote: true do %>
           <span type="button" class="btn btn-edit" data-toggle="modal" data-target="#community-edit-Modal<%= community_show.id %>">
             <svg viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>

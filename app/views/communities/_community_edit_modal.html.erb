@@ -270,8 +270,9 @@
     }).then(function(result) {
       if (result.isConfirmed) {
         $.ajax({
-          url: '/communities/<%= community_edit.id %>',
           type: 'DELETE',
+          url: '/communities/<%= community_edit.id %>',
+          data: { cp_current_user_id: '<%= cp_current_user.id %>' }
         });
         /*.done(function(response) {
           

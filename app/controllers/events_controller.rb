@@ -5,11 +5,10 @@ class EventsController < ApplicationController
     @event = Event.new
     @event.community_id = params[:community_id]
     @event.channel_id = params[:channel_id]
-    @event.color = params[:color]
   end
   
   def index
-    # fullcalendar コミュニティ毎のイベント表示
+    # fullcalendar コミュニティー毎のイベント表示
     @community = Community.find(params[:id])
     @events = @community.events
   end
@@ -34,6 +33,7 @@ class EventsController < ApplicationController
     
     @thread = Gthread.new
     @thread.user_id = current_user.id
+    @thread.community_id = @event.community_id
     @thread.channel_id = @event.channel_id
     @thread.title = @event.title
     @thread.description = @event.description

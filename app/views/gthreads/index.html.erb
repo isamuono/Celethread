@@ -135,279 +135,261 @@
     <%= render partial: 'footer', locals: { channel: @channel, gthread: @gthread, gthreads: @gthreads } %>
   </div>
 </div>
-<%= javascript_include_tag "mains.js" %>
-<%#= javascript_include_tag "gthread_destroy.js" %>
-<%= javascript_include_tag "mains_resize.js" %>
+<%= javascript_include_tag "gthreads_index.js" %>
 <script>
-  // When the user scrolls the page, execute myFunction
-  //window.onscroll = function() {stickyFunction()};
+  var $body = $('.overlay_container');
   
-  //var navbar = document.getElementById("navbar");
-  // Get the offset position of the navbar
-  //var sticky = navbar.offsetTop;
-  
-  // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-  //function stickyFunction() {
-  //  if (window.pageYOffset >= sticky) {
-  //    navbar.classList.add("sticky")
-  //  } else {
-  //    navbar.classList.remove("sticky");
-  //  }
-  //}
-
-var $body = $('.overlay_container');
-
-$(function() {
-  // サイドメニュー
-  $('#sideMenuBtn').on('click', function() {
-    $body.toggleClass('overlay');
-  });
-  
-  $('.overlay_container, .closebtn, .channel-name').on('click', function(e) {
-    closeNav();
-    if ($('.footer_container').css('display') == 'block') {
-      if ((!$(e.target).closest('.footer_container').length) && (!$(e.target).closest('#new_thread-btn').length)) {
-        $('.footer_container').slideUp();
+  $(function() {
+    // サイドメニュー
+    $('#sideMenuBtn').on('click', function() {
+      $body.toggleClass('overlay');
+    });
+    
+    $('.overlay_container, .closebtn, .channel-name').on('click', function(e) {
+      closeNav();
+      if ($('.footer_container').css('display') == 'block') {
+        if ((!$(e.target).closest('.footer_container').length) && (!$(e.target).closest('#new_thread-btn').length)) {
+          $('.footer_container').slideUp();
+        }
+        $body.removeClass('overlay');
       }
       $body.removeClass('overlay');
-    }
-    $body.removeClass('overlay');
-  });
-  
-  // サイドメニュー ドロップダウンリスト
-  $('.community-name').on('click', function() {
-    $(this).toggleClass('dropdown_toggle');//.children('.dropdown-container').slideToggle(200);
-  });
-  
-	$('.deep-dropdown-btn').on('click', function() {
-		$(this).toggleClass('dropdown_toggle');//.children('.deep-dropdown-container').slideToggle(200);
-	});
-	
-	// サイドメニュー ユーザー/コミュニティ/チャンネル編集モーダル
-	$('.user-edit, .community-show, .channel-show').on('click', function() {
-    closeNav();
-    $body.removeClass('overlay');
-  });
-  
-	$('.user-edit-Modal')
-  	.on('show.bs.modal', function() {
-      $('body').addClass('modal-opacity8');
-    })
-    .on('hidden.bs.modal', function() {
-      $('body').removeClass('modal-opacity8');
-    })
+    });
     
-  $('.community-edit-Modal, .channel-edit-Modal')
-  	.on('show.bs.modal', function() {
-      $('body').addClass('modal-opacity45');
-    })
-    .on('hidden.bs.modal', function() {
-      $('body').removeClass('modal-opacity45');
-    })
-	
-	// 画面読み込み時、最下部表示
-	//var main_container = document.getElementById('main');
+    // サイドメニュー ドロップダウンリスト
+    $('.community-name').on('click', function() {
+      $(this).toggleClass('dropdown_toggle');//.children('.dropdown-container').slideToggle(200);
+    });
+    
+  	$('.deep-dropdown-btn').on('click', function() {
+  		$(this).toggleClass('dropdown_toggle');//.children('.deep-dropdown-container').slideToggle(200);
+  	});
+  	
+  	// サイドメニュー ユーザー/コミュニティ/チャンネル編集モーダル
+  	$('.user-edit, .community-show, .channel-show').on('click', function() {
+      closeNav();
+      $body.removeClass('overlay');
+    });
+    
+  	$('.user-edit-Modal')
+    	.on('show.bs.modal', function() {
+        $('body').addClass('modal-opacity8');
+      })
+      .on('hidden.bs.modal', function() {
+        $('body').removeClass('modal-opacity8');
+      })
+      
+    $('.community-edit-Modal, .channel-edit-Modal')
+    	.on('show.bs.modal', function() {
+        $('body').addClass('modal-opacity45');
+      })
+      .on('hidden.bs.modal', function() {
+        $('body').removeClass('modal-opacity45');
+      })
+  	
+  	// 画面読み込み時、最下部表示
+  	//var main_container = document.getElementById('main');
     //main_container.scrollTop = main_container.scrollHeight;
-	
-  // tippy.js
-  tippy('.user-edit-icon', {
-    content: 'ユーザー情報の編集',
-    theme: 'black',
-    delay: [100, 0],
-  });
-  tippy('.community-show-icon', {
-    content: 'コミュニティー情報の詳細',
-    theme: 'black',
-    delay: [100, 0],
-  });
-  tippy('.channel-show-icon', {
-    content: 'チャンネル情報の詳細',
-    theme: 'black',
-    delay: [100, 0],
-  });
-  tippy('.new-thread-btn', {
-    content: `<div class="new-thread">
-                <%= image_tag "icons/thread_create.png", class: 'thread-create-icon', id: "user_img_prev" %>
-                <span class="dropdown-text1">
-                  スレッドを作成する
-                </span>
-              </div>
-              <div class="new-event">
-                <%= image_tag "icons/event_create.png", class: 'event-create-icon', id: "user_img_prev" %>
-                <%= link_to 'イベントを作成する', new_event_path(community_id: @channel.community_id, channel_id: @channel.id, color: @channel.color), class: 'dropdown-text2' %>
-              </div>`,
-    allowHTML: true,
-    theme: 'light',
-    delay: [300, 0],
-    interactive: true,
-    onMount(instance) {
-      var btnOpen = '.new-thread',
-          sld = '.footer_container';
-      
-      $(btnOpen).on('click', function(e) {
-        if ($(sld).css('display') == 'none') {
-          $(sld).slideDown();
-          $body.toggleClass('overlay');
-        }
-      });
-      
-      $('.overlay_container').on('click', function(e) {
-        if ($(sld).css('display') == 'block') {
-          if ((!$(e.target).closest(sld).length) && (!$(e.target).closest(btnOpen).length)) {
-            $(sld).slideUp();
+  	
+    // tippy.js
+    tippy('.user-edit-icon', {
+      content: 'ユーザー情報の編集',
+      theme: 'black',
+      delay: [100, 0],
+    });
+    tippy('.community-show-icon', {
+      content: 'コミュニティー情報の詳細',
+      theme: 'black',
+      delay: [100, 0],
+    });
+    tippy('.channel-show-icon', {
+      content: 'チャンネル情報の詳細',
+      theme: 'black',
+      delay: [100, 0],
+    });
+    tippy('.new-thread-btn', {
+      content: `<div class="new-thread">
+                  <%= image_tag "icons/thread_create.png", class: 'thread-create-icon' %>
+                  <span class="dropdown-text1">
+                    スレッドを作成する
+                  </span>
+                </div>
+                <div class="new-event">
+                  <%= image_tag "icons/event_create.png", class: 'event-create-icon' %>
+                  <%= link_to 'イベントを作成する', new_event_path(community_id: @channel.community_id, channel_id: @channel.id), class: 'dropdown-text2' %>
+                </div>`,
+      allowHTML: true,
+      theme: 'light',
+      delay: [300, 0],
+      interactive: true,
+      onMount(instance) {
+        var btnOpen = '.new-thread',
+            sld = '.footer_container';
+        
+        $(btnOpen).on('click', function(e) {
+          if ($(sld).css('display') == 'none') {
+            $(sld).slideDown();
+            $body.toggleClass('overlay');
           }
-          $body.removeClass('overlay');
-        }
-      });
-    }
+        });
+        
+        $('.overlay_container').on('click', function(e) {
+          if ($(sld).css('display') == 'block') {
+            if ((!$(e.target).closest(sld).length) && (!$(e.target).closest(btnOpen).length)) {
+              $(sld).slideUp();
+            }
+            $body.removeClass('overlay');
+          }
+        });
+      }
+    });
+    
+    tippy('.treaction-btn', {
+      content: 'リアクションする',
+      theme: 'black',
+      delay: [100, 0],
+    });
+    tippy('.treaction-number', {
+      content: 'リアクションしたユーザー一覧',
+      theme: 'black',
+      delay: [100, 0],
+    });
+    tippy('.tcomment-btn', {
+      content: 'コメントする',
+      theme: 'black',
+      delay: [100, 0],
+    });
+    tippy('.thread-destroy-btn', {
+      content: '削除する',
+      theme: 'black',
+      delay: [100, 0],
+    });
+    
+    // readmore.js
+    $('.thread-description').readmore({
+      moreLink: '<div class="btn btn-link readmore">続きを見る<div class="readmore-icon"><i class="fas fa-chevron-down"></i></div></div>',
+      lessLink: '<a class="readless">閉じる</a>',
+      speed: 10,
+      collapsedHeight: 200,
+      heightMargin: 40,
+      embedCSS: false
+    });
   });
   
-  tippy('.treaction-btn', {
-    content: 'リアクションする',
-    theme: 'black',
-    delay: [100, 0],
-  });
-  tippy('.treaction-number', {
-    content: 'リアクションしたユーザー一覧',
-    theme: 'black',
-    delay: [100, 0],
-  });
-  tippy('.tcomment-btn', {
-    content: 'コメントする',
-    theme: 'black',
-    delay: [100, 0],
-  });
-  tippy('.thread-destroy-btn', {
-    content: '削除する',
-    theme: 'black',
-    delay: [100, 0],
+  // 逆順無限スクロール
+  document.addEventListener('turbolinks:load', function() {
+    //window.threadContainer = document.getElementsByClassName('thread-container');
+    //window.mainContainer = document.getElementsByClassName('main-container');
+    
+    let oldest_thread_id,
+        channel_id;
+    
+    // メッセージの追加読み込みの可否を決定する変数
+    window.showAdditionally = true;
+    
+    $(".main-container").scroll(function() {
+      if (($(".main-container").scrollTop() == 0) && window.showAdditionally) {
+        window.showAdditionally = false;
+        oldest_thread_id = document.getElementsByClassName('thread-index-single')[0].id.replace(/[^0-9]/g, "");
+        channel_id = document.getElementById('thread-container').dataset.channel_id;
+        $.ajax({
+          type: 'GET',
+          url: '/show_additionally',
+          cache: false,
+          data: { oldest_gthread_id: oldest_thread_id, channel_id: channel_id, remote: true }
+        });
+      }
+    });
+  }, { passive: true });
+  
+  $(function() {
+    //setInterval(check_notification, 10000);
   });
   
-  // readmore.js
-  $('.thread-description').readmore({
-    moreLink: '<div class="btn btn-link readmore">続きを見る<div class="readmore-icon"><i class="fas fa-chevron-down"></i></div></div>',
-    lessLink: '<a class="readless">閉じる</a>',
-    speed: 10,
-    collapsedHeight: 200,
-    heightMargin: 40,
-    embedCSS: false
-  });
-});
-
-// 逆順無限スクロール
-document.addEventListener('turbolinks:load', function() {
-  //window.threadContainer = document.getElementsByClassName('thread-container');
-  //window.mainContainer = document.getElementsByClassName('main-container');
-  
-  let oldest_thread_id,
-      channel_id;
-  
-  // メッセージの追加読み込みの可否を決定する変数
-  window.showAdditionally = true;
-  
-  $(".main-container").scroll(function() {
-    if (($(".main-container").scrollTop() == 0) && window.showAdditionally) {
-      window.showAdditionally = false;
-      oldest_thread_id = document.getElementsByClassName('thread-index-single')[0].id.replace(/[^0-9]/g, "");
-      channel_id = document.getElementById('thread-container').dataset.channel_id;
-      $.ajax({
-        type: 'GET',
-        url: '/show_additionally',
-        cache: false,
-        data: { oldest_gthread_id: oldest_thread_id, channel_id: channel_id, remote: true }
-      });
-    }
-  });
-}, { passive: true });
-
-$(function() {
-  //setInterval(check_notification, 10000);
-});
-
-function check_notification() {
-  $.ajax({
-    url: '/unchecked_notifications_present_check',
-    type: 'GET',
-    cache: false
-  });
-}
-
-// 一定期間操作がなかった場合リロード
-$(function() {
-  var toHome = function() {
-    location.href = "/channels/<%= @channel.id %>/gthreads";
-  };
-  var timerMs = 60 * 60 * 1000;
-  var timerId = setTimeout(toHome, timerMs);
-
-  $('body').on('click keypress mousemove mousedown', function() {
-    clearTimeout(timerId);
-    timerId = setTimeout(toHome, timerMs);
-  });
-});
-
-//setTimeout(refresh, 10000);
-
-$(window).load(function(){
-  const threadDescriptionFormClass = document.getElementById('description');
-  threadDescriptionFormClass.setAttribute('id', 'ql-editor');
-});
-
-// cropper.js
-$(function () {
-  let $image = $('#imageModal'),
-    $img_field = $('#user_image'),
-    $croppedImage = $('#croppedImage'),
-    $cropModal = $('#cropModal'),
-    $beforeUpload = $('#beforeUpload'),
-    $button = $('#btn-save'),
-    $dataX = $('#dataX'),
-    $dataY = $('#dataY'),
-    $dataWidth = $('#dataWidth'),
-    $dataHeight = $('#dataHeight');
-
-  let options = {
-    dragmode: 'crop',
-    aspectRatio: 1/1,
-    restore: false,
-    guides: false,
-    center: false,
-    highlight: true,
-    cropBoxMovable: true,
-    cropBoxResizable: true,
-    modal: true,
-    crop: (e) => {
-      $dataX.val(Math.round(e.detail.x));
-      $dataY.val(Math.round(e.detail.y));
-      $dataWidth.val(Math.round(e.detail.width));
-      $dataHeight.val(Math.round(e.detail.height));
-    }
-  };
-
-  // when file upload
-  
-  // onclick save button
-  $button.click(() => {
-    imgCropping();
-  });
-
-  // modalを閉じたとき、cropper要素を初期化
-  $cropModal.on('hidden.bs.modal',function() {
-    $image.cropper('destroy').removeAttr('src');
-    let $cropperContainer = $('.cropper-container');
-    $cropperContainer.remove();
-  });
-
-  function imgCropping() {
-    if (!croppable) {
-      alert('トリミングする画像が用意されていません')
-      return false;
-    }
-    $beforeUpload.hide();
-    let croppedData = $image.cropper('getCroppedCanvas').toDataURL();
-    $croppedImage.attr('src', croppedData);
-    $cropModal.modal('hide');
+  function check_notification() {
+    $.ajax({
+      url: '/unchecked_notifications_present_check',
+      type: 'GET',
+      cache: false
+    });
   }
-});
+  
+  // 一定期間操作がなかった場合リロード
+  $(function() {
+    var toHome = function() {
+      location.href = "/channels/<%= @channel.id %>/gthreads";
+    };
+    var timerMs = 60 * 60 * 1000;
+    var timerId = setTimeout(toHome, timerMs);
+  
+    $('body').on('click keypress mousemove mousedown', function() {
+      clearTimeout(timerId);
+      timerId = setTimeout(toHome, timerMs);
+    });
+  });
+  
+  //setTimeout(refresh, 10000);
+  
+  $(window).load(function(){
+    const threadDescriptionFormClass = document.getElementById('description');
+    threadDescriptionFormClass.setAttribute('id', 'ql-editor');
+  });
+  
+  // cropper.js
+  $(function () {
+    let $image = $('#imageModal'),
+      $img_field = $('#user_image'),
+      $croppedImage = $('#croppedImage'),
+      $cropModal = $('#cropModal'),
+      $beforeUpload = $('#beforeUpload'),
+      $button = $('#btn-save'),
+      $dataX = $('#dataX'),
+      $dataY = $('#dataY'),
+      $dataWidth = $('#dataWidth'),
+      $dataHeight = $('#dataHeight');
+  
+    let options = {
+      dragmode: 'crop',
+      aspectRatio: 1/1,
+      restore: false,
+      guides: false,
+      center: false,
+      highlight: true,
+      cropBoxMovable: true,
+      cropBoxResizable: true,
+      modal: true,
+      crop: (e) => {
+        $dataX.val(Math.round(e.detail.x));
+        $dataY.val(Math.round(e.detail.y));
+        $dataWidth.val(Math.round(e.detail.width));
+        $dataHeight.val(Math.round(e.detail.height));
+      }
+    };
+  
+    // when file upload
+    
+    // onclick save button
+    $button.click(() => {
+      imgCropping();
+    });
+  
+    // modalを閉じたとき、cropper要素を初期化
+    $cropModal.on('hidden.bs.modal',function() {
+      $image.cropper('destroy').removeAttr('src');
+      let $cropperContainer = $('.cropper-container');
+      $cropperContainer.remove();
+    });
+  
+    function imgCropping() {
+      if (!croppable) {
+        alert('トリミングする画像が用意されていません')
+        return false;
+      }
+      $beforeUpload.hide();
+      let croppedData = $image.cropper('getCroppedCanvas').toDataURL();
+      $croppedImage.attr('src', croppedData);
+      $cropModal.modal('hide');
+    }
+  });
 
 </script>

@@ -10,202 +10,141 @@
   <div id="detail-area"></div>
 </div>
 
-<%#= javascript_include_tag "schedule.js" %>
-<%#= javascript_include_tag "_resize.js" %>
 <script>
   /* FullCalendar */
-/*var select = function(start, end, allDay) {
-        var title = window.prompt("title");
-        var data = {event: {title: title,
-                            start: start.format(),
-                            end: end.format(),
-                            allDay: allDay}};
-        $.ajax({
-            type: "POST",
-            url: "/events",
-            data: data,
-            success: function() {
-                calendar.fullCalendar('refetchEvents');
-            }
-        });
-        calendar.fullCalendar('unselect');
-    };
-
-var calendar = $('#calendar').fullCalendar({
-        events: '/events.json',
-        selectable: true,
-        selectHelper: true,
-        ignoreTimezone: false,
-        select: select
-    });*/
-    
-$(function () {
-  // 画面遷移を検知
-  $(document).on('turbolinks:load', function () {
-    // lengthを呼び出すことで、#calendarが存在していた場合はtrueの処理がされ、無い場合はnillを返す
-    if ($('#calendar').length) {
-      /*function eventCalendar() {
-        return $('#calendar').fullCalendar({
-        });
-      }
-      function clearCalendar() {
-        $('#calendar').html('');
-      }
-      
-      $(document).on('turbolinks:load', function () {
-        eventCalendar();
-      });
-      $(document).on('turbolinks:before-cache', clearCalendar);
-      */
-      
-      $('#calendar').fullCalendar({
-        //themeSystem: 'bootstrap4',
-        dayNames: ['日', '月', '火', '水', '木', '金', '土'],
-        dayNamesShort: ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'],
+  $(function () {
+    // 画面遷移を検知
+    $(document).on('turbolinks:load', function () {
+      // lengthを呼び出すことで、#calendarが存在していた場合はtrueの処理がされ、無い場合はnillを返す
+      if ($('#calendar').length) {
         
-        //ボタンなどのレイアウト
-        header: {
-          left: 'title',
-          center: 'month,agendaWeek,agendaDay,listMonth', //basic or agenda
-          right: 'today prev,next'
-        },
-        buttonText: {
-          month: 'month',
-          week: 'week',
-          day: 'day',
-          list: 'リスト'
-        },
-        views: {
-          month: {
-            titleFormat: 'YYYY年 M月',
-            columnFormat: 'dddd',
+        $('#calendar').fullCalendar({
+          dayNames: ['日', '月', '火', '水', '木', '金', '土'],
+          dayNamesShort: ['(日)', '(月)', '(火)', '(水)', '(木)', '(金)', '(土)'],
+          
+          header: {
+            left: 'title',
+            center: 'month,agendaWeek,agendaDay,listMonth', //basic or agenda
+            right: 'today prev,next'
           },
-          week: {
-            titleFormat: 'M/Dddd',
-            columnFormat: 'M/Ddddd',
+          buttonText: {
+            month: 'month',
+            week: 'week',
+            day: 'day',
+            list: 'リスト'
           },
-          day: {
-            titleFormat: 'M/Dddd',
-            columnHeader: false,
-          },
-          list: {
-            titleFormat: 'YYYY年 M月',
-            listDayFormat: 'M/Dddd',
-            listDayAltFormat: false
-          }
-        },
-        allDayText: '終日',
-      	slotLabelFormat: 'H:mm', //表示する時刻ラベル
-      	slotDuration: '00:30:00', //表示する時間軸の細かさ
-        minTime: "06:00:00", //スケジュールの開始時間
-        maxTime: "30:00:00", //スケジュールの最終時間
-        scrollTime: '09:00:00', //画面上に表示する初めの時間(スクロールされている場所)
-        nowIndicator: true,
-        
-        // Drag & Drop & Resize
-        events: /*[
-            {
-                title: 'test2',
-                start: '2020-08-24 13:00',
-                //end: '2020-05-25 16:00',
-                allDay: true, //default: false
-                color: 'red',
-                textColor: '#fff',
-                place: '立川市'
+          views: {
+            month: {
+              titleFormat: 'YYYY年 M月',
+              columnFormat: 'dddd',
             },
-        ],/*/'/communities/<%= @community.id %>/events',
-        /*events: function(start, end, timezone, callback) {
-            $.ajax({
-              url: 'events.json',
-              dataType: 'json',
-              data: {
-                start: start.unix(),
-                end: end.unix()
-              },
-              success: function(res) {
-                callback(res);
-              },error:function(res){
-                console.log(res)
-              }
+            week: {
+              titleFormat: 'M/Dddd',
+              columnFormat: 'M/Ddddd',
+            },
+            day: {
+              titleFormat: 'M/Dddd',
+              columnHeader: false,
+            },
+            list: {
+              titleFormat: 'YYYY年 M月',
+              listDayFormat: 'M/Dddd',
+              listDayAltFormat: false
+            }
+          },
+          allDayText: '終日',
+        	slotLabelFormat: 'H:mm', //表示する時刻ラベル
+        	slotDuration: '00:30:00', //表示する時間軸の細かさ
+          minTime: "06:00:00", //スケジュールの開始時間
+          maxTime: "30:00:00", //スケジュールの最終時間
+          scrollTime: '09:00:00', //画面上に表示する初めの時間(スクロールされている場所)
+          nowIndicator: true,
+          
+          events: '/communities/<%= @community.id %>/events',
+          eventClick: function(event) { 
+            //var dt = event.start.format()
+            //イベントをクリックすると発動
+            //event_dataという変数に表示させたいHTMLデータを入れ込んでいく
+  			    var event_data = '<div class="close-box"><a href="javascript:void(0);" class="close"><i class="far fa-times-circle"></i></a></div>';
+  			    
+            if (event.dateRange == false && event.allDay == true) {
+      				event_data += '<p><i class="fas fa-pen"></i>';
+      				event_data += event.title + '</p>';
+      				event_data += '<p><i class="far fa-calendar-alt"></i>';
+      				event_data += event.start.format('Y年M月D日ddd') + '</p>';
+      				event_data += '<p><i class="far fa-check-square"></i>終日</p>';
+      				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
+      				event_data += event.place + '</p>';
+            } else if (event.dateRange == false && event.allDay == false) {
+              event_data += '<p><i class="fas fa-pen"></i>';
+      				event_data += event.title + '</p>';
+      				event_data += '<p><i class="far fa-calendar-alt"></i>';
+      				event_data += event.start.format('Y年M月D日ddd') + '</p>';
+      				event_data += '<div class="allday-false-timerange"><p>' + event.start.format('H:mm') + '&emsp;〜&emsp;';
+      				event_data += event.end.format('H:mm') + '</p></div>';
+      				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
+      				event_data += event.place + '</p>';
+            } else if (event.dateRange == true && event.allDay == true) {
+              event_data += '<p><i class="fas fa-pen"></i>';
+      				event_data += event.title + '</p>';
+      				event_data += '<p><i class="far fa-calendar-alt"></i>';
+      				event_data += event.start.format('Y年M月D日ddd') + '</p>';
+      				event_data += '<div class="daterange-true"><p>&emsp;〜&emsp;';
+      				event_data += event.end.format('Y年M月D日ddd') + '</p></div>';
+      				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
+      				event_data += event.place + '</p>';
+            } else if (event.dateRange == true && event.allDay == false) {
+              event_data += '<p><i class="fas fa-pen"></i>';
+      				event_data += event.title + '</p>';
+      				event_data += '<p><i class="far fa-calendar-alt"></i>';
+      				event_data += event.start.format('Y年M月D日ddd H:mm') + '</p>';
+      				event_data += '<div class="daterange-true"><p>&emsp;〜&emsp;';
+      				event_data += event.end.format('Y年M月D日ddd H:mm') + '</p></div>';
+      				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
+      				event_data += event.place + '</p>';
+            }
+   
+    				//<div id="detail-area"></div>の中にevent_dataを入れて表示させる
+    				$('#detail-area').html(event_data).show();
+    				
+    				var $body = $('.fc-overlay_container');
+    				$body.toggleClass('fc-overlay');
+    				
+    				$('.close').on('click', function () {
+    				  $('#detail-area').hide();
+              $body.removeClass('fc-overlay');
             });
-        },*/
-        eventClick: function(event) { 
-          //var dt = event.start.format()
-          //イベントをクリックすると発動
-          //event_dataという変数に表示させたいHTMLデータを入れ込んでいく
-			    var event_data = '<div class="close-box"><a href="javascript:void(0);" class="close"><i class="far fa-times-circle"></i></a></div>';
-			    
-          if (event.dateRange == false && event.allDay == true) {
-    				event_data += '<p><i class="fas fa-pen"></i>';
-    				event_data += event.title + '</p>';
-    				event_data += '<p><i class="far fa-calendar-alt"></i>';
-    				event_data += event.start.format('Y年M月D日ddd') + '</p>';
-    				event_data += '<p><i class="far fa-check-square"></i>終日</p>';
-    				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
-    				event_data += event.place + '</p>';
-          } else if (event.dateRange == false && event.allDay == false) {
-            event_data += '<p><i class="fas fa-pen"></i>';
-    				event_data += event.title + '</p>';
-    				event_data += '<p><i class="far fa-calendar-alt"></i>';
-    				event_data += event.start.format('Y年M月D日ddd') + '</p>';
-    				event_data += '<div class="allday-false-timerange"><p>' + event.start.format('H:mm') + '&emsp;〜&emsp;';
-    				event_data += event.end.format('H:mm') + '</p></div>';
-    				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
-    				event_data += event.place + '</p>';
-          } else if (event.dateRange == true && event.allDay == true) {
-            event_data += '<p><i class="fas fa-pen"></i>';
-    				event_data += event.title + '</p>';
-    				event_data += '<p><i class="far fa-calendar-alt"></i>';
-    				event_data += event.start.format('Y年M月D日ddd') + '</p>';
-    				event_data += '<div class="daterange-true"><p>&emsp;〜&emsp;';
-    				event_data += event.end.format('Y年M月D日ddd') + '</p></div>';
-    				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
-    				event_data += event.place + '</p>';
-          } else if (event.dateRange == true && event.allDay == false) {
-            event_data += '<p><i class="fas fa-pen"></i>';
-    				event_data += event.title + '</p>';
-    				event_data += '<p><i class="far fa-calendar-alt"></i>';
-    				event_data += event.start.format('Y年M月D日ddd H:mm') + '</p>';
-    				event_data += '<div class="daterange-true"><p>&emsp;〜&emsp;';
-    				event_data += event.end.format('Y年M月D日ddd H:mm') + '</p></div>';
-    				event_data += '<p><i class="fas fa-map-marker-alt"></i>';
-    				event_data += event.place + '</p>';
-          }
- 
-  				//<div id="detail-area"></div>の中にevent_dataを入れて表示させる
-  				$('#detail-area').html(event_data).show();
-  				
-  				var $body = $('.fc-overlay_container');
-  				$body.toggleClass('fc-overlay');
-  				
-  				$('.close').on('click', function () {
-  				  $('#detail-area').hide();
-            $body.removeClass('fc-overlay');
-          });
-  			},
-        //editable: true,
-        timeFormat: 'H:mm', //イベントの時間表示を２４時間に
-        //イベントの色を変える
-        eventColor: '#87cefa',
-        eventTextColor: '#fff', //or #000
-        eventRender: function(event, element) {
-          element.css("font-size", "0.8em");
-          element.css("padding", "5px");
-        },
-        slotEventOverlap: false, //イベントを重ねて表示しない
-        
-        
-        //select: function(start, startTime, end, endTime, allDay) {
-          //日の枠内を選択したときの処理;
-        //},
-      });
-    }
+    			},
+          //editable: true,
+          timeFormat: 'H:mm', //イベントの時間表示を２４時間に
+          eventRender: function(event, element) {
+            element.css('font-size', '0.8em');
+            element.css('padding', '5px');
+            
+            function blackOrWhite(hexcolor) {
+            	var r = parseInt(hexcolor.substr( 1, 2 ), 16);
+            	var g = parseInt(hexcolor.substr( 3, 2 ), 16);
+            	var b = parseInt(hexcolor.substr( 5, 2 ), 16);
+            
+            	return ( ( ( (r * 299) + (g * 587) + (b * 114) ) / 1000 ) < 128 ) ? "white" : "black";
+            }
+            
+            var text_color = blackOrWhite(event.color);
+            element.css('color', text_color);
+          },
+          slotEventOverlap: false, //イベントを重ねて表示しない
+          
+          //select: function(start, startTime, end, endTime, allDay) {
+            //日の枠内を選択したときの処理;
+          //},
+        });
+      }
+    });
   });
-});
-
-//closeリンクを押した時に#detail-area部分を非表示にする
-function closeArea(){
-	$('#detail-area').hide();
-	$('.fc-overlay_container').removeClass('fc-overlay');
-}
+  
+  //closeリンクを押した時に#detail-area部分を非表示にする
+  function closeArea(){
+  	$('#detail-area').hide();
+  	$('.fc-overlay_container').removeClass('fc-overlay');
+  }
 </script>

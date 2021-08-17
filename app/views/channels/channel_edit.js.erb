@@ -1,4 +1,4 @@
-$('#channel-edit-Modal<%= @channel_edit_modal.id %>').html("<%= escape_javascript(render partial: 'channels/channel_edit_modal', locals: { channel_edit: @channel_edit_modal }) %>");
+$('#channel-edit-Modal<%= @channel_edit_modal.id %>').html("<%= escape_javascript(render partial: 'channels/channel_edit_modal', locals: { channel_edit: @channel_edit_modal, cp_current_user: @cp_current_user }) %>");
 
 $('#channel-edit-Modal<%= @channel_edit_modal.id %>').modal('show');
 

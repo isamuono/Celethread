@@ -11,6 +11,7 @@
         </div>
         <div class="modal-body channel-edit-modal-body">
           <%= f.hidden_field :id %>
+          <%= f.hidden_field :community_id %>
           <div class="form-group">
             <%= f.label "チャンネル名", class: "label-text3" %>
             <%= f.text_field :channelName, class: "form-control", id: "channelName#{ channel_edit.id }", placeholder: "チャンネル名" %>
@@ -96,7 +97,7 @@
     }
   };
   
-  $('#color<%= @channel_edit_modal.id %>').spectrum({
+  $('#color<%= channel_edit.id %>').spectrum({
     allowEmpty: true,
     showPaletteOnly: true,
     showPalette: true,
@@ -140,8 +141,9 @@
     }).then(function(result) {
       if (result.isConfirmed) {
         $.ajax({
-          url: '/channels/<%= channel_edit.id %>',
           type: 'DELETE',
+          url: '/channels/<%= channel_edit.id %>',
+          data: { cp_current_user_id: '<%= cp_current_user.id %>' }
         });
         /*.done(function(response) {
           

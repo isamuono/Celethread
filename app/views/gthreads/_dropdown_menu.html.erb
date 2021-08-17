@@ -31,7 +31,7 @@
       <%= render partial: 'deepdropdown_menu', locals: { channel: channel, cp_current_user: cp_current_user } %>
     <% end %>
     <% if cp_current_user.role == 1 %>
-      <%= link_to new_channel_path(community_id: c.id), class: 'new-channel-btn' do %>
+      <%= link_to new_channel_path(community_id: c.id, cp_current_user_id: cp_current_user.id), class: 'new-channel-btn' do %>
         <%= icon('fas', 'plus') %>チャンネル作成
       <% end %>
     <% end %>

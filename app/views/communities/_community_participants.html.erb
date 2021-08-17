@@ -84,33 +84,26 @@
   <% if cp.role == 2 %>
     tippy('#cp_role-change_<%= cp.id %>', {
       content: `<div class="cp_role-change-list-item">
-                  <%= link_to '管理者・責任者に変更する', community_participant_path(id: cp.id), class: 'cp_role-change-list-item', method: :patch, remote: true %>
+                  <%= link_to '管理者・責任者に変更する', community_participant_path(id: cp.id, cp_current_user_id: cp_current_user.id), class: 'cp_role-change-list-item', method: :patch, remote: true %>
                 </div>`,
       allowHTML: true,
       arrow: false,
       placement: 'left',
       trigger: 'click',
       theme: 'cp_role_change',
-      delay: [300, 0],
-      interactive: true,
-      interactiveBorder: 30,
-      onMount(instance) {
-        
-      }
+      interactive: true
     });
   <% elsif cp.role == 1 %>
     tippy('#cp_role-change_<%= cp.id %>', {
       content: `<div class="cp_role-change-list-item">
-                  <%= link_to '通常メンバーに変更する', community_participant_path(id: cp.id), class: 'cp_role-change-list-item', method: :patch, remote: true %>
+                  <%= link_to '通常メンバーに変更する', community_participant_path(id: cp.id, cp_current_user_id: cp_current_user.id), class: 'cp_role-change-list-item', method: :patch, remote: true %>
                 </div>`,
       allowHTML: true,
       arrow: false,
       placement: 'left',
       trigger: 'click',
       theme: 'cp_role_change',
-      delay: [300, 0],
-      interactive: true,
-      interactiveBorder: 30
+      interactive: true
     });
   <% end %>
 </script>

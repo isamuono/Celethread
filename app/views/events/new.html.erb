@@ -108,8 +108,6 @@
           <%= f.text_field :place, class: "form-control", id: "form9", placeholder: "住所や建物名など" %>
         </div>
         
-        <%= f.hidden_field :color %>
-        
         <div class="form-group" id="text_area">
           <div class="label-text-box">
             <span class="badge badge-danger">必須</span>
@@ -393,8 +391,8 @@
       target_image.remove();
     });
     
-    $('.thread-create-btn').on('click', function() {
-      dataBox.clearData();
-    });
+    //$('.btn-primary').on('click', function() {
+    //  dataBox.clearData();
+    //});
   });
 </script>

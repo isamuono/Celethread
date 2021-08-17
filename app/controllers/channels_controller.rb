@@ -1,5 +1,7 @@
 class ChannelsController < ApplicationController
   before_action :login_check, :set_user_id_to_cookie
+  before_action :has_admin_right?, only: [:new, :channel_edit, :destroy]
+  before_action :has_admin_right_at_channel?, only: [:create, :update]
   before_action :previous_channel_id, only: :channel_change
   
   def new
@@ -23,7 +25,6 @@ class ChannelsController < ApplicationController
   end
   
   def channel_change
-    #session[:previous_url] = request.referer
     @previous_channel_id = session[:previous_channel_id]
     
     @channel = Channel.find(params[:channel_id])
@@ -38,6 +39,7 @@ class ChannelsController < ApplicationController
   
   def channel_edit
     @channel_edit_modal = Channel.find(params[:id])
+    @cp_current_user = CommunityParticipant.find_by(id: params[:cp_current_user_id])
   end
   
   def update
@@ -63,5 +65,15 @@ class ChannelsController < ApplicationController
   private
     def channel_params
       params.require(:channel).permit(:community_id, :channelName, :description, :color, :public)
+    end
+    
+    def has_admin_right_at_channel?
+      cp_current_user_role = current_user.community_participants.find_by(community_id: params[:channel][:community_id]).role
+      
+      if cp_current_user_role == 1
+        true
+      elsif cp_current_user_role == 2
+        redirect_to request.referer, danger: 'あなたには権限がありません'
+      end
     end
 end
