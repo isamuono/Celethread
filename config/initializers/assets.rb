@@ -57,8 +57,6 @@ Rails.application.config.assets.precompile += %w( fullcalendar/ja.js )
 Rails.application.config.assets.precompile += %w( tippy/tippy.umd.min.js )
 Rails.application.config.assets.precompile += %w( readmore-js/readmore.min.js )
 Rails.application.config.assets.precompile += %w( quill/quill.js )
-Rails.application.config.assets.precompile += %w( pdf.js/pdf.min.js )
-Rails.application.config.assets.precompile += %w( pdf.js/pdf.worker.min.js )
 Rails.application.config.assets.precompile += %w( magnific-popup/jquery.magnific-popup.min.js )
 Rails.application.config.assets.precompile += %w( jquery-toast/jquery.toast.min.js )
 

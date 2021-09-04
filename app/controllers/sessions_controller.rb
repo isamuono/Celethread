@@ -4,8 +4,6 @@ class SessionsController < ApplicationController
   
   def create
     user = User.find_by(email: session_params[:email])
-    #@community_first = Community.find(current_user.communities.first.id)
-    #@channel = Channel.find(@community_first.channels.first.id)
     if !user #データベースにemailで照合 => emailがnilだったらaccontNameで照合
       user = User.find_by(accountName: session_params[:email])
     end
@@ -13,7 +11,7 @@ class SessionsController < ApplicationController
       if user.activated?                                                               # データベース内にあるpassword_digestカラムの値を比較
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_to channels_gthreads_path(current_user.communities.order(:created_at).first.channels.first.id), success: 'ログインに成功しました'
+        redirect_to channels_gthreads_path(current_user.communities.order(:created_at).first.channels.first.id), success: 'ログインしました'
       else
         message  = "このアカウントは有効でありません。"
         message += "お送りしたメールのリンクからアカウントを有効にしてください。"

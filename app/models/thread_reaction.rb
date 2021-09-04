@@ -1,10 +1,8 @@
 class ThreadReaction < ApplicationRecord
   validates :user_id, presence: true
   validates :gthread_id, presence: true
-  validates :entity_name, presence: false
-  validates :images, presence: true
-  
-  #validates_uniqueness_of :gthread_id, scope: :user_id
+  validates :entity_name, presence: true, uniqueness: { scope: [:user_id, :gthread_id] }
+  validates :images, presence: true, uniqueness: { scope: [:user_id, :gthread_id] }
   
   belongs_to :user
   belongs_to :gthread
@@ -16,10 +14,6 @@ class ThreadReaction < ApplicationRecord
     current_user = User.find_by(id: user_id)
     ApplicationController.renderer.render partial: "thread_reactions/treactions_list", locals: { gthread: self.gthread, treaction: self, current_user: current_user }
   end
-  
-  #def reaction_count_template
-  #  ApplicationController.renderer.render partial: "gthreads/treaction_count", locals: { gthread: self.gthread, treaction: self }
-  #end
   
   def reaction_count_all_template
     ApplicationController.renderer.render partial: "gthreads/treaction_count_all", locals: { gthread: self.gthread }

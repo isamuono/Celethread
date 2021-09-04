@@ -11,7 +11,7 @@ class ChannelsController < ApplicationController
   
   def create
     @channel = Channel.new(channel_params)
-    @channel.user_id = current_user.id #コミュニティ管理者のid
+    @channel.user_id = current_user.id
     if @channel.save
       redirect_to channels_gthreads_path(@channel.id), success: 'チャンネルを作成しました'
     else
@@ -39,7 +39,7 @@ class ChannelsController < ApplicationController
   
   def channel_edit
     @channel_edit_modal = Channel.find(params[:id])
-    @cp_current_user = CommunityParticipant.find_by(id: params[:cp_current_user_id])
+    @cp_current_user = @channel_edit_modal.community.community_participants.find_by(user_id: current_user.id)
   end
   
   def update
@@ -64,16 +64,18 @@ class ChannelsController < ApplicationController
   
   private
     def channel_params
-      params.require(:channel).permit(:community_id, :channelName, :description, :color, :public)
+      params.require(:channel).permit(:id, :community_id, :channelName, :description, :color, :public)
     end
     
     def has_admin_right_at_channel?
-      cp_current_user_role = current_user.community_participants.find_by(community_id: params[:channel][:community_id]).role
-      
-      if cp_current_user_role == 1
-        true
-      elsif cp_current_user_role == 2
-        redirect_to request.referer, danger: 'あなたには権限がありません'
+      if cp_current_user = current_user.community_participants.find_by(community_id: channel_params[:community_id])
+        if cp_current_user.role == 1
+          true
+        elsif cp_current_user.role == 2
+          redirect_to request.referer, danger: 'あなたには権限がありません'
+        end
+      else
+        redirect_to request.referer, danger: 'あなたはこのコミュニティーに参加していません'
       end
     end
 end

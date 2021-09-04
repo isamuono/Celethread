@@ -86,12 +86,10 @@
       </button>
     <% end %>
     
-    <%#button type="button" class="btn treaction-counter" data-toggle="modal" data-target="#treaction-Modal<%= thread.id >"%>
-      <span class="btn treaction-number" id="treaction-number<%= gthread.id %>" data-toggle="modal" data-target="#treaction-Modal<%= gthread.id %>">
-        <%= gthread.thread_reaction_users.count %>
-        <span class="treaction-number-attached">件のリアクション</span>
-      </span>
-    <%#/button%>
+    <span class="btn treaction-number" id="treaction-number<%= gthread.id %>" data-toggle="modal" data-target="#treaction-Modal<%= gthread.id %>">
+      <%= gthread.thread_reaction_users.count %>
+      <span class="treaction-number-attached">件のリアクション</span>
+    </span>
     
     <div class="modal thread-reaction-Modal" id="thread-reaction-Modal<%= gthread.id %>" tabindex="-1" aria-labelledby="ModalLabel">
       <%#= render partial: "thread_reaction_modal", locals: { gthread: gthread } %>
@@ -135,12 +133,10 @@
       <%#= render partial: 'comments/comment_modal', locals: { gthread: gthread } %>
     </div><!-- /.modal tcomment-Modal -->
     
-    <button type="button" class="btn treaction-counter">
-      <span class="tcomment-number" id="tcomment-number<%= gthread.id %>">
-        <%= gthread.comments.count %>
-      </span>
-      <%#= render partial: 'tcomment_count', locals: { gthread: gthread } %>
-    </button>
+    <span class="tcomment-number" id="tcomment-number<%= gthread.id %>">
+      <%= gthread.comments.count %>
+      <span class="tcomment-number-attached">件のコメント</span>
+    </span>
     
     <% if gthread.user_id == current_user.id %>
       <%= link_to "/gthreads/#{ gthread.id }", class: "thread-destroy-btn-a", method: :delete, remote: true do %>

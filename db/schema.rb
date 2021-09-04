@@ -176,22 +176,6 @@ ActiveRecord::Schema.define(version: 2021_07_30_114844) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "schedules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "community_id"
-    t.integer "channel_id"
-    t.integer "thread_id"
-    t.string "title"
-    t.date "startdate"
-    t.date "enddate"
-    t.time "starttime"
-    t.time "endtime"
-    t.string "place"
-    t.string "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "subcategories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.integer "category_id"
     t.string "name"
@@ -215,6 +199,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_114844) do
     t.string "email"
     t.string "images"
     t.text "self_introduction"
+    t.boolean "temporary", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"

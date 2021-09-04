@@ -3,7 +3,9 @@
 </head>
 <div class="top-wrapper">
   <div class="form-container">
-    <h1 class="text-black text-center mt-auto">サイト名</h1>
+    <div class="text-center">
+      <%= image_tag "icons/celethread_icon.png", class: 'celethread-icon' %>
+    </div>
     <h4 class="text-black text-center">アカウント作成</h4>
     <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
       <%= form_for @user, html: { autocapitalize: "off", autocorrect: "off" } do |f| %>
@@ -41,7 +43,7 @@
             <span class="badge badge-danger">必須</span>
             <%= f.label "パスワード", class: "label-text1" %>
           </div>
-          <%= f.password_field :password, class: "form-control", id: "password", placeholder: "半角英数字8～20文字", minlength: "８", maxlength: "20", pattern: "^[0-9A-Za-z]+$" %>
+          <%= f.password_field :password, class: "form-control", id: "password", placeholder: "半角英数字8文字以上", minlength: "8", pattern: "^[0-9A-Za-z]+$" %>
         </div>
         <div class="form-group">
           <div class="label-text-box">
@@ -49,10 +51,6 @@
             <%= f.label "パスワード（確認用）", class: "label-text1" %>
           </div>
           <%= f.password_field :password_confirmation, class: "form-control", id: "password_confirmation", placeholder: "パスワードの再入力", minlength: "8", maxlength: "20", pattern: "^[0-9A-Za-z]+$" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :images %>
-          <%= f.file_field :images %>
         </div>
         
         <%= f.submit "メールを送信する", class: "btn btn-block btn-primary" %>
@@ -62,8 +60,8 @@
 </div>
 <%= javascript_include_tag "users_new_resize.js" %>
 <script>
-  $(".form-control").addClear({
-    symbolClass: "far fa-times-circle",
-    color: "#7d7d7d"
+  $('.form-control').addClear({
+    symbolClass: 'far fa-times-circle',
+    color: '#7d7d7d'
   });
 </script>

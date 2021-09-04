@@ -1,7 +1,7 @@
 class CommunitiesController < ApplicationController
   before_action :login_check
   before_action :has_admin_right?, only: [:community_edit, :destroy]
-  before_action :has_admin_right_at_community?, only: [:update]
+  before_action :has_admin_right_at_community?, only: :update
   
   def new
     session[:previous_url] = request.referer
@@ -98,8 +98,8 @@ class CommunitiesController < ApplicationController
   end
   
   def community_edit
-    @community_edit_modal = Community.find(params[:id])
-    @cp_current_user = CommunityParticipant.find_by(id: params[:cp_current_user_id])
+    @community_edit_modal = Community.find(params[:community_id])
+    @cp_current_user = @community_edit_modal.community_participants.find_by(user_id: current_user.id)
     
     @subcategories1 = Subcategory.where(category_id: 1)
     @sub1 = '"---"'
@@ -131,7 +131,7 @@ class CommunitiesController < ApplicationController
   end
   
   def update
-    @community_edit_modal = Community.find(params[:community][:id])
+    @community_edit_modal = Community.find(community_params[:id])
     if @community_edit_modal.category == 5 # [その他]
       @community_edit_modal.subcategory = 43 # [その他]
     end
@@ -155,16 +155,18 @@ class CommunitiesController < ApplicationController
   
   private
     def community_params
-      params.require(:community).permit(:communityName, :category, :subcategory, :prefecture, :sex, :scale, :images, :description)
+      params.require(:community).permit(:id, :communityName, :category, :subcategory, :prefecture, :sex, :scale, :images, :description)
     end
     
     def has_admin_right_at_community?
-      cp_current_user_role = current_user.community_participants.find_by(community_id: params[:community][:id]).role
-      
-      if cp_current_user_role == 1
-        true
-      elsif cp_current_user_role == 2
-        redirect_to request.referer, danger: 'あなたには権限がありません'
+      if cp_current_user = current_user.community_participants.find_by(community_id: community_params[:id])
+        if cp_current_user.role == 1
+          true
+        elsif cp_current_user.role == 2
+          redirect_to request.referer, danger: 'あなたには権限がありません'
+        end
+      else
+        redirect_to request.referer, danger: 'あなたはこのコミュニティーに参加していません'
       end
     end
 end

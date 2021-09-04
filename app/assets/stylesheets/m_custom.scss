@@ -12,7 +12,7 @@ html {
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;
-  background-color: #a2efef;
+  background-color: #f1f1f1;
   h1 {
     font-size: 5rem;
   }
@@ -27,9 +27,13 @@ html {
   color: #000;
 }
 .btn-black {
+  margin-top: 8rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+  border-radius: 2.2rem;
+  font-size: 1.4rem;
   color: #000;
   border: 1px solid #000;
-  
   &:hover {
     color: #000;
   }
@@ -45,13 +49,6 @@ html {
 .top-container {
   padding-top: 6rem;
   padding-bottom: 6rem;
-}
-.btn-black {
-  font-size: 1.4rem;
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-  border-radius: 2.2rem;
-  margin-top: 8rem;
 }
 .public-com-container {
   p1 {
@@ -128,7 +125,7 @@ html {
   padding-bottom: 4rem;
   h4 {
     font-size: 2.4rem;
-    margin-top: 6rem;
+    margin-top: 0;
   }
   .label-text {
     font-size: 1.4rem;

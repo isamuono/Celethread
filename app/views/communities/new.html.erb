@@ -3,16 +3,15 @@
 </head>
 <div class="top-wrapper">
   <div class="form-container">  
-    <h1 class="text-black text-center mt-auto">サイト名</h1>
-    <h4 class="text-black text-center">コミュニティー開設</h4>
-    <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
+    <div class="h4 text-black text-center mb-5">コミュニティー開設</div>
+    <div class="community-form mt-4 offset-xl-2 offset-lg-2 offset-md-2 offset-1 col-xl-8 col-lg-8 col-md-8 col-10">
       <%= form_for(@community, html: { name: "selbox", autocapitalize: "off", autocorrect: "off" }) do |f| %>
         <div class="form-group">
           <div class="label-text-box">
             <span class="badge badge-danger">必須</span>
             <%= f.label "コミュニティー名", class: "label-text1" %>
           </div>
-          <%= f.text_field :communityName, class: "form-control", id: "communityName", placeholder: "例：Team Black", autofocus: true %>
+          <%= f.text_field :communityName, class: "form-control", id: "communityName", placeholder: "例：Team Black", autofocus: true, required: true %>
         </div>
         <div class="form-group">
           <div class="label-text-box">
@@ -20,21 +19,21 @@
             <%= f.label "カテゴリーを選択", class: "label-text1" %>
           </div>
           <%= f.select :category, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
-            { :prompt => "---" }, { class: "custom-select", id: "categorySelect", onchange: "categorySet()" } %>
+            { :prompt => "---" }, { class: "custom-select", id: "categorySelect", onchange: "categorySet()", required: true } %>
         </div>
         <div class="form-group" id="form-group">
           <div class="label-text-box">
             <span class="badge badge-danger">必須</span>
             <%= f.label "サブカテゴリーを選択", class: "label-text1" %>
           </div>
-          <%= f.select :subcategory, [], { :prompt => "---" }, { class: "custom-select text-charcoal", id: "subcategorySelect"} %>
+          <%= f.select :subcategory, [], { :prompt => "---" }, { class: "custom-select text-charcoal", id: "subcategorySelect", required: true } %>
         </div>
         <div class="form-group">
           <div class="label-text-box">
             <span class="badge badge-danger">必須</span>
             <%= f.label "都道府県を選択（主な活動拠点など）", class: "label-text1" %>
           </div>
-          <%= f.select :prefecture, Prefecture.all.map{ |prefecture| [prefecture.name] }, { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect"} %>
+          <%= f.select :prefecture, Prefecture.all.map{ |prefecture| [prefecture.name] }, { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect", required: true } %>
         </div>
         
         <%= f.submit "コミュニティーを作成する", class: "btn btn-block btn-primary" %>
@@ -44,9 +43,9 @@
 </div>
 <%= javascript_include_tag "communities_new_resize.js" %>
 <script>
-  $("#communityName").addClear({
-    symbolClass: "far fa-times-circle",
-    color: "#7d7d7d"
+  $('#communityName').addClear({
+    symbolClass: 'far fa-times-circle',
+    color: '#7d7d7d'
   });
   
   var subcategoryary1 = new Array(

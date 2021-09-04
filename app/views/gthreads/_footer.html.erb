@@ -138,12 +138,6 @@
   ql_list1.setAttribute('id', 'ql-list1');
   ql_list2.setAttribute('id', 'ql-list2');
   
-  //var ql_indent1 = document.getElementsByClassName('ql-indent')[0];
-  //var ql_indent2 = document.getElementsByClassName('ql-indent')[1];
-  
-  //ql_indent1.setAttribute('id', 'ql-indent1');
-  //ql_indent2.setAttribute('id', 'ql-indent2');
-  
   var imagefile_upload_btn_html = $('.upload-label');
   var ql_thread_submit_btn_html = $('.ql-submit');
   
@@ -235,37 +229,23 @@
     color: '#7d7d7d'
   });
   
-  // スレッド作成フォーム 未入力の場合送信ボタン使用不可 // 未完成
-  var submit_btn = $('.thread-create-btn');
+  // スレッド作成フォーム 未入力の場合送信ボタン使用不可
+  var title_field = document.getElementById('thread-new-title');
   var text_field = $('#ql-editor');
-  var text_fields = document.getElementById('ql-editor');
-  var text_field_p = $('#ql-editor p');
-  var text_field_br = $('#ql-editor > p > br');
-  var br1 = $('#ql-editor > p > br')[0];
-  
-  //var ql_blank = text_fields.classList.contains('ql-blank');
+  var submit_btn = $('.thread-create-btn');
   
   submit_btn.prop('disabled', true);
   
-  text_field.on('input keydown', function(e) {
-    var text_count = text_field_p.html().length;
-    //var text_val = ;
-    if (text_field_p.html() !== "<br>" && text_field_br.length <= 1 && !text_field_p.html().match(/\S/g) == "") {
+  $('#thread-new-title, #ql-editor').on('input keydown keyup', function(e) { // keydown, keyupトリガーを入れないとまともな挙動にならない
+    var input_text_0 = text_field.html().replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'');
+    var input_text_1 = input_text_0.replace(/\0/g, '');
+    var input_text = input_text_1.replace(/\n/g, '');
+    
+    if (title_field.value.length >= 1 && !title_field.value.match(/\S/g) == '' && input_text.length >= 1) {
       submit_btn.prop('disabled', false);
     } else {
       submit_btn.prop('disabled', true);
     }
-    /*if (ql_blank == true) {
-      submit_btn.prop('disabled', true);
-    } else if (text_field_p.html() !== "<br>") {
-      submit_btn.prop('disabled', false);
-    }*/
-    
-    //if (text_count >= 1 && text_field_p.html() !== "<br>" && text_field_br.length >= 1 && !text_field_p.html().match(/\S/g) == "") {
-    //  submit_btn.prop('disabled', false);
-    //} else {
-    //  submit_btn.prop('disabled', true);
-    //}
   });
   
   submit_btn.on('click', function() {

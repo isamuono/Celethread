@@ -2,11 +2,9 @@ class User < ApplicationRecord
   validates :family_name, presence: true
   validates :first_name, presence: true
   validates :accountName, presence: true
-  validates :email, presence: true#, uniqueness: true
-  #, format: { with: /\A[A-Za-z0-9._+]+@[A-Za-z]+\.[A-Za-z]+\z/ }
-  #VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-    #format: { with: VALID_EMAIL_REGEX },
-                    #uniqueness: { case_sensitive: false }
+  
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: true
   
   has_secure_password
   #PW_REGEX = /\A(?=.?[a-z])(?=.?\d)[a-z\d]{8,20}+\z/i  ⬅️テストユーザー作成時のパスを簡単にするため
@@ -15,21 +13,21 @@ class User < ApplicationRecord
   validates :images, presence: false
   validates :self_introduction, presence: false, length: { maximum: 3000 }
   validates :remember_digest, presence: false
+  validates :temporary, presence: false
   
   mount_uploader :images, ImageUploader
   
-  has_many :invitations
-  has_many :community_participants, source: 'community'
+  has_many :community_participants, source: 'community', dependent: :destroy
   has_many :communities, through: :community_participants
-  has_many :channel_participants, source: 'channel'
+  has_many :channel_participants, source: 'channel', dependent: :destroy
   has_many :channels, through: :channel_participants
-  has_many :gthreads
-  has_many :events
-  has_many :thread_reactions
-  has_many :comments
-  has_many :direct_messages
-  has_many :messages
-  has_many :dm_reactions
+  has_many :gthreads, dependent: :destroy
+  has_many :events, dependent: :destroy
+  has_many :thread_reactions, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :direct_messages, dependent: :destroy
+  has_many :messages, dependent: :destroy
+  has_many :dm_reactions, dependent: :destroy
   
   has_many :active_notifications, class_name: 'Notification', foreign_key: 'visitor_id', dependent: :destroy
   has_many :passive_notifications, class_name: 'Notification', foreign_key: 'visited_id', dependent: :destroy
@@ -60,8 +58,8 @@ class User < ApplicationRecord
   end
   
   # 渡されたトークンがremember（もしくはアカウント有効化）ダイジェストと一致したらtrueを返す
-  def authenticated?(attribute, token)   # attributeにrememberかactivateが入る
-    digest = send("#{attribute}_digest") # モデルの属性である〜_digestにアクセス
+  def authenticated?(attribute, token)   # attributeにrememberかactivateかinviteが入る
+    digest = send("#{ attribute }_digest") # モデルの属性である〜_digestにアクセス
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
   end
@@ -102,9 +100,14 @@ class User < ApplicationRecord
     reset_sent_at < 1.hours.ago
   end
   
-  # <招待機能>
-  def send_invite_email(community_id)
-    UserMailer.invitation(self, community_id).deliver_now #()内の@inviteeを => self に
+  # <新規ユーザー招待機能>
+  def send_invite_email(community_id, communityName)
+    UserMailer.invitation(self, community_id, communityName).deliver_now #()内の@inviteeを => self に
+  end
+  
+  # <既存ユーザー招待機能>
+  def send_participation_email(community_id, communityName)
+    UserMailer.participation(self, community_id, communityName).deliver_now #()内の@inviteeを => self に
   end
   
   # ユーザー招待の属性（トークンとダイジェストと、招待したユーザーのid）を作成する
@@ -118,15 +121,7 @@ class User < ApplicationRecord
     self.invite_sent_at < 24.hours.ago
   end
   
-  def can_access?(channel)
-    if self.community_participants.where(community_id: channel.community_id)# チャットルームへ入室するための条件を記述
-      true
-    else
-      false
-    end
-  end
-  
-  # 参加していないコミュニティーのチャンネルの
+  # 参加していないコミュニティーのチャンネルのサブスクリプションは購読不可とする
   def is_com_participants?(channel)
     if self.community_participants.where(community_id: channel.community_id).exists?
       true

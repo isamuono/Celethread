@@ -40,7 +40,7 @@
     <%= icon('far', 'calendar-alt') %>カレンダー
   <% end %>
   <% if cp_current_user.role == 1 %>
-    <%= link_to new_invitation_path(community_id: c.id), class: "invitation-btn" do %>
+    <%= link_to new_invitation_path(community_id: c.id, communityName: c.communityName), class: "invitation-btn" do %>
       <span class="invitation-btn-icon">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
           <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>

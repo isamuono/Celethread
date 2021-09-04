@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string  :email
       t.string  :images
       t.text    :self_introduction, charset: :utf8mb4
+      t.boolean :temporary, default: false
 
       t.timestamps
     end

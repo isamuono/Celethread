@@ -4,114 +4,114 @@
       <p class="modal-title">リアクションのアイコンを選んでください</p>
     </div>
     <div class="modal-body thread-reaction-modal-body">
-      <% reaction_images = ReactionImage.all %>
-      <% reaction_images.where(emoji_id: '1').each do |custom| %>
-        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: custom.entity_name).present? %>
-          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: custom.entity_name), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+      <%# reaction_images = ReactionImage.all %>
+      <% @reaction_images_custom.each do |custom| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: custom[:entity_name]).present? %>
+          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: custom[:entity_name]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
             <span class="thread-reaction-btn custom">
-              <img data-src="<%= "#{ custom.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag custom[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% else %>
-          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: custom.entity_name, images: custom.images), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: custom[:entity_name], images: custom[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
             <span class="thread-reaction-btn custom">
-              <img data-src="<%= "#{ custom.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag custom[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <hr>
-      <% reaction_images.where(emoji_id: '2').each do |se| %>
-        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: se.entity_name).present? %>
-          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: se.entity_name), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+      <% @reaction_images_smileys_and_emotion.each do |se| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: se[:entity_name]).present? %>
+          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: se[:entity_name]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
             <span class="thread-reaction-btn smileys_and_emotion">
-              <img data-src="<%= "#{ se.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag se[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% else %>
-          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: se.entity_name, images: se.images), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: se[:entity_name], images: se[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
             <span class="thread-reaction-btn smileys_and_emotion">
-              <img data-src="<%= "#{ se.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag se[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <hr>
-      <% reaction_images.where(emoji_id: '3').each do |bgp| %>
-        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: bgp.entity_name).present? %>
-          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: bgp.entity_name), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+      <% @reaction_images_body_and_gesture_and_person.each do |bgp| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: bgp[:entity_name]).present? %>
+          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: bgp[:entity_name]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
             <span class="thread-reaction-btn body_and_gesture_and_person">
-              <img data-src="<%= "#{ bgp.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag bgp[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% else %>
-          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: bgp.entity_name, images: bgp.images), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: bgp[:entity_name], images: bgp[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
             <span class="thread-reaction-btn body_and_gesture_and_person">
-              <img data-src="<%= "#{ bgp.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag bgp[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <hr>
-      <% reaction_images.where(emoji_id: '4').each do |np| %>
-        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: np.entity_name).present? %>
-          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: np.entity_name), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+      <% @reaction_images_nature_and_place.each do |np| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: np[:entity_name]).present? %>
+          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: np[:entity_name]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
             <span class="thread-reaction-btn nature_and_place">
-              <img data-src="<%= "#{ np.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag np[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% else %>
-          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: np.entity_name, images: np.images), { class: "thread-reaction-btn-a", controller: 'thread_reactionss', action: 'create', method: :post, remote: true } do %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: np[:entity_name], images: np[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactionss', action: 'create', method: :post, remote: true } do %>
             <span class="thread-reaction-btn nature_and_place">
-              <img data-src="<%= "#{ np.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag np[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <hr>
-      <% reaction_images.where(emoji_id: '5').each do |tfa| %>
-        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: tfa.entity_name).present? %>
-          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: tfa.entity_name), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+      <% @reaction_images_activity_and_tradition_and_features.each do |tfa| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: tfa[:entity_name]).present? %>
+          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: tfa[:entity_name]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
             <span class="thread-reaction-btn activity_and_tradition_and_features">
-              <img data-src="<%= "#{ tfa.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag tfa[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% else %>
-          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: tfa.entity_name, images: tfa.images), { class: "thread-reaction-btn-a", controller: 'thread_reactionss', action: 'create', method: :post, remote: true } do %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: tfa[:entity_name], images: tfa[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactionss', action: 'create', method: :post, remote: true } do %>
             <span class="thread-reaction-btn activity_and_tradition_and_features">
-              <img data-src="<%= "#{ tfa.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag tfa[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <hr>
-      <% reaction_images.where(emoji_id: '6').each do |objects| %>
-        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: objects.entity_name).present? %>
-          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: objects.entity_name), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+      <% @reaction_images_objects_and_others.each do |objects| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: objects[:entity_name]).present? %>
+          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: objects[:entity_name]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
             <span class="thread-reaction-btn objects_and_others">
-              <img data-src="<%= "#{ objects.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag objects[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% else %>
-          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: objects.entity_name, images: objects.images), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: objects[:entity_name], images: objects[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
             <span class="thread-reaction-btn objects_and_others">
-              <img data-src="<%= "#{ objects.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag objects[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% end %>
       <% end %>
       <hr>
-      <% reaction_images.where(emoji_id: '7').each do |symbols| %>
-        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: symbols.entity_name).present? %>
-          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: symbols.entity_name), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+      <% @reaction_images_symbols.each do |symbols| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: symbols[:entity_name]).present? %>
+          <%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: symbols[:entity_name]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
             <span class="thread-reaction-btn symbols">
-              <img data-src="<%= "#{ symbols.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag symbols[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% else %>
-          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: symbols.entity_name, images: symbols.images), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: symbols[:entity_name], images: symbols[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
             <span class="thread-reaction-btn symbols">
-              <img data-src="<%= "#{ symbols.images }" %>" class="thread-reaction-images-single lazyload">
+              <%= image_tag symbols[:images], class: "thread-reaction-images-single lazyload" %>
             </span>
           <% end %>
         <% end %>

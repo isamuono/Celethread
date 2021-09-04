@@ -37,96 +37,66 @@
   });
   
   // コメントフォーム
-  var $submit_btn<%= gthread.id %> = $("#submit<%= gthread.id %>");
-  var $text_field<%= gthread.id %> = document.getElementById("commentTextForm<%= gthread.id %>");
+  var $submit_btn = $("#submit<%= gthread.id %>");
+  var $text_field = document.getElementById("commentTextForm<%= gthread.id %>");
   
-  $submit_btn<%= gthread.id %>.prop("disabled", true);
+  $submit_btn.prop("disabled", true);
   
-  //var lineHeight = parseInt($text_field<%= gthread.id %>.css('lineHeight'));
-  // 最低行数を指定
-  //var minHeight = lineHeight * 1;
+  // 最低行数と最高幅を指定
   const maxLineCount = 13;
-  // 最高幅を指定
-  var maxHeight = parseInt($(window).height() * 0.45);
     
-  $text_field<%= gthread.id %>.addEventListener('input', function() {
+  $text_field.addEventListener('input', function() {
     //未入力の場合送信ボタン使用不可
-    var $text_count = $text_field<%= gthread.id %>.value.length;
-    var $text_val = $text_field<%= gthread.id %>.value;
-    
-    if ($text_count >= 1 && !$text_val.match(/\S/g) == "") {
-      $submit_btn<%= gthread.id %>.prop('disabled', false);
+    if ($text_field.value.length >= 1 && !$text_field.value.match(/\S/g) == '') {
+      $submit_btn.prop('disabled', false);
     } else {
-      $submit_btn<%= gthread.id %>.prop('disabled', true);
+      $submit_btn.prop('disabled', true);
     }
     
-    // 上方向に拡大
-    //var lines<%= gthread.id %> = ($(this).value + '\n').match(/\n/g).length;
-    changeLineCheck<%= gthread.id %>();
-    
-    //$(this).height(Math.min(maxHeight, Math.max(lineHeight * lines<%= gthread.id %>, minHeight)));
+    changeLineCheck();
   });
   
-  const getLineCount<%= gthread.id %> = function() {
-    return ($text_field<%= gthread.id %>.value + "\n").match(/\r?\n/g).length;
+  const getLineCount = function() {
+    return ($text_field.value + "\n").match(/\r?\n/g).length;
   };
 
-  let lineCount<%= gthread.id %> = getLineCount<%= gthread.id %>();
-  let newLineCount<%= gthread.id %>;
+  let lineCount = getLineCount();
+  let newLineCount;
   
-  const changeLineCheck<%= gthread.id %> = function() {
+  const changeLineCheck = function() {
     // 現在の入力行数を取得（ただし，最大の行数は maxLineCount とする）
-    newLineCount<%= gthread.id %> = Math.min(getLineCount<%= gthread.id %>(), maxLineCount);
+    newLineCount = Math.min(getLineCount(), maxLineCount);
+    
     // 以前の入力行数と異なる場合は変更する
-    if (lineCount<%= gthread.id %> !== newLineCount<%= gthread.id %>) {
-      changeLineCount<%= gthread.id %>(newLineCount<%= gthread.id %>);
+    if (lineCount !== newLineCount) {
+      changeLineCount(newLineCount);
     }
   };
   
-  const comment_index<%= gthread.id %> = document.getElementById("comment-index<%= gthread.id %>");
-  const footer<%= gthread.id %> = document.getElementById("modal-footer<%= gthread.id %>");
-  let footerHeight<%= gthread.id %> = $text_field<%= gthread.id %>.scrollHeight;
-  let newFooterHeight<%= gthread.id %>,
-      footerHeightDiff<%= gthread.id %>;
-      
-  //var paddingBottom = parseInt($("#comment_index<%= gthread.id %>").css('padding-bottom'));
+  const comment_index = document.getElementById("comment-index<%= gthread.id %>");
+  let footerHeight = $text_field.scrollHeight;
+  let newFooterHeight,
+      footerHeightDiff;
   
-  /*$('.tcomment-textarea').on('input', function(){
-    const maxLineHeight = 13;
-    let lineHeight<%= gthread.id %> = Number($text_field<%= gthread.id %>.getAttribute("rows"));
-    
-    if ($(this).outerHeight() > this.scrollHeight && lineHeight<%= gthread.id %> < maxLineHeight){
-      $(this).height(1)
-    }
-    while ($(this).outerHeight() < this.scrollHeight && lineHeight<%= gthread.id %> < maxLineHeight){
-      $(this).height($(this).height() + 1)
-    }
-  });*/
-  
-  $text_field<%= gthread.id %>.addEventListener("input", changeLineCount<%= gthread.id %> = (newLineCount<%= gthread.id %>) => {
-    $text_field<%= gthread.id %>.rows = lineCount<%= gthread.id %>;
-    lineCount<%= gthread.id %> = newLineCount<%= gthread.id %>;
+  $text_field.addEventListener('input', changeLineCount = (newLineCount) => {
+    $text_field.rows = lineCount;
+    lineCount = newLineCount;
     
     // 文字量によって自動で高さが変わるtextarea
-    $(".tcomment-textarea").height(0).innerHeight($text_field<%= gthread.id %>.scrollHeight);
+    $(".tcomment-textarea").height(0).innerHeight($text_field.scrollHeight);
     
-    newFooterHeight<%= gthread.id %> = $text_field<%= gthread.id %>.scrollHeight;
-    footerHeightDiff<%= gthread.id %> = newFooterHeight<%= gthread.id %> - footerHeight<%= gthread.id %>;
-    if (footerHeightDiff<%= gthread.id %> > 0/* && newLineCount<%= gthread.id %> <= 4*/) {
-      //comment_index<%= gthread.id %>.style.paddingBottom = newFooterHeight<%= gthread.id %> - 40 + "px";
-      comment_index<%= gthread.id %>.style.height = 501 - newFooterHeight<%= gthread.id %> + 40 + "px";
-      comment_index<%= gthread.id %>.scrollBy(0, footerHeightDiff<%= gthread.id %>);
-    } else {
-      comment_index<%= gthread.id %>.scrollBy(0, footerHeightDiff<%= gthread.id %>);
-      //comment_index<%= gthread.id %>.style.paddingBottom = newFooterHeight<%= gthread.id %> - 40 + "px";
-      comment_index<%= gthread.id %>.style.height = 501 - newFooterHeight<%= gthread.id %> + 40 + "px";
+    newFooterHeight = $text_field.scrollHeight;
+    footerHeightDiff = newFooterHeight - footerHeight;
+    if (footerHeightDiff > 0 && lineCount < maxLineCount) {
+      comment_index.style.height = 501 - newFooterHeight + 40 + "px";
+      comment_index.scrollBy(0, footerHeightDiff);
+    } else if (footerHeightDiff < 0 && lineCount < maxLineCount - 1) {
+      comment_index.scrollBy(0, footerHeightDiff);
+      comment_index.style.height = 501 - newFooterHeight + 40 + "px";
     }
-    footerHeight<%= gthread.id %> = newFooterHeight<%= gthread.id %>;
+    footerHeight = newFooterHeight;
   });
   
-  //const data<%= gthread.id %> = document.getElementById("data<%= gthread.id %>")
-  //const thread_id = data<%= gthread.id %>.getAttribute("data-thread-id");
-  const comment_modal<%= gthread.id %> = $("#tcomment-Modal<%= gthread.id %>");
   
   App.comment = App.cable.subscriptions.create('CommentChannel', {
     connected: function() {
@@ -136,7 +106,6 @@
       // Called when the subscription has been terminated by the server
     },
     received: function(data) {
-      //var params = location.search
       var href = location.href;
       
       var comment_id = data['comment_id'];
@@ -149,17 +118,17 @@
         document.getElementById('comment-index' + gthread_id).insertAdjacentHTML("beforeend", data['comment']);
         
         if (gon.current_user_id == comment_user_id) {
-          document.getElementById('commentTextForm' + gthread_id).value = '';
-          $('#submit' + gthread_id).prop("disabled", true);
+          $text_field.value = '';
+          $submit_btn.prop('disabled', true);
           
           const windowWidth = document.documentElement.clientWidth;
           
           if (windowWidth >= 768) {
-            document.getElementById('comment-index' + gthread_id).style.height = 501 + 'px';
-            document.getElementById('commentTextForm' + gthread_id).style.height = 42 + 'px';
+            comment_index.style.height = 501 + 'px';
+            $text_field.style.height = 42 + 'px';
           } else if (windowWidth <= 767) {
-            document.getElementById('comment-index' + gthread_id).style.height = 501 + 'px';
-            document.getElementById('commentTextForm' + gthread_id).style.height = 30 + 'px';
+            comment_index.style.height = 501 + 'px';
+            $text_field.style.height = 30 + 'px';
           }
         }
       }

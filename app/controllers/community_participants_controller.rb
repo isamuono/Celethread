@@ -17,7 +17,7 @@ class CommunityParticipantsController < ApplicationController
   #end
   
   def update
-    @participant = CommunityParticipant.find(params[:id])
+    @participant = CommunityParticipant.find(community_participant_params[:id])
     
     if @participant.role == 2
       @participant.update(role: 1)
@@ -28,6 +28,8 @@ class CommunityParticipantsController < ApplicationController
     end
   end
   
-  
-    
+  private
+    def community_participant_params
+      params.permit(:id, :community_id)
+    end
 end

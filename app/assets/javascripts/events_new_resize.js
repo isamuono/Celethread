@@ -20,9 +20,9 @@ function resizeElement() {
   
   const resizebox1 = document.getElementById('form1');
     if (windowWidth <= 767) {
-      resizebox1.className = 'form-control';
+      resizebox1.className = 'form-control addclear';
     } else if (windowWidth >= 768) {
-      resizebox1.className = 'form-control form-control-lg';
+      resizebox1.className = 'form-control form-control-lg addclear';
     } 
   const resizebox2 = document.getElementById('form2');
     if (windowWidth <= 767) {
@@ -68,9 +68,9 @@ function resizeElement() {
     } 
   const resizebox9 = document.getElementById('form9');
     if (windowWidth <= 767) {
-      resizebox9.className = 'form-control';
+      resizebox9.className = 'form-control addclear';
     } else if (windowWidth >= 768) {
-      resizebox9.className = 'form-control form-control-lg';
+      resizebox9.className = 'form-control form-control-lg addclear';
     } 
 }
 

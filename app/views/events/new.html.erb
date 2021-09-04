@@ -23,8 +23,8 @@
 </head>
 <div class="top-wrapper">
   <div class="form-container">
-    <h4 class="text-black text-center mb-5">イベント作成</h4>
-    <div class="event-form mt-4 offset-xl-2 offset-lg-3 offset-md-2 offset-1 col-xl-8 col-lg-6 col-md-8 col-10">
+    <div class="h4 text-black text-center mb-5">イベント作成</div>
+    <div class="event-form mt-4 offset-xl-2 offset-lg-2 offset-md-2 offset-1 col-xl-8 col-lg-8 col-md-8 col-10">
       <%= form_for @event, html: { autocapitalize: "off", autocorrect: "off" } do |f| %>
         <%= f.hidden_field :community_id %>
         <%= f.hidden_field :channel_id %>
@@ -33,7 +33,7 @@
             <span class="badge badge-danger">必須</span>
             <%= f.label "タイトル", class: "label-text1" %>
           </div>
-          <%= f.text_field :title, class: "form-control", id: "form1", placeholder: "イベントのタイトル", autofocus: true, required: true %>
+          <%= f.text_field :title, class: "form-control addclear", id: "form1", placeholder: "イベントのタイトル", autofocus: true, required: true %>
         </div>
         <div class="form-group" id="datepair">
           <div class="form-row">
@@ -105,7 +105,7 @@
         </div>
         <div class="form-group">
           <%= f.label "場所", class: "label-text2" %>
-          <%= f.text_field :place, class: "form-control", id: "form9", placeholder: "住所や建物名など" %>
+          <%= f.text_field :place, class: "form-control addclear", id: "form9", placeholder: "住所や建物名など" %>
         </div>
         
         <div class="form-group" id="text_area">
@@ -123,16 +123,16 @@
           </span>
         </label>
         
-        <%= f.submit "イベントを作成する", class: "btn btn-block btn-primary" %>
+        <%= f.submit "イベントを作成する", class: "btn btn-block btn-primary event-create-btn" %>
       <% end %>
     </div>
   </div>
 </div>
 <%= javascript_include_tag "events_new_resize.js" %>
 <script>
-  $(".form-control").addClear({
-    symbolClass: "far fa-times-circle",
-    color: "#7d7d7d"
+  $('.addclear').addClear({
+    symbolClass: 'far fa-times-circle',
+    color: '#7d7d7d'
   });
   
   $(function(){
@@ -394,5 +394,24 @@
     //$('.btn-primary').on('click', function() {
     //  dataBox.clearData();
     //});
+  });
+  
+  // 未入力の場合送信ボタン使用不可
+  var title_field = document.getElementById('form1');
+  var text_field = $('#ql-editor');
+  var submit_btn = $('.event-create-btn');
+  
+  submit_btn.prop('disabled', true);
+  
+  $('#form1, #ql-editor').on('input keydown keyup', function(e) { // keydown, keyupトリガーを入れないとまともな挙動にならない
+    var input_text_0 = text_field.html().replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'');
+    var input_text_1 = input_text_0.replace(/\0/g, '');
+    var input_text = input_text_1.replace(/\n/g, '');
+    
+    if (title_field.value.length >= 1 && !title_field.value.match(/\S/g) == '' && input_text.length >= 1) {
+      submit_btn.prop('disabled', false);
+    } else {
+      submit_btn.prop('disabled', true);
+    }
   });
 </script>

@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "noreply@example.com" #サイトのメールアドレスにする？
+  default from: "celethread136@gmail.com"
   layout 'mailer'
 end

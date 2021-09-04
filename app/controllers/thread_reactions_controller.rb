@@ -1,5 +1,6 @@
 class ThreadReactionsController < ApplicationController
   before_action :login_check
+  before_action :is_the_person_who_thread_reaction?, only: :destroy
   
   def create
     @thread_reaction = ThreadReaction.new(thread_reaction_params)
@@ -62,5 +63,13 @@ class ThreadReactionsController < ApplicationController
   private
     def thread_reaction_params
       params.permit(:gthread_id, :entity_name, :images)
+    end
+    
+    def is_the_person_who_thread_reaction?
+      if current_user.thread_reactions.find_by(gthread_id: thread_reaction_params[:gthread_id], entity_name: thread_reaction_params[:entity_name])
+        true
+      else
+        redirect_to request.referer, danger: 'あなたはこのリアクションを削除出来ません'
+      end
     end
 end

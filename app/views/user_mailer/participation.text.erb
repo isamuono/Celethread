@@ -1,0 +1,5 @@
+<%= @inviter.accountName %>さんがあなたを<%= @communityName %>に招待しています。
+以下のリンクにアクセスして上記のコミュニティーに参加してください。
+
+<%= edit_invitation_url(@user.invite_token, email: @user.email, community_id: @community_id, communityName: @communityName) %>
+このリンクは24時間で有効期限が切れます。

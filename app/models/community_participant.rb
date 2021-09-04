@@ -1,7 +1,7 @@
 class CommunityParticipant < ApplicationRecord
   validates :role, presence: true, inclusion: { in: [0, 1, 2] }
   validates :user_id, presence: true,
-    uniqueness: { scope: [:community_id], message: "あなたはすでにこのコミュニティーのメンバーです" }
+    uniqueness: { scope: [:community_id] }
   validates :community_id, presence: true
   validates :community_n_sw, presence: false
   validates :channel_n_sw, presence: false

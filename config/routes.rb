@@ -52,7 +52,7 @@ Rails.application.routes.draw do
     member do
       resources :gthreads, only: [:index], as: :channels_gthreads, param: :g_uid
       get 'gthreads/:g_uid', to: 'gthreads#index' #2021/7/9追記 リアクション、コメントモーダル用
-    end  
+    end
   end
   
   get '/show_additionally', to: 'gthreads#show_additionally'

@@ -31,7 +31,6 @@ ja:
       gthread:
         title: 'タイトル'
         description: '本文'
-        images: '画像'
         
       event:
         title: 'タイトル'

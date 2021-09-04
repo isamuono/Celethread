@@ -4798,7 +4798,7 @@ Keyboard.DEFAULTS = {
             line = _quill$getLine10[0],
             offset = _quill$getLine10[1];
 
-        var delta = new _quillDelta2.default().retain(range.index + line.length() - offset - 2).retain(2, { 'code-block': null }).delete(1); //2021/6/28変更(retain(1, → retain(2,)
+        var delta = new _quillDelta2.default().retain(range.index + line.length() - offset - 1).retain(2, { 'code-block': null }).delete(1); //2021/6/28変更(retain(1, → retain(2,)
         this.quill.updateContents(delta, _quill2.default.sources.USER);
       }
     },

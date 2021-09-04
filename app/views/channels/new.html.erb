@@ -5,9 +5,8 @@
 </head>
 <div class="top-wrapper">
   <div class="form-container">
-    <h1 class="text-black text-center mt-auto">サイト名</h1>
-    <h4 class="text-black text-center">チャンネル作成</h4>
-    <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-2 offset-1 col-xl-6 col-lg-6 col-md-8 col-10">
+    <div class="h4 text-black text-center mb-5">チャンネル作成</div>
+    <div class="channel-form mt-4 offset-xl-2 offset-lg-2 offset-md-2 offset-1 col-xl-8 col-lg-8 col-md-8 col-10">
       <%= form_for @channel, html: { autocapitalize: "off", autocorrect: "off" } do |f| %>
         <%= f.hidden_field :community_id %>
         <div class="form-group">
@@ -22,7 +21,7 @@
           <%= f.text_area :description, class: "form-control", id: "description", rows: "4", placeholder: "例：春休みや夏休み期間中における泊まり込みの練習。1〜2泊の遠征。", maxlength: "2000" %>
           <small class="form-text text-muted text-right help-text2" >※2000文字以内</small>
         </div>
-        <div class="form-group color-select-form">
+        <div class="form-group color-select-form-group">
           <div class="label-text-box">
             <span class="badge badge-danger">必須</span>
             <%= f.label "イメージカラー", class: "label-text1" %>
@@ -53,9 +52,9 @@
 </div>
 <%= javascript_include_tag "channels_new_resize.js" %>
 <script>
-  $("#channelName").addClear({
-    symbolClass: "far fa-times-circle",
-    color: "#7d7d7d"
+  $('#channelName').addClear({
+    symbolClass: 'far fa-times-circle',
+    color: '#7d7d7d'
   });
   $('#color').spectrum({
     allowEmpty: true,
@@ -64,16 +63,16 @@
     preferredFormat: "hex",
     palette: [
       'black', 'gray', 
-      'steelblue', 'navy', 'blue', 'royalblue', 'dodgerblue', 'deepskyblue', 'lightskyblue', 
-      'darkcyan', 'green', 'mediumseagreen', 'palegreen', 'greenyellow', 'lime', 'yellowgreen', 'darkkhaki', 'khaki', 
-      '#fff450', 'gold', '#fcc800', 'orange', 'darkorange', '#8f6552', 'saddlebrown', 'firebrick', 'tomato', 'orangered', 'red', 'crimson', '#e73562',
-      'deeppink', 'hotpink', 'lightpink', 'violet', 'darkmagenta', 'darkviolet'
+      'steelblue', 'navy', 'blue', 'royalblue', 'dodgerblue', 'deepskyblue', 'lightskyblue', 'cyan', '#00afcc',
+      'darkcyan', 'green', 'mediumseagreen', 'palegreen', 'greenyellow', 'lime', '#9fc24d', 'yellowgreen', '#d9e367', 'darkkhaki', 'khaki', 
+      '#fff799', '#fff352', '#ffdc00', '#fcc800', 'orange', 'darkorange', '#8f6552', 'saddlebrown', 'firebrick', 'tomato', 'orangered', 'red', 'crimson', '#e73562',
+      'deeppink', 'hotpink', 'lightpink', 'violet', 'darkmagenta', 'darkviolet', '#5e17eb'
     ],
     //hideAfterPaletteSelect: true,
   });
   
   // 文字量によって自動で高さが変わるtextarea
-  $("#description").on("input", function() {
+  $('#description').on('input', function() {
     $(this).height(0).innerHeight(this.scrollHeight);
   });
 </script>

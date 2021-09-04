@@ -28,10 +28,10 @@ module Portfolio
         class_name = instance.object.class.name.underscore
         method_name = instance.instance_variable_get(:@method_name)
         "<div class=\"has-error\">#{html_tag}
-          <span class=\"help-block\">
+          <div class=\"help-block\">
             ［#{I18n.t("activerecord.attributes.#{class_name}.#{method_name}")}］
             #{instance.error_message.first}
-          </span>
+          </div>
         </div>".html_safe
       end
     end

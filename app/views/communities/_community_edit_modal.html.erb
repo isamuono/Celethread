@@ -66,35 +66,35 @@
           </div>
         </div>
         <div class="modal-footer">
-          <%= link_to "/communities/#{ community_edit.id }", class: "community-destroy-link", method: :delete, data: { sweet_confirm: "#{ community_edit.communityName } を削除してもよろしいですか？" } do %>
-            <span type="button" class="btn btn-destroy">削除する</span>
+          <% if cp_current_user.role == 1 %>
+            <%= link_to "/communities/#{ community_edit.id }", class: "community-destroy-link", method: :delete, data: { sweet_confirm: "#{ community_edit.communityName } を削除してもよろしいですか？" } do %>
+              <span type="button" class="btn btn-destroy">削除する</span>
+            <% end %>
+            <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
+            <%= f.submit "変更を保存", class: "btn btn-primary" %>
           <% end %>
-          <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
-          <%= f.submit "変更を保存", class: "btn btn-primary" %>
         </div>
       </div>
     <% end %>
   </div>
 </div>
 <script>
-  var resizeFlg; //setTimeoutの待機中かを判定するフラグ
+  var resizeFlg;
   
-  function windowResizeFunc(){
-  
-    //resizeFlgに値が設定されている場合は、待ち時間中なのでリセットする
+  function windowResizeFunc() {
     if (resizeFlg !== false) {
-        clearTimeout(resizeFlg);
+      clearTimeout(resizeFlg);
     }
-    //300ms待機後にリサイズ処理を実施する
-    resizeFlg = setTimeout( function() {
-      resizeElement();    //リサイズを実施する処理
+    
+    resizeFlg = setTimeout(function() {
+      resizeElement();
     }, 300);
   }
   
   window.addEventListener('resize', windowResizeFunc);
   window.addEventListener('load', resizeElement());
   
-  function resizeElement(){
+  function resizeElement() {
     const windowWidth = document.documentElement.clientWidth;
     
     const resizebox1 = document.getElementById("communityName<%= community_edit.id %>");
@@ -103,65 +103,58 @@
       } else if (windowWidth >= 768) {
         resizebox1.className = "form-control form-control-lg";
       } 
-    
     const resizeCustomselectbox1 = document.getElementById("categorySelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
         resizeCustomselectbox1.className = "custom-select text-charcoal";
       } else if (windowWidth >= 768) {
         resizeCustomselectbox1.className = "custom-select custom-select-lg text-charcoal";
       } 
-      
     const resizeCustomselectbox2 = document.getElementById("subcategorySelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
         resizeCustomselectbox2.className = "custom-select text-charcoal";
       } else if (windowWidth >= 768) {
         resizeCustomselectbox2.className = "custom-select custom-select-lg text-charcoal";
       } 
-      
     const resizeCustomselectbox3 = document.getElementById("prefectureSelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
         resizeCustomselectbox3.className = "custom-select text-charcoal";
       } else if (windowWidth >= 768) {
         resizeCustomselectbox3.className = "custom-select custom-select-lg text-charcoal";
-      }
-    
+      } 
     const resizeCustomselectbox4 = document.getElementById("sexSelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
         resizeCustomselectbox4.className = "custom-select text-charcoal";
       } else if (windowWidth >= 768) {
         resizeCustomselectbox4.className = "custom-select custom-select-lg text-charcoal";
       } 
-    
     const resizeCustomselectbox5 = document.getElementById("scaleSelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
         resizeCustomselectbox5.className = "custom-select text-charcoal";
       } else if (windowWidth >= 768) {
         resizeCustomselectbox5.className = "custom-select custom-select-lg text-charcoal";
       } 
-      
     const resizebox2 = document.getElementById("community-description");
       if (windowWidth <= 767) {
         resizebox2.className = "form-control";
       } else if (windowWidth >= 768) {
         resizebox2.className = "form-control form-control-lg";
-      }
+      } 
   }
   
-  //傾きを変える度に現在の傾きを判定
-  window.orientationchange = function (){
-    if (Math.abs(window.orientation) === 0){
+  window.orientationchange = function() {
+    if (Math.abs(window.orientation) === 0) {
       window.reload(); 
     } else {
       window.reload();
     }
   };
   
-  function categorySet(){
+  function categorySet() {
     var value = document.getElementById("categorySelect<%= community_edit.id %>").value;
     var subcateSel = document.getElementById("subcategorySelect<%= community_edit.id %>");
     var i;
     
-    if (1 <= value && value <= 4){
+    if (1 <= value && value <= 4) {
       document.getElementById("form-group<%= community_edit.id %>").style.display = "block";
       
       var subs = subcategories[value];
@@ -184,12 +177,12 @@
     subcateSel.selectedIndex = 0;
   }
   
-  $('#community-edit-Modal<%= community_edit.id %>').on('show.bs.modal', function subcategorySet(){
+  $('#community-edit-Modal<%= community_edit.id %>').on('show.bs.modal', function subcategorySet() {
     var value = document.getElementById("categorySelect<%= community_edit.id %>").value;
     var subcateSel = document.getElementById("subcategorySelect<%= community_edit.id %>");
     var i;
     
-    if (1 <= value && value <= 4){
+    if (1 <= value && value <= 4) {
       document.getElementById("form-group<%= community_edit.id %>").style.display = "block";
       
       var subs = subcategories[value];
@@ -237,6 +230,7 @@
       reader<%= community_edit.id %>.readAsDataURL(input.files[0]);
     }
   }
+  
   $("#community_images<%= community_edit.id %>").change(function() {
     readURL(this);
   });
@@ -272,7 +266,7 @@
         $.ajax({
           type: 'DELETE',
           url: '/communities/<%= community_edit.id %>',
-          data: { cp_current_user_id: '<%= cp_current_user.id %>' }
+          data: { community_id: '<%= community_edit.id %>' }
         });
         /*.done(function(response) {
           

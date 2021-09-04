@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :login_check
+  before_action :is_the_person_who_comment?, only: :destroy
   
   def create
     @comment = Comment.new(comment_params)
@@ -87,5 +88,13 @@ class CommentsController < ApplicationController
   private
     def comment_params
       params.require(:comment).permit(:gthread_id, :text)
+    end
+    
+    def is_the_person_who_comment?
+      if current_user.id == Comment.find_by(id: params[:id]).user_id
+        true
+      else
+        redirect_to request.referer, danger: 'あなたはこのコメントを削除出来ません'
+      end
     end
 end

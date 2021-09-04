@@ -1,13 +1,13 @@
 <head>
   <%= stylesheet_link_tag 'colorpicker/spectrum', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag "colorpicker/spectrum.js" %>
+  <%= javascript_include_tag 'colorpicker/spectrum.js' %>
 </head>
 <div class="modal-dialog modal-dialog-centered">
   <div class="channel-edit-form">
     <%= form_with model: @channel_edit_modal, url: { controller: 'channels', action: 'update', method: :patch } do |f| %>
       <div class="modal-content channel-edit-container">
         <div class="modal-header">
-          <p class="modal-title channel-edit-title">チャンネル情報を編集</p>
+          <p class="modal-title channel-edit-title"><%= channel_edit.channelName %></p>
         </div>
         <div class="modal-body channel-edit-modal-body">
           <%= f.hidden_field :id %>
@@ -22,7 +22,7 @@
             <small class="form-text text-muted text-right help-text2" >※2000文字以内</small>
           </div>
           
-          <div class="form-group color-select-form">
+          <div class="form-group color-select-form-group">
             <%= f.label "イメージカラー", class: "label-text3" %>
             <%= f.text_field :color, class: "form-control", id: "color#{ channel_edit.id }" %>
           </div>
@@ -42,55 +42,54 @@
           </div>
         </div>
         <div class="modal-footer">
-          <%= link_to "/channels/#{ channel_edit.id }", class: "channel-destroy-link", method: :delete, data: { sweet_confirm: "#{ channel_edit.channelName } チャンネルを削除してもよろしいですか？" } do %>
-            <span type="button" class="btn btn-destroy">削除する</span>
+          <% if cp_current_user.role == 1 %>
+            <%= link_to "/channels/#{ channel_edit.id }", class: "channel-destroy-link", method: :delete, data: { sweet_confirm: "#{ channel_edit.channelName } チャンネルを削除してもよろしいですか？" } do %>
+              <span type="button" class="btn btn-destroy">削除する</span>
+            <% end %>
+            <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
+            <%= f.submit "変更を保存", class: "btn btn-primary" %>
           <% end %>
-          <span type="button" class="btn btn-cancel" data-dismiss="modal">キャンセル</span>
-          <%= f.submit "変更を保存", class: "btn btn-primary" %>
         </div>
       </div>
     <% end %>
   </div>
 </div>
 <script>
-  var resizeFlg; //setTimeoutの待機中かを判定するフラグ
+  var resizeFlg;
   
-  function windowResizeFunc(){
-  
-    //resizeFlgに値が設定されている場合は、待ち時間中なのでリセットする
+  function windowResizeFunc() {
     if (resizeFlg !== false) {
-        clearTimeout(resizeFlg);
+      clearTimeout(resizeFlg);
     }
-    //300ms待機後にリサイズ処理を実施する
-    resizeFlg = setTimeout( function() {
-      resizeElement();    //リサイズを実施する処理
+    
+    resizeFlg = setTimeout(function() {
+      resizeElement();
     }, 300);
   }
   
   window.addEventListener('resize', windowResizeFunc);
   window.addEventListener('load', resizeElement());
   
-  function resizeElement(){
+  function resizeElement() {
     const windowWidth = document.documentElement.clientWidth;
     
-    const resizebox1 = document.getElementById("channelName<%= @channel_edit_modal.id %>");
+    const resizebox1 = document.getElementById('channelName<%= @channel_edit_modal.id %>');
       if (windowWidth <= 767) {
-        resizebox1.className = "form-control";
+        resizebox1.className = 'form-control';
       } else if (windowWidth >= 768) {
-        resizebox1.className = "form-control form-control-lg";
+        resizebox1.className = 'form-control form-control-lg';
       } 
     
-    const resizebox2 = document.getElementById("channel-description");
+    const resizebox2 = document.getElementById('channel-description');
       if (windowWidth <= 767) {
-        resizebox2.className = "form-control";
+        resizebox2.className = 'form-control';
       } else if (windowWidth >= 768) {
-        resizebox2.className = "form-control form-control-lg";
+        resizebox2.className = 'form-control form-control-lg';
       }
   }
   
-  //傾きを変える度に現在の傾きを判定
-  window.orientationchange = function (){
-    if (Math.abs(window.orientation) === 0){
+  window.orientationchange = function() {
+    if (Math.abs(window.orientation) === 0) {
       window.reload(); 
     } else {
       window.reload();
@@ -101,15 +100,14 @@
     allowEmpty: true,
     showPaletteOnly: true,
     showPalette: true,
-    preferredFormat: "hex",
+    preferredFormat: 'hex',
     palette: [
       'black', 'gray', 
-      'steelblue', 'navy', 'blue', 'royalblue', 'dodgerblue', 'deepskyblue', 'lightskyblue', 
-      'darkcyan', 'green', 'mediumseagreen', 'palegreen', 'greenyellow', 'lime', 'yellowgreen', 'darkkhaki', 'khaki', 
-      '#fff450', 'gold', '#fcc800', 'orange', 'darkorange', '#8f6552', 'saddlebrown', 'firebrick', 'tomato', 'orangered', 'red', 'crimson', '#e73562',
-      'deeppink', 'hotpink', 'lightpink', 'violet', 'darkmagenta', 'darkviolet'
-    ],
-    //hideAfterPaletteSelect: true,
+      'steelblue', 'navy', 'blue', 'royalblue', 'dodgerblue', 'deepskyblue', 'lightskyblue', 'cyan', '#00afcc',
+      'darkcyan', 'green', 'mediumseagreen', 'palegreen', 'greenyellow', 'lime', '#9fc24d', 'yellowgreen', '#d9e367', 'darkkhaki', 'khaki', 
+      '#fff799', '#fff352', '#ffdc00', '#fcc800', 'orange', 'darkorange', '#8f6552', 'saddlebrown', 'firebrick', 'tomato', 'orangered', 'red', 'crimson', '#e73562',
+      'deeppink', 'hotpink', 'lightpink', 'violet', 'darkmagenta', 'darkviolet', '#5e17eb'
+    ]
   });
   
   $('#channel-description').on('input', function() {
@@ -143,14 +141,8 @@
         $.ajax({
           type: 'DELETE',
           url: '/channels/<%= channel_edit.id %>',
-          data: { cp_current_user_id: '<%= cp_current_user.id %>' }
+          data: { community_id: '<%= channel_edit.community_id %>',  }
         });
-        /*.done(function(response) {
-          
-        })
-        .fail(function(xhr) {
-          
-        });*/
       }
     }, function(dismiss) {});
   });

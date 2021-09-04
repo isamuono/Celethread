@@ -12,7 +12,7 @@ html {
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: cover;
-  background-color: #a2efef;
+  background-color: #f1f1f1;
   h1 {
     font-size: 7rem;
   }
@@ -26,9 +26,13 @@ html {
   color: #000;
 }
 .btn-black {
+  margin-top: 8rem;
+  padding-top: 1.4rem;
+  padding-bottom: 1.4rem;
+  border-radius: 2.2rem;
+  font-size: 2rem;
   color: #000;
   border: 1px solid #000;
-  
   &:hover {
     color: #000;
   }
@@ -42,15 +46,8 @@ html {
 
 /*Topページ*/
 .top-container {
-  padding-top: 10rem;
+  padding-top: 4rem;
   padding-bottom: 4rem;
-}
-.btn-black {
-  font-size: 2rem;
-  padding-top: 1.4rem;
-  padding-bottom: 1.4rem;
-  border-radius: 2.2rem;
-  margin-top: 14rem;
 }
 .public-com-container {
   p1 {
@@ -127,7 +124,7 @@ html {
   padding-bottom: 4rem;
   h4 {
     font-size: 3.6rem;
-    margin-top: 7rem;
+    margin-top: 0;
   }
   .label-text {
     font-size: 1.8rem;
