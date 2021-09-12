@@ -44,7 +44,7 @@ Rails.application.configure do
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
-  config.web_socket_server_url = "wss://celethread.herokuapp.com//cable"
+  config.web_socket_server_url = "wss://celethread.herokuapp.com//cable" # 2021/9/12変更
   config.action_cable.allowed_request_origins = ['http://celethread.herokuapp.com/ ', 'https://celethread.herokuapp.com/'] # 2021/9/12変更
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
@@ -68,7 +68,18 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  host = 'gmail.com'
+  config.action_mailer.smtp_settings = {
+    address: 'celethread136@gmail.com',
+    port: 587,
+    domain: 'gmail.com',
+    user_name: ENV['SEND_MAIL'], #celeste
+    password: ENV['GMAIL_SPECIFIC_PASSWORD'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
