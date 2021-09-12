@@ -1,0 +1,36 @@
+<span id="treaction_<%= gthread.id %>_<%= treaction.entity_name %>">
+  <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: treaction.entity_name, images: treaction.images), { class: "treactions-text-decoration", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+    <button type="button" class="btn treactions-list_<%= gthread.id %>_<%= treaction.entity_name %>">
+      <img src='<%= "#{ treaction.images }" %>' class="treactions-images">
+      <span class="treactions-counts-box">
+        <span class="treactions-counts" id="treactions-counts_<%= gthread.id %>_<%= treaction.entity_name %>">
+          <%= gthread.thread_reactions.where(images: treaction.images).count %>
+        </span>
+      </span>
+    </button>
+  <% end %>
+</span>  
+<script>
+  // リアクションしたユーザーとその人数
+  tippy('.treactions-list_<%= gthread.id %>_<%= treaction.entity_name %>', {
+    content: `<div class="tippy-treaction-users-container">
+                <div class="tippy-treaction-images-box">
+                  <img src='<%= "#{ treaction.images }" %>' class="tippy-treaction-images">
+                </div>
+                <div class="tippy-treaction-users-accountName">
+                  <% gthread.thread_reaction_users.where(thread_reactions: { images: treaction.images }).each_with_index do |treaction_user, i| %>
+                    <% if i == gthread.thread_reaction_users.where(thread_reactions: { images: treaction.images }).length - 1 %>
+                      <%= treaction_user.accountName %>さんが
+                      <span class="tippy-treaction-text-attached">リアクションしました</span>
+                      ${ ( gon.current_user_id == <%= treaction_user.id %> ) ? `（削除する場合はクリック）` : `` }
+                    <% else %>
+                      <%= treaction_user.accountName %>さん,
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>`,
+    allowHTML: true,
+    theme: 'treaction',
+    delay: [200, 0]
+  });
+</script>

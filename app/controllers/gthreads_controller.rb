@@ -12,7 +12,7 @@ class GthreadsController < ApplicationController
     @communities = current_user.communities
     
     if params[:channel_id] && Channel.exists?(id: params[:channel_id])
-      @channel = Channel.find(params[:channel_id])#_by(id: @communities.first)
+      @channel = Channel.find(params[:channel_id])
     else
       redirect_to channels_gthreads_path(current_user.communities.order(:created_at).first.channels.first.id)
       @community_first = Community.find(current_user.communities.order(:created_at).first.id)
@@ -24,11 +24,6 @@ class GthreadsController < ApplicationController
     gon.channel_id = @channel.id
     gon.current_user_id = current_user.id
     
-    #respond_to do |format| 
-    #  format.html
-    #  format.json { @new_thread = Gthread.includes(:user, :thread_reaction_users, :thread_reactions).where('id > ?', params[:thread][:id]) }
-    #end
-    
     @unchecked_notifications = current_user.passive_notifications.where(checked: false).where.not(visitor_id: current_user.id)
   end
   
@@ -38,7 +33,8 @@ class GthreadsController < ApplicationController
     @channel = Channel.find_by(id: thread_params[:channel_id])
     @gthread.save
     
-    ActionCable.server.broadcast "gthread_channel_#{ @channel.id }", gthread: @gthread.template, gthread_id: @gthread['id'], channel_id: @gthread['channel_id'], current_user_id: current_user.id, user_id: @gthread.user_id, title: @gthread.title,
+    ActionCable.server.broadcast "gthread_channel_#{ @channel.id }", my_gthread: @gthread.my_gthread, others_gthread: @gthread.others_gthread,
+        gthread_id: @gthread['id'], channel_id: @gthread['channel_id'], user_id: @gthread.user_id, title: @gthread.title,
         gthread_user_name: @gthread.user.accountName, gthread_user_images: @gthread.user.images.url, gthread_user_self_introduction: @gthread.user.self_introduction,
         gthread_user_communities_count: @gthread.user.communities.count, gthread_user_created_at: @gthread.user.created_at.strftime("%-Y#{'年'}%-m#{'月'}"),
         channel_name: @gthread.channel.channelName, channel_color: @gthread.channel.color,
@@ -71,7 +67,7 @@ class GthreadsController < ApplicationController
   end
   
   def reaction_image_index
-    @thread_reaction_image = Gthread.find(params[:id])
+    @gthread = Gthread.find(params[:id])
     
     @reaction_images_custom = [
       { emoji_id: '1', entity_name: 'ryokai', images: "/reaction_images/custom/ryokai.png" },
@@ -391,10 +387,15 @@ class GthreadsController < ApplicationController
     ]
   end
   
+  def thread_reaction_index
+    @gthread = Gthread.find(params[:id])
+    @channel = @gthread.channel
+  end
+  
   def comment_index
-    @thread_comment = Gthread.find(params[:id])
-    @comments = @thread_comment.comments.includes(:user)
-    @channel = @thread_comment.channel
+    @gthread = Gthread.find(params[:id])
+    @comments = @gthread.comments.includes(:user)
+    @channel = @gthread.channel
     @comment = Comment.new
   end
   
@@ -403,11 +404,6 @@ class GthreadsController < ApplicationController
     last_id = params[:oldest_gthread_id].to_i - 1
     @gthreads = @channel.gthreads.includes(:user, :thread_reaction_users, :thread_reactions).order(:created_at).where(id: 1..last_id).last(5)
   end
-  
-  #def new
-  #  @gthread = Gthread.new
-  #  @gthread.channel_id = params[:channel_id]
-  #end
   
   def destroy
     @gthread = Gthread.find_by(user_id: current_user.id, id: params[:id])

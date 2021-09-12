@@ -8,9 +8,12 @@ class Comment < ApplicationRecord
   belongs_to :gthread
   has_many :notifications, dependent: :destroy
   
-  def template
-    current_user = User.find_by(id: user.id)
-    ApplicationController.renderer.render partial: "comments/comment", locals: { tcomment: self, current_user: current_user }
+  def my_comment
+    ApplicationController.renderer.render partial: "comments/my_comment", locals: { tcomment: self }
+  end
+  
+  def others_comment
+    ApplicationController.renderer.render partial: "comments/others_comment", locals: { tcomment: self }
   end
   
   def comment_count_template

@@ -1,20 +1,20 @@
-$('#thread-reaction-Modal<%= @thread_reaction_image.id %>').html('<%= escape_javascript(render partial: 'thread_reactions/thread_reaction_modal', locals: { gthread: @thread_reaction_image, thread_reaction_users: @thread_reaction_image.thread_reaction_users }) %>');
+$('#thread-reaction-Modal<%= @gthread.id %>').html('<%= escape_javascript(render partial: 'thread_reactions/reaction_image_index_modal', locals: { gthread: @gthread, thread_reaction_users: @gthread.thread_reaction_users }) %>');
 
-$('#thread-reaction-Modal<%= @thread_reaction_image.id %>').modal('show');
+$('#thread-reaction-Modal<%= @gthread.id %>').modal('show');
 
-$('#thread-reaction-Modal<%= @thread_reaction_image.id %>').on('hidden.bs.modal', function() {
-  $('#thread-reaction-Modal<%= @thread_reaction_image.id %>').modal('hide');
+$('#thread-reaction-Modal<%= @gthread.id %>').on('hidden.bs.modal', function() {
+  $('#thread-reaction-Modal<%= @gthread.id %>').modal('hide');
   
   $.ajax({
-    'url': '/channels/<%= @thread_reaction_image.channel.id %>/gthreads/<%= @thread_reaction_image.g_uid %>',
+    'url': '/channels/<%= @gthread.channel.id %>/gthreads/<%= @gthread.g_uid %>',
     'dataType': 'html',
     'cache': false
   })
   .then(function(data) {
-    window.history.pushState(null, null, '/channels/<%= @thread_reaction_image.channel.id %>/gthreads');
+    window.history.pushState(null, null, '/channels/<%= @gthread.channel.id %>/gthreads');
   })
   
   //App.thread_reaction.unsubscribe();
 });
 
-window.history.pushState(null, null, '/channels/<%= @thread_reaction_image.channel.id %>/gthreads/<%= @thread_reaction_image.g_uid %>');
+window.history.pushState(null, null, '/channels/<%= @gthread.channel.id %>/gthreads/<%= @gthread.g_uid %>');

@@ -1,0 +1,7 @@
+$('#treaction-Modal<%= @gthread.id %>').html("<%= escape_javascript(render partial: 'thread_reactions/thread_reaction_index_modal', locals: { gthread: @gthread }) %>");
+
+$('#treaction-Modal<%= @gthread.id %>').modal('show');
+
+$('#treaction-Modal<%= @gthread.id %>').on('hidden.bs.modal', function() {
+  $('#treaction-Modal<%= @gthread.id %>').modal('hide');
+});

@@ -7,12 +7,14 @@ class ThreadReaction < ApplicationRecord
   belongs_to :user
   belongs_to :gthread
   has_many :reaction_images
-  #has_many :thread_reaction_users#, through: :reaction_images, source: 'user'
   has_many :notifications, dependent: :destroy
   
-  def template
-    current_user = User.find_by(id: user_id)
-    ApplicationController.renderer.render partial: "thread_reactions/treactions_list", locals: { gthread: self.gthread, treaction: self, current_user: current_user }
+  def my_treaction
+    ApplicationController.renderer.render partial: "thread_reactions/my_treaction", locals: { gthread: self.gthread, treaction: self }
+  end
+  
+  def others_treaction
+    ApplicationController.renderer.render partial: "thread_reactions/others_treaction", locals: { gthread: self.gthread, treaction: self }
   end
   
   def reaction_count_all_template

@@ -1,0 +1,38 @@
+<%= link_to thread_reaction_path(gthread_id: gthread.id, entity_name: entity_name), { class: "thread-reaction-btn-a", id: "thread-reaction-destroy-btn_#{ gthread.id }_#{ entity_name }", controller: 'thread_reactions', action: 'destroy', method: :delete, remote: true, data: { confirm: "このリアクションを削除してもよろしいですか？" } } do %>
+  <span class="thread-reaction-btn symbols">
+    <%= image_tag images, class: "thread-reaction-images-single lazyload" %>
+  </span>
+<% end %>
+<script>
+  // 削除時確認ダイアログ(sweetalert2)
+  $('#thread-reaction-destroy-btn_<%= gthread.id %>_<%= entity_name %>').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  
+    var $link = $(this);
+  
+    swal.fire({
+      icon: 'warning',
+      iconColor: 'red',
+      title: 'このリアクションを削除してもよろしいですか？',
+      confirmButtonText: '削除する',
+      confirmButtonColor: '#d33',
+      showCancelButton: true,
+      cancelButtonText: 'キャンセル',
+      focusCancel: true,
+      position : 'center',
+      allowEscapeKey: true,
+      customClass: {
+        popup: 'sweetalert-reaction-destroy'
+      }
+    }).then(function(result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/thread_reactions/<%= entity_name %>',
+          type: 'DELETE',
+          data: { gthread_id: <%= gthread.id %> },
+        });
+      }
+    }, function(dismiss) {});
+  });
+</script>

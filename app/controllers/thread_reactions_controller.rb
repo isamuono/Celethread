@@ -5,13 +5,24 @@ class ThreadReactionsController < ApplicationController
   def create
     @thread_reaction = ThreadReaction.new(thread_reaction_params)
     @thread_reaction.user_id = current_user.id
+    
+    #saveする前
     thread_reaction_present_check = @thread_reaction.gthread.thread_reactions.where(entity_name: @thread_reaction.entity_name).present?
+    
+    temp = @thread_reaction.gthread.thread_reactions.select(:user_id).where(images: @thread_reaction.images)
+    treaction_user_ids = []
+    
+    temp.each do |obj|
+      treaction_user_ids.push(obj.user_id)
+    end
+    
     @thread_reaction.save
     
-    ActionCable.server.broadcast "thread_reaction_channel", thread_reaction: @thread_reaction.template, treaction_count_all: @thread_reaction.reaction_count_all_template,
-        thread_reaction_already_present_check: thread_reaction_present_check, current_user_id: current_user.id, 
+    ActionCable.server.broadcast "thread_reaction_channel", my_treaction: @thread_reaction.my_treaction, others_treaction: @thread_reaction.others_treaction,
+        treaction_count_all: @thread_reaction.reaction_count_all_template, thread_reaction_already_present_check: thread_reaction_present_check, treaction_user_ids: treaction_user_ids,
         user_id: @thread_reaction['user_id'], gthread_id: @thread_reaction['gthread_id'], entity_name: @thread_reaction['entity_name'], images: @thread_reaction['images'],
         treaction_user_accountName: @thread_reaction.user.accountName, channel_id: @thread_reaction.gthread.channel.id
+    
     
     # 通知機能 @thread_reaction.gthread.create_notification_react!(current_user)
     # スレッド投稿者に通知を知らせる
@@ -52,10 +63,18 @@ class ThreadReactionsController < ApplicationController
   
   def destroy
     @thread_reaction = ThreadReaction.find_by(user_id: current_user.id, gthread_id: thread_reaction_params[:gthread_id], entity_name: thread_reaction_params[:entity_name])
-    @treaction_count = ThreadReaction.where(gthread_id: thread_reaction_params[:gthread_id], entity_name: thread_reaction_params[:entity_name]).count
+    treaction_count = ThreadReaction.where(gthread_id: thread_reaction_params[:gthread_id], entity_name: thread_reaction_params[:entity_name]).count
+    
+    temp = @thread_reaction.gthread.thread_reactions.select(:user_id).where(images: @thread_reaction.images)
+    treaction_user_ids = []
+    
+    temp.each do |obj|
+      treaction_user_ids.push(obj.user_id)
+    end
     
     if @thread_reaction.destroy
-      ActionCable.server.broadcast "thread_reaction_delete_channel", thread_reaction: @thread_reaction.template, treaction_count_check: @treaction_count, treaction_count_all: @thread_reaction.reaction_count_all_template,
+      ActionCable.server.broadcast "thread_reaction_delete_channel", my_treaction: @thread_reaction.my_treaction, others_treaction: @thread_reaction.others_treaction,
+          treaction_count: treaction_count, treaction_count_all: @thread_reaction.reaction_count_all_template, treaction_user_ids: treaction_user_ids,
           gthread_id: @thread_reaction['gthread_id'], entity_name: @thread_reaction['entity_name'], current_user_id: current_user.id, user_id: @thread_reaction['user_id']
     end
   end

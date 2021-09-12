@@ -1904,7 +1904,7 @@ body {
     width: 1.7rem;
     font-size: 1.5rem;
   }
-  .treaction-btn {
+  .reaction-images-btn {
     display: inline-block;
     position: relative;
     height: 3.2rem;
@@ -1960,12 +1960,14 @@ body {
     margin-bottom: 0.8rem;
     font-size: 1.5rem;
     font-weight: 500;
+    color: #212529;
   }
   .treaction-number-attached,
   .tcomment-number-attached {
     color: #656565;
   }
-  .thread-reaction-btn-a:hover,
+  .reaction-images-btn-a:hover,
+  .treaction-btn-a:hover,
   .tcomment-btn-a:hover,
   .thread-destroy-btn-a:hover {
     text-decoration: none; //リンクのカーソル時のアンダーラインを非表示
@@ -2014,9 +2016,8 @@ body {
     height: 2rem;
     width: 2rem;
   }
-  
   [class*="treactions-list_"],
-  .treaction-btn,
+  .reaction-images-btn,
   .tcomment-btn,
   .thread-destroy-btn {
     &:hover {
@@ -2276,6 +2277,10 @@ body {
     text-overflow: ellipsis;
     -webkit-text-overflow: ellipsis; /* Safari */
     -o-text-overflow: ellipsis; /* Opera */
+  }
+  .treaction-null-text {
+    margin-left: 0.5rem;
+    font-size: 1.8rem;
   }
 }
 

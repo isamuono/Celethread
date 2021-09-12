@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   get '/show_additionally', to: 'gthreads#show_additionally'
   get 'gthreads/notification_index', to: 'gthreads#notification_index', as: :gthreads_notification_index
   get 'gthreads/reaction_image_index', to: 'gthreads#reaction_image_index', as: :gthreads_reaction_image_index
+  get 'gthreads/thread_reaction_index', to: 'gthreads#thread_reaction_index', as: :gthreads_thread_reaction_index
   get 'gthreads/comment_index', to: 'gthreads#comment_index', as: :gthreads_comment_index
   get 'gthreads/test', to: 'gthreads#test'
   

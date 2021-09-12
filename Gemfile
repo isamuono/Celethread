@@ -47,6 +47,9 @@ group :development, :test do
   gem 'pry-doc'
   gem 'pry-byebug'
   gem 'pry-stack_explorer'
+  
+  gem 'rspec-rails', '~> 3.6'
+  gem 'spring-commands-rspec'
 end
 
 group :development do

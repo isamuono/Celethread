@@ -16,11 +16,11 @@ class GthreadChannel < ApplicationCable::Channel
   end
   
   #def speak(data)
-    #ActionCable.server.broadcast 'gthread_channel', message: data['message']
-    #Gthread.create! description: data['direct_message'], user_id: current_user.id, room_id: params['room']
+    #ActionCable.server.broadcast 'gthread_channel_#{ params[:channel_id] }', gthread: data['gthread']
+  #  Gthread.create! description: data['direct_message'], user_id: current_user.id
   #end
   
-  private
+  #private
     #def render_thread(gthread)
      # ActionController.render(
       #  partial: 'gthreads/gthread', locals: { gthread: gthread }

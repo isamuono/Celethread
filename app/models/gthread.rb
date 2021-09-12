@@ -28,8 +28,11 @@ class Gthread < ApplicationRecord
     g_uid
   end
   
-  def template
-    current_user = User.find_by(id: user_id)
-    ApplicationController.renderer.render partial: "gthreads/gthread", locals: { gthread: self, current_user: current_user }
+  def my_gthread
+    ApplicationController.renderer.render partial: "gthreads/my_gthread", locals: { gthread: self }
+  end
+  
+  def others_gthread
+    ApplicationController.renderer.render partial: "gthreads/others_gthread", locals: { gthread: self }
   end
 end

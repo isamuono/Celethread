@@ -1,5 +1,12 @@
 <div class="thread-container" id="thread-container" data-channel_id="<%= @channel.id %>">
-  <%= render @gthreads %>
+  <%#= render @gthreads %>
+  <% gthreads.each do |gthread| %>
+    <% if gthread.user_id == current_user.id %>
+      <%= render partial: 'gthreads/my_gthread', locals: { channel: channel, gthread: gthread } %>
+    <% else %>
+      <%= render partial: 'gthreads/others_gthread', locals: { channel: channel, gthread: gthread } %>
+    <% end %>
+  <% end %>
 </div>
 <script>
   //if (!isSubscribed(channel, channel_id)) {
@@ -20,12 +27,11 @@
         
         var gthread_id = data['gthread_id'];
         var gthread_user_id = data['user_id'];
-        //var current_user_id = data['current_user_id'];
         
         if (href.match(`/channels/${ data['channel_id'] }/gthreads`)) {
-          threads.insertAdjacentHTML('beforeend', data['gthread']);
-          
           if (gon.current_user_id == gthread_user_id) {
+            threads.insertAdjacentHTML('beforeend', data['my_gthread']);
+            
             threadTitleForm.value = '';
             $('.ql-editor').html('<p></p>');
             $('#file_field').val(null);
@@ -33,6 +39,8 @@
             $('.ql-editor').css('height', 100 + '%');
             $('.preview-container').css('display', 'none');
             $submit_btn.prop('disabled', true);
+          } else {
+            threads.insertAdjacentHTML('beforeend', data['others_gthread']);
           }
         }
         

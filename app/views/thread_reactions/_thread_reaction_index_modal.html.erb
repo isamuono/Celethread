@@ -1,0 +1,22 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content treaction-users-index">
+    <div class="modal-header">
+      <p class="modal-title">リアクションしたユーザー</p>
+    </div>
+    <div class="modal-body treaction-modal-body">
+      <% if gthread.thread_reactions.present? %>
+        <% gthread.thread_reactions.each do |treaction| %>
+          <div class="treaction-list">
+            <div class="treaction-list-reactions">
+              <img src='<%= "#{ treaction.images }" %>' class="treaction-images-single">
+            </div>
+            <div class="treaction-list-user_names"><%= treaction.user.accountName %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="treaction-null-text">リアクションはまだありません</p>
+      <% end %>
+    </div>
+  </div>
+</div><!-- /.modal-dialog -->

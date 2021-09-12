@@ -1,0 +1,95 @@
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content reaction-images-index">
+    <div class="modal-header">
+      <p class="modal-title">リアクションのアイコンを選んでください</p>
+    </div>
+    <div class="modal-body thread-reaction-modal-body">
+      <% @reaction_images_custom.each do |custom| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: custom[:entity_name]).present? %>
+          <%= render partial: 'thread_reactions/thread_reaction_destroy_icon', locals: { gthread: gthread, entity_name: custom[:entity_name], images: custom[:images] } %>
+        <% else %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: custom[:entity_name], images: custom[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+            <span class="thread-reaction-btn custom">
+              <%= image_tag custom[:images], class: "thread-reaction-images-single lazyload" %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <hr>
+      <% @reaction_images_smileys_and_emotion.each do |se| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: se[:entity_name]).present? %>
+          <%= render partial: 'thread_reactions/thread_reaction_destroy_icon', locals: { gthread: gthread, entity_name: se[:entity_name], images: se[:images] } %>
+        <% else %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: se[:entity_name], images: se[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+            <span class="thread-reaction-btn smileys_and_emotion">
+              <%= image_tag se[:images], class: "thread-reaction-images-single lazyload" %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <hr>
+      <% @reaction_images_body_and_gesture_and_person.each do |bgp| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: bgp[:entity_name]).present? %>
+          <%= render partial: 'thread_reactions/thread_reaction_destroy_icon', locals: { gthread: gthread, entity_name: bgp[:entity_name], images: bgp[:images] } %>
+        <% else %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: bgp[:entity_name], images: bgp[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+            <span class="thread-reaction-btn body_and_gesture_and_person">
+              <%= image_tag bgp[:images], class: "thread-reaction-images-single lazyload" %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <hr>
+      <% @reaction_images_nature_and_place.each do |np| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: np[:entity_name]).present? %>
+          <%= render partial: 'thread_reactions/thread_reaction_destroy_icon', locals: { gthread: gthread, entity_name: np[:entity_name], images: np[:images] } %>
+        <% else %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: np[:entity_name], images: np[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactionss', action: 'create', method: :post, remote: true } do %>
+            <span class="thread-reaction-btn nature_and_place">
+              <%= image_tag np[:images], class: "thread-reaction-images-single lazyload" %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <hr>
+      <% @reaction_images_activity_and_tradition_and_features.each do |tfa| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: tfa[:entity_name]).present? %>
+          <%= render partial: 'thread_reactions/thread_reaction_destroy_icon', locals: { gthread: gthread, entity_name: tfa[:entity_name], images: tfa[:images] } %>
+        <% else %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: tfa[:entity_name], images: tfa[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactionss', action: 'create', method: :post, remote: true } do %>
+            <span class="thread-reaction-btn activity_and_tradition_and_features">
+              <%= image_tag tfa[:images], class: "thread-reaction-images-single lazyload" %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <hr>
+      <% @reaction_images_objects_and_others.each do |objects| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: objects[:entity_name]).present? %>
+          <%= render partial: 'thread_reactions/thread_reaction_destroy_icon', locals: { gthread: gthread, entity_name: objects[:entity_name], images: objects[:images] } %>
+        <% else %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: objects[:entity_name], images: objects[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+            <span class="thread-reaction-btn objects_and_others">
+              <%= image_tag objects[:images], class: "thread-reaction-images-single lazyload" %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+      <hr>
+      <% @reaction_images_symbols.each do |symbols| %>
+        <% if gthread.thread_reactions.where(user_id: current_user.id, entity_name: symbols[:entity_name]).present? %>
+          <%= render partial: 'thread_reactions/thread_reaction_destroy_icon', locals: { gthread: gthread, entity_name: symbols[:entity_name], images: symbols[:images] } %>
+        <% else %>
+          <%= link_to thread_reactions_path(gthread_id: gthread.id, entity_name: symbols[:entity_name], images: symbols[:images]), { class: "thread-reaction-btn-a", controller: 'thread_reactions', action: 'create', method: :post, remote: true } do %>
+            <span class="thread-reaction-btn symbols">
+              <%= image_tag symbols[:images], class: "thread-reaction-images-single lazyload" %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+<script>
+  lazyload();
+</script>

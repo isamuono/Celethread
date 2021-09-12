@@ -119,7 +119,7 @@
   
   <div id="main" class="main-container">
     <div class="channel-container">
-      <%= render partial: 'channel_room', locals: { channel: @channel, gthread: @gthread, gthreads: @gthreads } %>
+      <%= render partial: 'channel_room', locals: { channel: @channel, gthreads: @gthreads } %>
     </div>
     <%# if @channel.id != 1 %>
       <button class="btn new-thread-btn" id="new-thread-btn">

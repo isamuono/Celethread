@@ -1,12 +1,12 @@
-$('#tcomment-Modal<%= @thread_comment.id %>').html("<%= escape_javascript(render partial: 'comments/comment_modal', locals: { gthread: @thread_comment, comments: @comments }) %>");
+$('#tcomment-Modal<%= @gthread.id %>').html("<%= escape_javascript(render partial: 'comments/comment_index_modal', locals: { gthread: @gthread, comments: @comments }) %>");
 
-$('#tcomment-Modal<%= @thread_comment.id %>').modal('show');
+$('#tcomment-Modal<%= @gthread.id %>').modal('show');
 
-$('#tcomment-Modal<%= @thread_comment.id %>').on('hidden.bs.modal', function() {
-  $('#tcomment-Modal<%= @thread_comment.id %>').modal('hide');
+$('#tcomment-Modal<%= @gthread.id %>').on('hidden.bs.modal', function() {
+  $('#tcomment-Modal<%= @gthread.id %>').modal('hide');
   
   $.ajax({
-    'url': '/channels/<%= @thread_comment.channel.id %>/gthreads/<%= @thread_comment.g_uid %>',
+    'url': '/channels/<%= @gthread.channel.id %>/gthreads/<%= @gthread.g_uid %>',
     'dataType': 'html',
     'cache': false
   })
@@ -23,4 +23,4 @@ $('#tcomment-Modal<%= @thread_comment.id %>').on('hidden.bs.modal', function() {
   App.comment.unsubscribe();
 });
 
-window.history.pushState(null, null, '/channels/<%= @channel.id %>/gthreads/<%= @thread_comment.g_uid %>');
+window.history.pushState(null, null, '/channels/<%= @channel.id %>/gthreads/<%= @gthread.g_uid %>');

@@ -3,12 +3,10 @@ $('.nav-channel-name').html("<%= @channel.channelName %>");
 
 $('.footer_container').html("<%= escape_javascript(render partial: 'gthreads/footer') %>");
 
-//var gthreads = '<div class="thread-container" id="thread-container" data-channel_id="<%= @channel.id %>"><%= escape_javascript(render @gthreads) %></div>';
-
 // 同じチャンネルのサブスクリプションが複数複数作成されるのを防ぐ
 App.gthread.unsubscribe();
 
-$('.channel-container').html("<%= escape_javascript(render partial: 'gthreads/channel_room') %>");
+$('.channel-container').html("<%= escape_javascript(render partial: 'gthreads/channel_room', locals: { channel: @channel, gthread: @gthread, gthreads: @gthreads }) %>");
 
 tippy('.new-thread-btn', {
   content: `<div class="new-thread">

@@ -8,8 +8,8 @@ class CommentsController < ApplicationController
     @comment.community_participant_role = current_user.community_participants.find_by(community_id: @comment.gthread.channel.community_id).role
     @comment.save
     
-    ActionCable.server.broadcast "comment_channel", comment: @comment.template, tcomment_count: @comment.comment_count_template,
-        comment_id: @comment['id'], gthread_id: @comment['gthread_id'], g_uid: @comment.gthread['g_uid'], current_user_id: current_user.id, user_id: @comment['user_id'],
+    ActionCable.server.broadcast "comment_channel", my_comment: @comment.my_comment, others_comment: @comment.others_comment, tcomment_count: @comment.comment_count_template,
+        comment_id: @comment['id'], gthread_id: @comment['gthread_id'], g_uid: @comment.gthread['g_uid'], user_id: @comment['user_id'],
         channel_id: @comment.gthread.channel.id
     
     # 通知機能
@@ -81,7 +81,8 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     
     if @comment.destroy
-      ActionCable.server.broadcast 'comment_delete_channel', tcomment_count: @comment.comment_count_template, comment_id: @comment['id'], gthread_id: @comment['gthread_id']
+      ActionCable.server.broadcast 'comment_delete_channel', tcomment_count: @comment.comment_count_template,
+          comment_id: @comment['id'], gthread_id: @comment['gthread_id']
     end
   end
   
