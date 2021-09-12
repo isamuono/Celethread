@@ -1,5 +1,5 @@
-<p><%= "#{ @inviter.accountName }さんがあなたを[サイト名]に招待しています。" %></p>
+<p><%= "#{ @inviter.accountName }さんがあなたを[Celethread]に招待しています。" %></p>
 <p>まずは以下のリンクにアクセスしてアカウントを作成してください。</p>
 
-<%= link_to "[サイト名]でアカウントを作成する", edit_invitation_url(@user.invite_token, email: @user.email, community_id: @community_id) %>
+<%= link_to "[Celethread]でアカウントを作成する", edit_invitation_url(@user.invite_token, email: @user.email, community_id: @community_id) %>
 <p>このリンクは24時間で有効期限が切れます。</p>
