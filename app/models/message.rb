@@ -1,5 +1,5 @@
 class Message < ApplicationRecord
   
-  mount_uploader :images, ImagesUploader
+  mount_uploaders :images, ImagesUploader
   
 end
