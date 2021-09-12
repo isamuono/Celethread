@@ -847,6 +847,11 @@
   dependencies:
     mkdirp "^1.0.4"
 
+"@popperjs/core@^2.8.3":
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.10.1.tgz#728ecd95ab207aab8a9a4e421f0422db329232be"
+  integrity sha512-HnUhk1Sy9IuKrxEMdIRCxpIqPw6BFsbYSEUO9p/hNw5sMld/+3OLMWQP80F8/db9qsv3qUjs7ZR5bS/R+iinXw==
+
 "@rails/webpacker@5.2.1":
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-5.2.1.tgz#87cdbd4af2090ae2d74bdc51f6f04717d907c5b3"
@@ -4111,15 +4116,15 @@ jquery-simplecolorpicker@^0.3.1:
   resolved "https://registry.yarnpkg.com/jquery-simplecolorpicker/-/jquery-simplecolorpicker-0.3.1.tgz#4f6befd380ab05470f585d5482e5180556e460eb"
   integrity sha1-T2vv04CrBUcPWF1UguUYBVbkYOs=
 
+jquery-toast-plugin@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/jquery-toast-plugin/-/jquery-toast-plugin-1.3.2.tgz#9bef5a7d7590403e0d56b1d73a05b9842d67fa05"
+  integrity sha512-0j/nfqA2FHFuJXp8QL33EVVCY//TDVfq4LULhTbasZYl2aZlX6YiSF5IGrI31dQiS9S4JkXBUfX3rMJcfl/u/g==
+
 jquery@>2.1.4:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
   integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
-
-jquery@^1.11.3:
-  version "1.12.4"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-1.12.4.tgz#01e1dfba290fe73deba77ceeacb0f9ba2fec9e0c"
-  integrity sha1-AeHfuikP5z3rp3zurLD5ui/sngw=
 
 jquery@^2.2.4:
   version "2.2.4"
@@ -5256,6 +5261,11 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+pdfjs-dist@^2.8.335:
+  version "2.9.359"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-2.9.359.tgz#e67bafebf20e50fc41f1a5c189155ad008ac4f81"
+  integrity sha512-P2nYtkacdlZaNNwrBLw1ZyMm0oE2yY/5S/GDCAmMJ7U4+ciL/D0mrlEC/o4HZZc/LNE3w8lEVzBEyVgEQlPVKQ==
 
 performance-now@^2.1.0:
   version "2.1.0"
@@ -6682,13 +6692,6 @@ signal-exit@^3.0.0:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.3.tgz#a1410c2edd8f077b08b4e253c8eacfcaf057461c"
   integrity sha512-VUJ49FC8U1OxwZLxIbTTrDvLnf/6TDgxZcK8wxR8zs13xpx7xbG60ndBlhNrFi2EMuFRoeDoJO7wthSLq42EjA==
 
-simple-sidebar@^2.8.3:
-  version "2.8.3"
-  resolved "https://registry.yarnpkg.com/simple-sidebar/-/simple-sidebar-2.8.3.tgz#084c6b7450515c654990d1a126fc49b504982412"
-  integrity sha1-CExrdFBRXGVJkNGhJvxJtQSYJBI=
-  dependencies:
-    jquery "^1.11.3"
-
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -7115,6 +7118,11 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
+sweetalert2@^11.0.18:
+  version "11.1.5"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.1.5.tgz#6bc0d681e8f83c744a9284a84aefbfdcc7d92bec"
+  integrity sha512-5cfqUK9lLbvxtjzsvORKWj+d3tcgYlzsL60FoJFXE/+mtMa5EJ3tDax9p9MBjVnZ60gQd+WGrqDIrxoNenhUjA==
+
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
@@ -7213,6 +7221,13 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+
+tippy.js@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.1.tgz#3788a007be7015eee0fd589a66b98fb3f8f10181"
+  integrity sha512-JnFncCq+rF1dTURupoJ4yPie5Cof978inW6/4S6kmWV7LL9YOSEVMifED3KdrVPEG+Z/TFH2CDNJcQEfaeuQww==
+  dependencies:
+    "@popperjs/core" "^2.8.3"
 
 to-arraybuffer@^1.0.0:
   version "1.0.1"
@@ -7514,11 +7529,6 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
-
-vue-infinite-loading@^2.4.5:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/vue-infinite-loading/-/vue-infinite-loading-2.4.5.tgz#cc20fd40af7f20188006443c99b60470cf1de1b3"
-  integrity sha512-xhq95Mxun060bRnsOoLE2Be6BR7jYwuC89kDe18+GmCLVrRA/dU0jrGb12Xu6NjmKs+iTW0AA6saSEmEW4cR7g==
 
 vue-loader@^15.9.5:
   version "15.9.5"
