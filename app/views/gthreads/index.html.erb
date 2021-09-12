@@ -303,7 +303,7 @@
   }, { passive: true });
   
   $(function() {
-    //setInterval(check_notification, 10000);
+    setInterval(check_notification, 10000);
   });
   
   function check_notification() {
@@ -319,7 +319,7 @@
     var toHome = function() {
       location.href = "/channels/<%= @channel.id %>/gthreads";
     };
-    var timerMs = 60 * 60 * 1000;
+    var timerMs = 60 * 60 * 1000; //1h
     var timerId = setTimeout(toHome, timerMs);
   
     $('body').on('click keypress mousemove mousedown', function() {
@@ -327,8 +327,6 @@
       timerId = setTimeout(toHome, timerMs);
     });
   });
-  
-  //setTimeout(refresh, 10000);
   
   $(window).load(function(){
     const threadDescriptionFormClass = document.getElementById('description');
@@ -391,5 +389,4 @@
       $cropModal.modal('hide');
     }
   });
-
 </script>

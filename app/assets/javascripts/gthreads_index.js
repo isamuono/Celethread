@@ -80,7 +80,7 @@ document.addEventListener('turbolinks:load', function() {
 
 // サイドメニュー チャンネルイメージカラー
 function colorElement() {
-  const color = $('#color-icon, .color-icons, .channel-color');//document.getElementsByClassName('color-icons');
+  const color = $('#color-icon, .color-icons, .channel-color');
   const color_arr = Array.from(color);
   
   //for ( i = 0; i < color.length; i++ ) {
@@ -300,18 +300,3 @@ main_container.scrollTop = main_container.scrollHeight;
     
   }
 });*/
-
-// 重複しているリアクションを隠す
-/*const set = new Set();
-
-$('[class*=treactions-list]').filter(
-  function() {
-    const t = $(this).children('img').attr('src');
-    if (set.has(t)) {
-      return true;
-    } else {
-      set.add(t);
-      return false;
-    }
-  }
-).remove();*/

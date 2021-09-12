@@ -19,7 +19,7 @@ class GthreadsController < ApplicationController
       @channel = Channel.find(@community_first.channels.first.id)
     end
     
-    @gthreads = @channel.gthreads.includes(:user, :thread_reaction_users, :thread_reactions).order(:created_at).last(4)
+    @gthreads = @channel.gthreads.includes(:user, :thread_reaction_users, :thread_reactions).order(:created_at).last(8)
     
     gon.channel_id = @channel.id
     gon.current_user_id = current_user.id
