@@ -459,7 +459,7 @@ ReactionImage.create!([
 
 User.create!(id: '1', family_name: 'celeste', first_name: 'bot', accountName: 'celestebot', email: 'celethread136@gmail.com', password: 'dummy_pass')
 
-Community.create!(id: 'celestebot', user_id: '1', communityName: 'celeste_bot', category: 'その他', subcategory: 'その他', prefecture: '東京都', images: File.open("./app/assets/images/icons/image_default.png"), public: '0')
+Community.create!(id: 'celestebot', user_id: '1', communityName: 'celeste_bot', category_id: '5', subcategory_id: '5', prefecture_id: '13', images: File.open("./app/assets/images/icons/image_default.png"), public: '0')
 
 CommunityParticipant.create!(id: '1', user_id: '1', community_id: 'celestebot', role: '1')
 

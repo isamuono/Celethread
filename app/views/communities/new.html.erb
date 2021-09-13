@@ -18,7 +18,7 @@
             <span class="badge badge-danger">必須</span>
             <%= f.label "カテゴリーを選択", class: "label-text1" %>
           </div>
-          <%= f.select :category, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
+          <%= f.select :category_id, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
             { :prompt => "---" }, { class: "custom-select", id: "categorySelect", onchange: "categorySet()", required: true } %>
         </div>
         <div class="form-group" id="form-group">
@@ -26,14 +26,14 @@
             <span class="badge badge-danger">必須</span>
             <%= f.label "サブカテゴリーを選択", class: "label-text1" %>
           </div>
-          <%= f.select :subcategory, [], { :prompt => "---" }, { class: "custom-select text-charcoal", id: "subcategorySelect", required: true } %>
+          <%= f.select :subcategory_id, [], { :prompt => "---" }, { class: "custom-select text-charcoal", id: "subcategorySelect", required: true } %>
         </div>
         <div class="form-group">
           <div class="label-text-box">
             <span class="badge badge-danger">必須</span>
             <%= f.label "都道府県を選択（主な活動拠点など）", class: "label-text1" %>
           </div>
-          <%= f.select :prefecture, Prefecture.all.map{ |prefecture| [prefecture.name] }, { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect", required: true } %>
+          <%= f.collection_select :prefecture_id, Prefecture.all, :id, :name, { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect", required: true } %>
         </div>
         
         <%= f.submit "コミュニティーを作成する", class: "btn btn-block btn-primary" %>
@@ -52,19 +52,39 @@
     <%== @sub1 %>
   );
   
+  var subcategoryary1_id = new Array(
+    <%== @sub1_id %>
+  );
+  
   var subcategoryary2 = new Array(
     <%== @sub2 %>
+  );
+  
+  var subcategoryary2_id = new Array(
+    <%== @sub2_id %>
   );
   
   var subcategoryary3 = new Array(
     <%== @sub3 %>
   );
   
+  var subcategoryary3_id = new Array(
+    <%== @sub3_id %>
+  );
+  
   var subcategoryary4 = new Array(
     <%== @sub4 %>
   );
   
+  var subcategoryary4_id = new Array(
+    <%== @sub4_id %>
+  );
+  
   var subcategories = new Array(
     0, subcategoryary1, subcategoryary2, subcategoryary3, subcategoryary4
+  );
+  
+  var subcategory_ids = new Array(
+    0, subcategoryary1_id, subcategoryary2_id, subcategoryary3_id, subcategoryary4_id
   );
 </script>

@@ -52,6 +52,7 @@ window.orientationchange = function() {
 };
 
 var subcategories;
+var subcategory_ids;
 
 function categorySet() {
   var value = document.getElementById('categorySelect').value;
@@ -62,6 +63,7 @@ function categorySet() {
     document.getElementById('form-group').style.display = 'block';
     
     var subs = subcategories[value];
+    var sub_ids = subcategory_ids[value];
     var size = subcateSel.options.length;
     
     for (i = 0; i < size; i++) {
@@ -71,7 +73,7 @@ function categorySet() {
     for (i = 0; i < subs.length; i++) {
       var option = document.createElement('option');
         option.text = subs[i];
-        option.value = i;
+        option.value = sub_ids[i];
         subcateSel.add(option);
     }
   } else {

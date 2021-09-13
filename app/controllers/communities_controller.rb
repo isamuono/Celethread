@@ -10,38 +10,50 @@ class CommunitiesController < ApplicationController
     
     @subcategories1 = Subcategory.where(category_id: 1)
     @sub1 = '"---"'
+    @sub1_id = '""'
     @subcategories1.each do |sub|
       item = ',"' + sub.name + '"'
       @sub1 = @sub1 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub1_id = @sub1_id + item_id
     end
       
     @subcategories2 = Subcategory.where(category_id: 2)
     @sub2 = '"---"'
+    @sub2_id = '""'
     @subcategories2.each do |sub|
       item = ',"' + sub.name + '"'
       @sub2 = @sub2 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub2_id = @sub2_id + item_id
     end
     
     @subcategories3 = Subcategory.where(category_id: 3)
     @sub3 = '"---"'
+    @sub3_id = '""'
     @subcategories3.each do |sub|
       item = ',"' + sub.name + '"'
       @sub3 = @sub3 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub3_id = @sub3_id + item_id
     end
     
     @subcategories4 = Subcategory.where(category_id: 4)
     @sub4 = '"---"'
+    @sub4_id = '""'
     @subcategories4.each do |sub|
       item = ',"' + sub.name + '"'
       @sub4 = @sub4 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub4_id = @sub4_id + item_id
     end
   end
   
   def create
     @community = Community.new(community_params)
     @community.user_id = current_user.id
-    if @community.category == 5
-      @community.subcategory = 43
+    if @community.category_id == 5
+      @community.subcategory_id = 43
     end
     @community.public = 2 # 基本的に全て公開にする
     
@@ -103,37 +115,49 @@ class CommunitiesController < ApplicationController
     
     @subcategories1 = Subcategory.where(category_id: 1)
     @sub1 = '"---"'
+    @sub1_id = '""'
     @subcategories1.each do |sub|
       item = ',"' + sub.name + '"'
       @sub1 = @sub1 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub1_id = @sub1_id + item_id
     end
       
     @subcategories2 = Subcategory.where(category_id: 2)
     @sub2 = '"---"'
+    @sub2_id = '""'
     @subcategories2.each do |sub|
       item = ',"' + sub.name + '"'
       @sub2 = @sub2 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub2_id = @sub2_id + item_id
     end
     
     @subcategories3 = Subcategory.where(category_id: 3)
     @sub3 = '"---"'
+    @sub3_id = '""'
     @subcategories3.each do |sub|
       item = ',"' + sub.name + '"'
       @sub3 = @sub3 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub3_id = @sub3_id + item_id
     end
     
     @subcategories4 = Subcategory.where(category_id: 4)
     @sub4 = '"---"'
+    @sub4_id = '""'
     @subcategories4.each do |sub|
       item = ',"' + sub.name + '"'
       @sub4 = @sub4 + item
+      item_id = ',"' + sub.id.to_s + '"'
+      @sub4_id = @sub4_id + item_id
     end
   end
   
   def update
     @community_edit_modal = Community.find(community_params[:id])
-    if @community_edit_modal.category == 5 # [その他]
-      @community_edit_modal.subcategory = 43 # [その他]
+    if @community_edit_modal.category_id == 5 # [その他]
+      @community_edit_modal.subcategory_id = 43 # [その他]
     end
     
     if @community_edit_modal.update(community_params)
@@ -155,7 +179,7 @@ class CommunitiesController < ApplicationController
   
   private
     def community_params
-      params.require(:community).permit(:id, :communityName, :category, :subcategory, :prefecture, :sex, :scale, :images, :description)
+      params.require(:community).permit(:id, :communityName, :category_id, :subcategory_id, :prefecture_id, :sex, :scale, :images, :description)
     end
     
     def has_admin_right_at_community?

@@ -33,17 +33,17 @@
               </div>
               <div class="form-group">
                 <%= f.label "カテゴリーを選択", class: "label-text3" %>
-                <%= f.select :category, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
+                <%= f.select :category_id, [["運動・スポーツ・アウトドア", 1], ["文化", 2], ["営利団体", 3], ["非営利団体・公共団体", 4], ["その他", 5]],
                   { }, { class: "custom-select", id: "categorySelect#{ community_edit.id }", onchange: "categorySet()" } %>
               </div>
               <div class="form-group" id="form-group<%= community_edit.id %>">
                 <%= f.label "サブカテゴリーを選択", class: "label-text3" %>
-                <%= f.select :subcategory, [],
+                <%= f.select :subcategory_id, [],
                   { }, { class: "custom-select text-charcoal", id: "subcategorySelect#{ community_edit.id }" } %>
               </div>
               <div class="form-group">
                 <%= f.label "都道府県を選択（主な活動場所、拠点など）", class: "label-text3" %>
-                <%= f.select :prefecture, Prefecture.all.map{ |prefecture| [prefecture.name] },
+                <%= f.collection_select :prefecture_id, Prefecture.all, :id, :name,
                   { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect#{ community_edit.id }"} %>
               </div>
               <div class="form-group">
@@ -158,6 +158,7 @@
       document.getElementById("form-group<%= community_edit.id %>").style.display = "block";
       
       var subs = subcategories[value];
+      var sub_ids = subcategory_ids[value];
       var size = subcateSel.options.length;
       
       for (i = 0; i < size; i++) {
@@ -167,7 +168,7 @@
       for (i = 0; i < subs.length; i++) {
         var option = document.createElement("option");
           option.text = subs[i];
-          option.value = i;
+          option.value = sub_ids[i];
           subcateSel.add(option);
       }
     } else {
@@ -186,6 +187,7 @@
       document.getElementById("form-group<%= community_edit.id %>").style.display = "block";
       
       var subs = subcategories[value];
+      var sub_ids = subcategory_ids[value];
       var size = subcateSel.options.length;
       
       for (i = 0; i < size; i++) {
@@ -195,30 +197,54 @@
       for (i = 0; i < subs.length; i++) {
         var option = document.createElement("option");
           option.text = subs[i];
-          option.value = i;
+          option.value = sub_ids[i];
           subcateSel.add(option);
       }
     } else {
       document.getElementById("form-group<%= community_edit.id %>").style.display = "none";
     }
     
-    subcateSel.selectedIndex = <%= community_edit.subcategory %>;
+    subcateSel.selectedIndex = <%= community_edit.subcategory_id %> - sub_ids[1] + 1;
   });
   
   var subcategoryary1 = new Array(
     <%== @sub1 %>
   );
+  
+  var subcategoryary1_id = new Array(
+    <%== @sub1_id %>
+  );
+  
   var subcategoryary2 = new Array(
     <%== @sub2 %>
   );
+  
+  var subcategoryary2_id = new Array(
+    <%== @sub2_id %>
+  );
+  
   var subcategoryary3 = new Array(
     <%== @sub3 %>
   );
+  
+  var subcategoryary3_id = new Array(
+    <%== @sub3_id %>
+  );
+  
   var subcategoryary4 = new Array(
     <%== @sub4 %>
   );
+  
+  var subcategoryary4_id = new Array(
+    <%== @sub4_id %>
+  );
+  
   var subcategories = new Array(
     0, subcategoryary1, subcategoryary2, subcategoryary3, subcategoryary4
+  );
+  
+  var subcategory_ids = new Array(
+    0, subcategoryary1_id, subcategoryary2_id, subcategoryary3_id, subcategoryary4_id
   );
   
 	function readURL(input) {

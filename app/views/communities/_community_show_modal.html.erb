@@ -24,15 +24,15 @@
             <div class="col-8">
               <div class="community-information-single">
                 <label class="label-text4">カテゴリー</label>
-                <div><%= Category.find(community_show.category).name %></div>
+                <div><%= community_show.category.name %></div>
               </div>
               <div class="community-information-single">
                 <label class="label-text4">サブカテゴリー</label>
-                <div><%= Subcategory.find(community_show.subcategory).name %></div>
+                <div><%= community_show.subcategory.name %></div>
               </div>
               <div class="community-information-single">
                 <label class="label-text4">都道府県（主な活動場所、拠点など）</label>
-                <div><%= community_show.prefecture %></div>
+                <div><%= community_show.prefecture.name %></div>
               </div>
               <div class="community-information-single">
                 <label class="label-text4">性別（コミュニティーメンバーの性別が限定的である場合指定可能）</label>

@@ -49,9 +49,9 @@ ActiveRecord::Schema.define(version: 2021_07_30_114844) do
 
   create_table "communities", id: :string, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC", force: :cascade do |t|
     t.string "communityName"
-    t.integer "category"
-    t.integer "subcategory"
-    t.string "prefecture"
+    t.integer "category_id"
+    t.integer "subcategory_id"
+    t.integer "prefecture_id"
     t.integer "sex"
     t.string "scale"
     t.string "images"
@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_114844) do
     t.string "email"
     t.string "images"
     t.text "self_introduction"
-    t.boolean "temporary", default: false, null: false
+    t.boolean "temporary", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
