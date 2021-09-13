@@ -73,11 +73,11 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: host, protocol: 'https' }
   config.action_mailer.smtp_settings = {
-    address: 'celethread136@gmail.com',
+    address: 'smtp.sendgrid.net',
     port: 587,
     domain: 'gmail.com',
-    user_name: ENV['SEND_MAIL'], #celeste
-    password: ENV['GMAIL_SPECIFIC_PASSWORD'],
+    user_name: ENV['SENDGRID_USERNAME'],
+    password: ENV['SENDGRID_PASSWORD'],
     authentication: 'plain',
     enable_starttls_auto: true
   }
