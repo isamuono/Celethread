@@ -3,7 +3,9 @@
 </head>
 <div class="top-wrapper">
   <div class="form-container">
-    <h1 class="text-black text-center mt-auto">サイト名</h1>
+    <div class="text-center">
+      <%= image_tag "icons/celethread_icon.png", class: 'celethread-icon' %>
+    </div>
     <h4 class="text-black text-center">パスワード再発行</h4>
     <div class="mt-4 offset-xl-3 offset-lg-3 offset-md-3 offset-2 col-xl-6 col-lg-6 col-md-6 col-8">
       <%= form_for :password_reset, url: password_resets_path, html: { class: "needs-validation", novalidate: true, autocapitalize: "off", autocorrect: "off" } do |f| %>

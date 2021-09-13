@@ -88,6 +88,7 @@ body {
     top: 50%;
     left: 96%;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     background: none;
     color: #666;
     border: none;
@@ -114,6 +115,7 @@ body {
     top: 50%;
     left: 94%;
     transform: translateY(55%);
+    -webkit-transform: translateY(55%);
     font-size: 2.0rem;
   }
   input[type="search"]::-webkit-search-cancel-button {
@@ -203,6 +205,7 @@ body {
     top: 50%;
     right: 50%;
     transform: translateX(-40%) translateY(32.5%);
+    -webkit-transform: translateX(-40%) translateY(32.5%);
     font-size: 1.8rem;
   }
   h4 {
@@ -226,6 +229,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     font-size: 1.2rem;
   }
   .label-text1 {
@@ -350,6 +354,7 @@ body {
   overflow-y: scroll;
   scrollbar-width: none; /* Firefox 対応 */
   transition: 0.4s;
+  -moz-transition: 0.4s;
   z-index: 1;
   .communities-participated,
   .new-community-btn,
@@ -447,6 +452,7 @@ body {
   .fa-caret-down {
     margin-right: 1.11rem; //0.25 + 0.86
     transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
     -webkit-transition: all .15s linear;
     -moz-transition: all .15s linear;
     -o-transition: all .15s linear;
@@ -551,8 +557,8 @@ body {
     }
   }
   .dropdown_toggle .fa-caret-down {
-    -webkit-transform: rotate(0deg);
-  	 transform: rotate(0deg);
+  	transform: rotate(0deg);
+  	-webkit-transform: rotate(0deg);
   }
   .calendar-btn {
     padding-left: 4.0rem;
@@ -614,8 +620,8 @@ body {
   width: 100%;
   height: 100%;
   cursor: default;
-  -webkit-transition: all .5s ease;
-  transition: all .5s ease;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
   z-index: 10;
 }
 //.overlay::after {
@@ -652,6 +658,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
   height: 70rem;
   width: 70rem;
   border-radius: 1.5rem;
@@ -927,6 +934,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
   height: 70rem;
   width: 70rem;
   border-radius: 1.5rem;
@@ -1264,8 +1272,8 @@ body {
     top: 50%;
     right: 50%;
     transform: translateX(-40%) translateY(32.5%);
+    -webkit-transform: translateX(-40%) translateY(32.5%);
     font-size: 1.8rem;
-    //background-color: #000;
   }
 }
 .main-container {
@@ -1311,6 +1319,7 @@ body {
     top: 50%;
     left: 1.0rem;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     height: 2.6rem;
     width: 2.6rem;
   }
@@ -1319,6 +1328,7 @@ body {
     top: 50%;
     left: 1.0rem;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     height: 2.4rem;
     width: 2.4rem;
   }
@@ -1373,6 +1383,7 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     width: 90rem;
   }
   #thread-new-title {
@@ -1402,6 +1413,7 @@ body {
     top: 50%;
     right: 50%;
     transform: translateX(-40%) translateY(39%);
+    -webkit-transform: translateX(-40%) translateY(39%);
     font-size: 2.1rem;
   }
   .ql-toolbar {
@@ -1419,6 +1431,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
   }
   /*.file-submit-box {
     position: absolute;
@@ -1453,6 +1466,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     font-size: 1.8rem;
   }
   .file_field {
@@ -1464,14 +1478,6 @@ body {
     cursor: not-allowed;
   }
   .thread-create-btn {
-    //display: inline;
-    //position: absolute;
-    //top: 50%;
-    //left: 4.4rem;
-    //transform: translateY(-50%);
-    //padding: 0;
-    //height: 2.4rem;
-    //width: 2.4rem;
     height: 26.4px;
     width: 30.8px;
     padding: 3px 5px;
@@ -1590,6 +1596,7 @@ body {
   top: 50%;
   left: 1rem;
   transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   height: 4rem;
   width: 4rem;
 }
@@ -1599,6 +1606,7 @@ body {
   top: 50%;
   left: 6rem;
   transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   width: 11.8rem;
   margin-right: 1rem;
   overflow: hidden;
@@ -1665,6 +1673,7 @@ body {
     top: 50%;
     left: 6rem;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     width: 21rem;
   }
   .thread-author-name {
@@ -1829,6 +1838,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     height: 6rem;
     width: 19rem;
     border: solid 1px #ccc;
@@ -1848,6 +1858,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     height: 6rem;
     width: 6rem;
     &:hover {
@@ -1860,6 +1871,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     height: 6rem;
     width: 6rem;
     margin: 0;
@@ -1890,6 +1902,7 @@ body {
     height: 2.6rem;
     width: 2.6rem;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
   }
   .treactions-counts-box {
     display: inline-block;
@@ -1897,6 +1910,7 @@ body {
     top: 50%;
     left: 1.7rem;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     width: 1.7rem;
   }
   .treactions-counts {
@@ -1917,6 +1931,7 @@ body {
     left: 50%; 
     top: 50%;
     transform: translateX(-50%) translateY(-47%);
+    -webkit-transform: translateX(-50%) translateY(-47%);
     font-size: 2rem;
   }
   .treaction-counter {
@@ -1987,6 +2002,7 @@ body {
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     font-size: 2rem;
   }
   /*.tcomment-modal {
@@ -1995,6 +2011,7 @@ body {
     left: 50%;
     width: 40rem;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     border-radius: 1rem;
     z-index: 10;
   }*/
@@ -2002,6 +2019,7 @@ body {
     opacity: 0;
     visibility: hidden;
     transform: translate(0, 0) scale(0.8);
+    -webkit-transform: translate(0, 0) scale(0.8);
   }
   .modal-header {
     padding-left: 1.5rem;
@@ -2013,6 +2031,7 @@ body {
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     height: 2rem;
     width: 2rem;
   }
@@ -2072,6 +2091,7 @@ body {
     top: 50%;
     left: 6rem;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     width: 25rem;
     font-size: 2.0rem;
     font-weight: bold;
@@ -2124,6 +2144,7 @@ body {
       top: 50%;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
+      -webkit-transform: translateX(-50%) translateY(-50%);
       height: 3.6rem;
       width: 3.6rem;
     }
@@ -2165,6 +2186,7 @@ body {
   height: 52rem;
   width: 58rem;
   transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
   padding-bottom: 1rem;
   border-radius: 1rem;
   .thread-reaction-modal-body {
@@ -2217,6 +2239,7 @@ body {
   height: 2.6rem;
   width: 2.6rem;
   transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
 }
 .thread-reaction-emojis {
   display: block;
@@ -2226,6 +2249,7 @@ body {
   height: 100%;
   width: 100%;
   transform: translateX(-33%) translateY(-48%);
+  -webkit-transform: translateX(-33%) translateY(-48%);
   //margin: -2.2rem 0 0 -50%;
   font-size: 2.6rem;
 }
@@ -2238,6 +2262,7 @@ body {
   height: 60rem;
   width: 40rem;
   transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
   border-radius: 1rem;
   .treaction-modal-body {
     position: relative;
@@ -2258,6 +2283,7 @@ body {
     height: 2.6rem;
     width: 2.6rem;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     object-fit: cover;
   }
   .treaction-images-single {
@@ -2292,6 +2318,7 @@ body {
   height: 60rem;
   width: 40rem;
   transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
   border-radius: 1rem;
   .tcomment-modal-body {
     position: relative;
@@ -2393,6 +2420,7 @@ body {
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
     height: 4.2rem;
     border: none;
   }
@@ -2440,6 +2468,7 @@ body {
     top: 50%;
     left: 91.5%;
     transform: translateY(-50%);
+    -webkit-transform:translateY(-50%);
     padding: 0;
     height: 2.8rem;
     width: 2.8rem;
@@ -2461,8 +2490,8 @@ body {
   position: fixed;
   top: 40%;
   left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
   width: 100%;
 }
 .community-form,
@@ -2498,6 +2527,7 @@ body {
     top: 50%;
     right: 50%;
     transform: translateX(-40%) translateY(39%);
+    -webkit-transform: translateX(-40%) translateY(39%);
     font-size: 2.1rem;
   }
   // バリデーションエラー時のテキスト
@@ -2587,6 +2617,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
   }
   .upload-label {
     display: inline;
@@ -2609,6 +2640,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
     font-size: 1.8rem;
   }
   .file_field {
@@ -2792,6 +2824,7 @@ body {
 	top: 50%;
 	left: 50%;
 	transform: translateX(-50%) translateY(-90%);
+	-webkit-transform: translateX(-50%) translateY(-90%);
 	z-index: 11;
 	padding: 2.2rem 3rem 2rem 3rem;
 	border: solid 1px #333;

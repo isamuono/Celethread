@@ -48,6 +48,7 @@ class EventsController < ApplicationController
           result = false
         end
       else
+        @thread.delete
         result = false
       end
     else
