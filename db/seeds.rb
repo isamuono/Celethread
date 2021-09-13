@@ -457,12 +457,12 @@ ReactionImage.create!([
   { emoji_id: '7', entity_name: 'beginners_mark', images: File.open("public/reaction_images/symbols/beginners_mark.png") }
 ])
 
-User.create!(id: '1', family_name: 'celeste', first_name: 'bot', accountName: 'celestebot', email: 'celethread136@gmail.com', password: 'dummy_pass')
+User.create!(id: '0', family_name: 'celeste', first_name: 'bot', accountName: 'celestebot', email: 'celethread136@gmail.com', password: 'dummy_pass')
 
-Community.create!(id: 'celestebot', user_id: '1', communityName: 'celeste_bot', category_id: '5', subcategory_id: '5', prefecture_id: '13', images: File.open("./app/assets/images/icons/image_default.png"), public: '0')
+Community.create!(id: 'celestebot', user_id: '0', communityName: 'celeste_bot', category_id: '5', subcategory_id: '5', prefecture_id: '13', images: File.open("./app/assets/images/icons/image_default.png"), public: '0')
 
-CommunityParticipant.create!(id: '1', user_id: '1', community_id: 'celestebot', role: '1')
+CommunityParticipant.create!(id: '0', user_id: '0', community_id: 'celestebot', role: '1')
 
-Channel.create!(id: 'celestebot', user_id: '1', community_id: 'celestebot', channelName: 'celeste_channel_bot', color: '#a2efef', public: '2')
+Channel.create!(id: 'celestebot', user_id: '0', community_id: 'celestebot', channelName: 'celeste_channel_bot', color: '#a2efef', public: '2')
 
-Gthread.create!(id: 'celestebot', user_id: '1', community_id: 'celestebot', channel_id: 'celestebot', title: 'celeste_botです！', description: '<p>' + 'こんにちは、celeste_botです！' + '</p>')
+Gthread.create!(id: 'celestebot', user_id: '0', community_id: 'celestebot', channel_id: 'celestebot', title: 'celeste_botです！', description: '<p>' + 'こんにちは、celeste_botです！' + '</p>')
