@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_114844) do
     t.integer "subcategory_id"
     t.integer "prefecture_id"
     t.integer "sex"
-    t.string "scale"
+    t.integer "scale"
     t.string "images"
     t.text "description"
     t.integer "user_id"

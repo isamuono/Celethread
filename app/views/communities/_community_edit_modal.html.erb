@@ -39,22 +39,22 @@
               <div class="form-group" id="form-group<%= community_edit.id %>">
                 <%= f.label "サブカテゴリーを選択", class: "label-text3" %>
                 <%= f.select :subcategory_id, [],
-                  { }, { class: "custom-select text-charcoal", id: "subcategorySelect#{ community_edit.id }" } %>
+                  { }, { class: "custom-select", id: "subcategorySelect#{ community_edit.id }" } %>
               </div>
               <div class="form-group">
                 <%= f.label "都道府県を選択（主な活動場所、拠点など）", class: "label-text3" %>
                 <%= f.collection_select :prefecture_id, Prefecture.all, :id, :name,
-                  { :prompt => "---" }, { class: "custom-select text-charcoal", id: "prefectureSelect#{ community_edit.id }"} %>
+                  { :prompt => "---" }, { class: "custom-select", id: "prefectureSelect#{ community_edit.id }"} %>
               </div>
               <div class="form-group">
                 <%= f.label "性別を選択（メンバーが男性か女性どちらかの場合のみ、選択してください）", class: "label-text3" %>
                 <%= f.select :sex, [["指定なし", 0], ["男性", 1], ["女性", 2]],
-                  { }, { class: "custom-select text-charcoal", id: "sexSelect#{ community_edit.id }" } %>
+                  { }, { class: "custom-select", id: "sexSelect#{ community_edit.id }" } %>
               </div>
               <div class="form-group">
                 <%= f.label "規模・人数を選択", class: "label-text3" %>
                 <%= f.select :scale, [["指定なし", 0], ["1〜10人", 1], ["11〜50人", 2], ["51〜100人", 3], ["101〜500人", 4], ["501〜1000人", 5], ["1001人〜", 6]],
-                  { }, { class: "custom-select text-charcoal", id: "scaleSelect#{ community_edit.id }" } %>
+                  { }, { class: "custom-select", id: "scaleSelect#{ community_edit.id }" } %>
               </div>
             </div>
             <div class="col-12">
@@ -105,33 +105,33 @@
       } 
     const resizeCustomselectbox1 = document.getElementById("categorySelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
-        resizeCustomselectbox1.className = "custom-select text-charcoal";
+        resizeCustomselectbox1.className = "custom-select";
       } else if (windowWidth >= 768) {
-        resizeCustomselectbox1.className = "custom-select custom-select-lg text-charcoal";
+        resizeCustomselectbox1.className = "custom-select custom-select-lg";
       } 
     const resizeCustomselectbox2 = document.getElementById("subcategorySelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
-        resizeCustomselectbox2.className = "custom-select text-charcoal";
+        resizeCustomselectbox2.className = "custom-select";
       } else if (windowWidth >= 768) {
-        resizeCustomselectbox2.className = "custom-select custom-select-lg text-charcoal";
+        resizeCustomselectbox2.className = "custom-select custom-select-lg";
       } 
     const resizeCustomselectbox3 = document.getElementById("prefectureSelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
-        resizeCustomselectbox3.className = "custom-select text-charcoal";
+        resizeCustomselectbox3.className = "custom-select";
       } else if (windowWidth >= 768) {
-        resizeCustomselectbox3.className = "custom-select custom-select-lg text-charcoal";
+        resizeCustomselectbox3.className = "custom-select custom-select-lg";
       } 
     const resizeCustomselectbox4 = document.getElementById("sexSelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
-        resizeCustomselectbox4.className = "custom-select text-charcoal";
+        resizeCustomselectbox4.className = "custom-select";
       } else if (windowWidth >= 768) {
-        resizeCustomselectbox4.className = "custom-select custom-select-lg text-charcoal";
+        resizeCustomselectbox4.className = "custom-select custom-select-lg";
       } 
     const resizeCustomselectbox5 = document.getElementById("scaleSelect<%= community_edit.id %>");
       if (windowWidth <= 767) {
-        resizeCustomselectbox5.className = "custom-select text-charcoal";
+        resizeCustomselectbox5.className = "custom-select";
       } else if (windowWidth >= 768) {
-        resizeCustomselectbox5.className = "custom-select custom-select-lg text-charcoal";
+        resizeCustomselectbox5.className = "custom-select custom-select-lg";
       } 
     const resizebox2 = document.getElementById("community-description");
       if (windowWidth <= 767) {

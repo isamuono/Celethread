@@ -6,7 +6,7 @@ class CreateCommunities < ActiveRecord::Migration[5.2]
       t.integer  :subcategory_id
       t.integer  :prefecture_id
       t.integer  :sex
-      t.string   :scale
+      t.integer   :scale
       t.string   :images
       t.text     :description, charset: :utf8mb4
       t.integer  :user_id

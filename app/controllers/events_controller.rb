@@ -39,21 +39,32 @@ class EventsController < ApplicationController
     @thread.description = @event.description
     @thread.images = @event.images
     
-    result = true
-    if @thread.save
-      @event.gthread_id = @thread.id
-      if @event.save
-        @thread.event_id = @event.id
-        if !@thread.save
-          result = false
+    result = false
+    if @thread.valid?
+      @event.gthread_id = Gthread.maximum(:id) + 1
+      @thread.event_id = Event.next_id
+      #binding.pry
+      made_thread = @thread.save
+      made_event = false
+      #binding.pry
+      if made_thread && @event.valid?
+        # イベントがバリデーションを通った場合の処理
+        if made_event = @event.save
+          result = true
         end
-      else
-        @thread.delete
-        result = false
       end
-    else
-      result = false
+      
+      if !result
+        if made_thread
+          @thread.destroy
+        end
+        
+        if made_event
+          @event.destroy
+        end
+      end
     end
+    
     
     if result
       redirect_to channels_gthreads_path(@event.channel_id), success: 'イベントを作成しました'

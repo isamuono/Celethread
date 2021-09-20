@@ -741,6 +741,11 @@ body {
   .channel-information-single-placeholder {
     color: #656565;
   }
+  .community-information-single-description-text,
+  .channel-information-single-description-text {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
   .cp-users-single {
     display: flex;
     justify-content: space-between;
@@ -1001,6 +1006,7 @@ body {
     height: calc(4.2rem);
     font-size: 2.0rem;
     border: solid 1px #8a8a8a;
+    color: #212529;
   }
   #text_area {
     margin-top: 2.5rem;
@@ -1769,30 +1775,6 @@ body {
   strong {
     border-radius: 3px;
   }
-  /*.ql-indent-1 {
-    padding-left: 5.4rem;
-  }
-  .ql-indent-2 {
-    padding-left: 10.8rem;
-  }
-  .ql-indent-3 {
-    padding-left: 16.2rem;
-  }
-  .ql-indent-4 {
-    padding-left: 21.6rem;
-  }
-  .ql-indent-5 {
-    padding-left: 27.0rem;
-  }
-  .ql-indent-6 {
-    padding-left: 32.4rem;
-  }
-  .ql-indent-7 {
-    padding-left: 37.8rem;
-  }
-  .ql-indent-8 {
-    padding-left: 43.2rem;
-  }*/
   blockquote {
     border-left: 4px solid #ccc;
     margin-bottom: 3px;

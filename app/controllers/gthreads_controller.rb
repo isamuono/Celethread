@@ -51,7 +51,7 @@ class GthreadsController < ApplicationController
     temp_ids.each do |temp_id|
       notification = current_user.active_notifications.new(
         gthread_id: @gthread.id,
-        visited_id: temp_id['id'],#@gthread.channel.community.users,#visited_id,
+        visited_id: temp_id['id'],
         action: 'gthread'
       )
       # 自分の投稿したスレッドの場合は、通知済みとする

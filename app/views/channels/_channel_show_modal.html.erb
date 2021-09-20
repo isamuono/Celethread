@@ -7,7 +7,7 @@
       <div class="channel-information-single">
         <label class="label-text4">チャンネルの説明文</label>
         <% if channel_show.description.present? %>
-          <div><%= channel_show.description %></div>
+          <div class="channel-information-single-description-text"><%== channel_show.description %></div>
         <% else %>
           <div class="channel-information-single-placeholder">ここにチャンネルの説明文を記載することができます</div>
         <% end %>
@@ -68,7 +68,7 @@
 	      value.style.backgroundColor = 'deepskyblue';
 	    } else if (value.nextElementSibling.innerHTML == '#87cefa') {
 	      value.style.backgroundColor = 'lightskyblue';
-	    } else if (value.nextElementSibling.innerHTML == '00ffff') {
+	    } else if (value.nextElementSibling.innerHTML == '#00ffff') {
 	      value.style.backgroundColor = 'cyan';
 	    } else if (value.nextElementSibling.innerHTML == '#00afcc') {
 	      value.style.backgroundColor = '#00afcc'; // turquoise blue

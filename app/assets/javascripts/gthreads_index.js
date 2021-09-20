@@ -104,7 +104,7 @@ function colorElement() {
 	      value.style.backgroundColor = 'deepskyblue';
 	    } else if (value.firstElementChild.innerHTML == '#87cefa') {
 	      value.style.backgroundColor = 'lightskyblue';
-	    } else if (value.firstElementChild.innerHTML == '00ffff') {
+	    } else if (value.firstElementChild.innerHTML == '#00ffff') {
 	      value.style.backgroundColor = 'cyan';
 	    } else if (value.firstElementChild.innerHTML == '#00afcc') {
 	      value.style.backgroundColor = '#00afcc'; // turquoise blue

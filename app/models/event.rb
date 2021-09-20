@@ -46,4 +46,12 @@ class Event < ApplicationRecord
   belongs_to :community
   belongs_to :channel
   belongs_to :gthread, dependent: :destroy
+  
+  def self.next_id
+    if self.count >= 1
+      return self.maximum(:id) + 1
+    else
+      return 1
+    end
+  end
 end

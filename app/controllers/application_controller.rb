@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   def is_com_participant?
     # コミュニティー、チャンネル削除時に、当該チャンネルのidが含まれるURLから削除した場合にリダレクトで元のURLに戻れないため、
     # celestebotチャンネルのidが含まれるURLにリダレクトする
-    if channel = Channel.find(params[:channel_id])
+    if channel = Channel.find_by(id: params[:channel_id]) # find_byで検索しないとエラーになる
       if current_user.community_participants.find_by(community_id: channel.community_id).present?
         true
       else

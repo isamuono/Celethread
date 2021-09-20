@@ -44,12 +44,30 @@
                   <div>女性のみ</div>
                 <% end %>
               </div>
+              <div class="community-information-single">
+                <label class="label-text4">規模・人数</label>
+                <% if community_show.scale == 0 || community_show.scale == nil %>
+                  <div class="community-information-single-placeholder">指定なし</div>
+                <% elsif community_show.scale == 1 %>
+                  <div>1〜10人</div>
+                <% elsif community_show.scale == 2 %>
+                  <div>11〜50人</div>
+                <% elsif community_show.scale == 3 %>
+                  <div>51〜100人</div>
+                <% elsif community_show.scale == 4 %>
+                  <div>101〜500人</div>
+                <% elsif community_show.scale == 5 %>
+                  <div>501〜1000人</div>
+                <% elsif community_show.scale == 6 %>
+                  <div>1001人〜</div>
+                <% end %>
+              </div>
             </div>
             <div class="col-12">
               <div class="community-information-single-description">
                 <label class="label-text4">コミュニティー紹介文・説明文</label>
                 <% if community_show.description.present? %>
-                  <div><%= community_show.description %></div>
+                  <div class="community-information-single-description-text"><%= community_show.description %></div>
                 <% else %>
                   <div class="community-information-single-placeholder">ここにコミュニティーの説明文を記載することができます</div>
                 <% end %>

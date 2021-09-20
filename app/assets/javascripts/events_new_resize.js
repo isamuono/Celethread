@@ -50,9 +50,9 @@ function resizeElement() {
     } 
   const resizebox6 = document.getElementById('form6');
     if (windowWidth <= 767) {
-      resizebox6.className = 'form-control timepicker';
+      resizebox6.className = 'form-control timepicker start';
     } else if (windowWidth >= 768) {
-      resizebox6.className = 'form-control form-control-lg timepicker';
+      resizebox6.className = 'form-control form-control-lg timepicker start';
     } 
   const resizebox7 = document.getElementById('secondRangeInput');
     if (windowWidth <= 767) {

@@ -74,7 +74,7 @@
           </div>
           <div class="col-3" id="starttime2">
             <%= f.label "　", class: "label-text2" %>
-            <%= f.text_field :starttime2, class: "form-control timepicker", id: "form6", placeholder: "HH:MM", onkeypress: "return false" %>
+            <%= f.text_field :starttime2, class: "form-control timepicker start", id: "form6", placeholder: "HH:MM", onkeypress: "return false" %>
           </div>
           <div class="col-1" id="from-to2">
             <p class="from-to">〜</p>
@@ -135,7 +135,7 @@
     color: '#7d7d7d'
   });
   
-  $(function(){
+  $(function() {
     $('.flatpickr1').css('background-color', '#fff');
     $('.flatpickr2').css('background-color', '#fff');
     
@@ -156,7 +156,6 @@
       disableMobile: "true",
       //minDate: "today",
       dateFormat: "Y-m-d(D)", //H:i",
-      //defaultHour: 9,
       //minuteIncrement: "15",
       //enableTime: true, //datetime
       locale: "ja",
@@ -179,17 +178,14 @@
 	    'timeFormat': 'H:i'
 	  });
 	  
-	  
 	  // 開始時間と終了時間を連動し、終了時間を開始時間よりも前に設定不可にする
 	  var defaultTimeDelta = document.getElementById('datepair');
     var defaultDelta = new Datepair(defaultTimeDelta, {
-      //'defaultTimeDelta': 1800000 // 30minutes後の時間をセット
+      'defaultTimeDelta': 1800000 // 30minutes後の時間をセット
     });
-  });
-  
-  // 読み込み時、時間入力欄に現在時刻を表示
-  $(window).load(function(){
-    $('.timepicker').timepicker('setTime', new Date());
+    
+    // 読み込み時、時間入力欄に現在時刻を表示
+    $('.start').timepicker('setTime', new Date());
   });
   
   var defaults = {
