@@ -37,7 +37,7 @@ class ApplicationController < ActionController::Base
   
   def login_check
     unless logged_in?
-      flash[:alert] = "ログインしてください"
+      flash[:warning] = "ログインしてください"
       redirect_to root_path
     end
   end

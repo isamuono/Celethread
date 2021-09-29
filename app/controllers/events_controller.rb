@@ -43,10 +43,8 @@ class EventsController < ApplicationController
     if @thread.valid?
       @event.gthread_id = Gthread.maximum(:id) + 1
       @thread.event_id = Event.next_id
-      #binding.pry
       made_thread = @thread.save
       made_event = false
-      #binding.pry
       if made_thread && @event.valid?
         # イベントがバリデーションを通った場合の処理
         if made_event = @event.save
@@ -64,7 +62,6 @@ class EventsController < ApplicationController
         end
       end
     end
-    
     
     if result
       redirect_to channels_gthreads_path(@event.channel_id), success: 'イベントを作成しました'
